@@ -1,8 +1,11 @@
 package com.facility.controller;
 
+import com.facility.domain.Peptideo;
+import com.facility.dto.PeptideoDTO;
+import com.facility.enums.TipoPeptideo;
+import com.facility.repository.PeptideoRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.facility.domain.Peptideo;
-import com.facility.dto.PeptideoDTO;
-import com.facility.enums.TipoPeptideo;
-import com.facility.repository.PeptideoRepository;
 
 @RestController
 @RequestMapping("v1/peptideos")
@@ -33,10 +31,10 @@ public class PeptideoController {
 
   @GetMapping
   public ResponseEntity<List<PeptideoDTO>> findAll() {
-    List<PeptideoDTO> peptideos = peptideoRepository
-        .findAll().stream()
-        .map(peptideo -> new PeptideoDTO(peptideo))
-        .collect(Collectors.toList());
+    List<PeptideoDTO> peptideos =
+        peptideoRepository.findAll().stream()
+            .map(peptideo -> new PeptideoDTO(peptideo))
+            .collect(Collectors.toList());
     if (peptideos == null || peptideos.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -95,9 +93,10 @@ public class PeptideoController {
   @GetMapping(path = {"tipoPeptideo/{tipoPeptideo}"})
   public ResponseEntity<?> findByTipoPeptideo(
       @PathVariable("tipoPeptideo") TipoPeptideo tipoPeptideo) {
-    List<PeptideoDTO> peptideos = peptideoRepository.findByTipoPeptideo(tipoPeptideo).stream()
-        .map(peptideo -> new PeptideoDTO(peptideo))
-        .collect(Collectors.toList());
+    List<PeptideoDTO> peptideos =
+        peptideoRepository.findByTipoPeptideo(tipoPeptideo).stream()
+            .map(peptideo -> new PeptideoDTO(peptideo))
+            .collect(Collectors.toList());
     return peptideos == null || peptideos.isEmpty()
         ? ResponseEntity.noContent().build()
         : ResponseEntity.ok(peptideos);

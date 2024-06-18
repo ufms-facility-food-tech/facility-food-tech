@@ -1,8 +1,10 @@
 package com.facility.controller;
 
+import com.facility.domain.CasoSucesso;
+import com.facility.dto.CasoSucessoDTO;
+import com.facility.repository.CasoSucessoRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.facility.domain.CasoSucesso;
-import com.facility.dto.CasoSucessoDTO;
-import com.facility.repository.CasoSucessoRepository;
-
 @RestController
 @RequestMapping("v1/casossucesso")
 public class CasoSucessoController {
@@ -27,10 +25,10 @@ public class CasoSucessoController {
 
   @GetMapping
   public ResponseEntity<List<CasoSucessoDTO>> findAll() {
-    List<CasoSucessoDTO> casosSucessos = casoSucessoRepository
-        .findAll().stream()
-        .map(casoSucesso -> new CasoSucessoDTO(casoSucesso))
-        .collect(Collectors.toList());
+    List<CasoSucessoDTO> casosSucessos =
+        casoSucessoRepository.findAll().stream()
+            .map(casoSucesso -> new CasoSucessoDTO(casoSucesso))
+            .collect(Collectors.toList());
     if (casosSucessos == null || casosSucessos.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -1,9 +1,11 @@
 package com.facility.controller;
 
+import com.facility.domain.Organismo;
+import com.facility.dto.OrganismoDTO;
+import com.facility.repository.OrganismoRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -20,10 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.facility.domain.Organismo;
-import com.facility.dto.OrganismoDTO;
-import com.facility.repository.OrganismoRepository;
-
 @RestController
 @RequestMapping("v1/organismos")
 public class OrganismoController {
@@ -32,10 +30,10 @@ public class OrganismoController {
 
   @GetMapping
   public ResponseEntity<List<OrganismoDTO>> findAll() {
-    List<OrganismoDTO> organismos = organismoRepository
-        .findAll().stream()
-        .map(organismo -> new OrganismoDTO(organismo))
-        .collect(Collectors.toList());
+    List<OrganismoDTO> organismos =
+        organismoRepository.findAll().stream()
+            .map(organismo -> new OrganismoDTO(organismo))
+            .collect(Collectors.toList());
     if (organismos == null || organismos.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -61,12 +59,15 @@ public class OrganismoController {
     if (nomeCientifico.isPresent()) {
       organismo.setNomeCientifico(nomeCientifico.get());
     }
-    var organismos = organismoRepository.findAll(
-            Example.of(
-                organismo, ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING)))
-        .stream()
-        .map(o -> new OrganismoDTO(o))
-        .collect(Collectors.toList());
+    var organismos =
+        organismoRepository
+            .findAll(
+                Example.of(
+                    organismo,
+                    ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING)))
+            .stream()
+            .map(o -> new OrganismoDTO(o))
+            .collect(Collectors.toList());
     return new ResponseEntity<>(organismos, HttpStatus.OK);
   }
 

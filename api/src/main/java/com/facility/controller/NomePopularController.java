@@ -1,8 +1,10 @@
 package com.facility.controller;
 
+import com.facility.domain.NomePopular;
+import com.facility.dto.NomePopularDTO;
+import com.facility.repository.NomePopularRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.facility.domain.NomePopular;
-import com.facility.dto.NomePopularDTO;
-import com.facility.repository.NomePopularRepository;
-
 @RestController
 @RequestMapping("v1/nomespopulares")
 public class NomePopularController {
@@ -27,10 +25,10 @@ public class NomePopularController {
 
   @GetMapping
   public ResponseEntity<List<NomePopularDTO>> findAll() {
-    List<NomePopularDTO> nomesPopulares = nomePopularRepository
-        .findAll().stream()
-        .map(nomePopular -> new NomePopularDTO(nomePopular))
-        .collect(Collectors.toList());
+    List<NomePopularDTO> nomesPopulares =
+        nomePopularRepository.findAll().stream()
+            .map(nomePopular -> new NomePopularDTO(nomePopular))
+            .collect(Collectors.toList());
     if (nomesPopulares == null || nomesPopulares.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

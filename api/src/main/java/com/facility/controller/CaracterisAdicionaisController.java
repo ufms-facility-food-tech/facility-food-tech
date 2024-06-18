@@ -1,8 +1,10 @@
 package com.facility.controller;
 
+import com.facility.domain.CaracterisAdicionais;
+import com.facility.dto.CaracterisAdicionaisDTO;
+import com.facility.repository.CaracterisAdicionaisRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.facility.domain.CaracterisAdicionais;
-import com.facility.dto.CaracterisAdicionaisDTO;
-import com.facility.repository.CaracterisAdicionaisRepository;
-
 @RestController
 @RequestMapping("v1/caracterisadicionais")
 public class CaracterisAdicionaisController {
@@ -27,11 +25,11 @@ public class CaracterisAdicionaisController {
 
   @GetMapping
   public ResponseEntity<List<CaracterisAdicionaisDTO>> findAll() {
-    List<CaracterisAdicionaisDTO> caracterisAdicionaisList = caracterisAdicionaisRepository
-        .findAll().stream()
-        .map(caracterisAdicionais -> new CaracterisAdicionaisDTO(caracterisAdicionais))
-        .collect(Collectors.toList());
-        
+    List<CaracterisAdicionaisDTO> caracterisAdicionaisList =
+        caracterisAdicionaisRepository.findAll().stream()
+            .map(caracterisAdicionais -> new CaracterisAdicionaisDTO(caracterisAdicionais))
+            .collect(Collectors.toList());
+
     if (caracterisAdicionaisList == null || caracterisAdicionaisList.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

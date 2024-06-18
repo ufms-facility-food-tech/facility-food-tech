@@ -1,8 +1,10 @@
 package com.facility.controller;
 
+import com.facility.domain.AtivCitotoxica;
+import com.facility.dto.AtivCitotoxicaDTO;
+import com.facility.repository.AtivCitotoxicaRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.facility.domain.AtivCitotoxica;
-import com.facility.dto.AtivCitotoxicaDTO;
-import com.facility.repository.AtivCitotoxicaRepository;
-
 @RestController
 @RequestMapping("v1/ativcitotoxica")
 public class AtivCitotoxicaController {
@@ -27,10 +25,10 @@ public class AtivCitotoxicaController {
 
   @GetMapping
   public ResponseEntity<List<AtivCitotoxicaDTO>> findAll() {
-    List<AtivCitotoxicaDTO> ativsCitotoxicas = ativCitotoxicaRepository
-        .findAll().stream()
-        .map(ativCitotoxica -> new AtivCitotoxicaDTO(ativCitotoxica))
-        .collect(Collectors.toList());
+    List<AtivCitotoxicaDTO> ativsCitotoxicas =
+        ativCitotoxicaRepository.findAll().stream()
+            .map(ativCitotoxica -> new AtivCitotoxicaDTO(ativCitotoxica))
+            .collect(Collectors.toList());
     if (ativsCitotoxicas == null || ativsCitotoxicas.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
