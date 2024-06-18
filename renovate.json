@@ -5,7 +5,6 @@
   "automerge": true,
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"]
     }
   ]
