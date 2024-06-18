@@ -1,9 +1,8 @@
-package com.facility.resources;
+package com.facility.controller;
 
-import com.facility.domain.NomePopular;
-import com.facility.dto.NomePopularDTO;
-import com.facility.service.NomePopularService;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +15,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/v1/nomespopulares")
-public class NomePopularResource {
+import com.facility.domain.NomePopular;
+import com.facility.dto.NomePopularDTO;
+import com.facility.repository.NomePopularRepository;
 
-  @Autowired private NomePopularService nomePopularService;
+@RestController
+@RequestMapping("v1/nomespopulares")
+public class NomePopularController {
+
+  @Autowired private NomePopularRepository nomePopularRepository;
 
   @GetMapping
   public ResponseEntity<List<NomePopularDTO>> findAll() {
-    List<NomePopularDTO> nomesPopulares = nomePopularService.findAll();
+    List<NomePopularDTO> nomesPopulares = nomePopularRepository
+        .findAll().stream()
+        .map(nomePopular -> new NomePopularDTO(nomePopular))
+        .collect(Collectors.toList());
     if (nomesPopulares == null || nomesPopulares.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -33,12 +39,12 @@ public class NomePopularResource {
 
   @PostMapping
   public NomePopular create(@RequestBody NomePopular nomePopular) {
-    return nomePopularService.save(nomePopular);
+    return nomePopularRepository.save(nomePopular);
   }
 
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<?> findById(@PathVariable Long id) {
-    return nomePopularService
+    return nomePopularRepository
         .findById(id)
         .map(record -> ResponseEntity.ok().body(record))
         .orElse(ResponseEntity.notFound().build());
@@ -47,13 +53,13 @@ public class NomePopularResource {
   @PutMapping(value = "/{id}")
   public ResponseEntity<NomePopular> update(
       @PathVariable("id") Long id, @RequestBody NomePopular nomePopular) {
-    return nomePopularService
+    return nomePopularRepository
         .findById(id)
         .map(
             record -> {
               record.setNome(nomePopular.getNome());
               record.setOrganismo(nomePopular.getOrganismo());
-              NomePopular updated = nomePopularService.save(record);
+              NomePopular updated = nomePopularRepository.save(record);
               return ResponseEntity.ok().body(updated);
             })
         .orElse(ResponseEntity.notFound().build());
@@ -61,11 +67,11 @@ public class NomePopularResource {
 
   @DeleteMapping(path = {"/{id}"})
   public ResponseEntity<?> delete(@PathVariable Long id) {
-    return nomePopularService
+    return nomePopularRepository
         .findById(id)
         .map(
             record -> {
-              nomePopularService.deleteById(id);
+              nomePopularRepository.deleteById(id);
               return ResponseEntity.ok().build();
             })
         .orElse(ResponseEntity.notFound().build());

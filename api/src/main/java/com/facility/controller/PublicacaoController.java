@@ -1,9 +1,8 @@
-package com.facility.resources;
+package com.facility.controller;
 
-import com.facility.domain.AtivAntifungica;
-import com.facility.dto.AtivAntifungicaDTO;
-import com.facility.service.AtivAntifungicaService;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,44 +15,51 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/v1/atividadesantifungicas")
-public class AtivAntifungicaResource {
+import com.facility.domain.Publicacao;
+import com.facility.dto.PublicacaoDTO;
+import com.facility.repository.PublicacaoRepository;
 
-  @Autowired private AtivAntifungicaService ativAntifungicaService;
+@RestController
+@RequestMapping("v1/publicacoes")
+public class PublicacaoController {
+
+  @Autowired private PublicacaoRepository publicacaoRepository;
 
   @GetMapping
-  public ResponseEntity<List<AtivAntifungicaDTO>> findAll() {
-    List<AtivAntifungicaDTO> ativsAntifungicas = ativAntifungicaService.findAll();
-    if (ativsAntifungicas == null || ativsAntifungicas.isEmpty()) {
+  public ResponseEntity<List<PublicacaoDTO>> findAll() {
+    List<PublicacaoDTO> publicacoes = publicacaoRepository
+        .findAll().stream()
+        .map(puplicacao -> new PublicacaoDTO(puplicacao))
+        .collect(Collectors.toList());
+    if (publicacoes == null || publicacoes.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    return new ResponseEntity<>(ativsAntifungicas, HttpStatus.OK);
+    return new ResponseEntity<>(publicacoes, HttpStatus.OK);
   }
 
   @PostMapping
-  public AtivAntifungica create(@RequestBody AtivAntifungica ativAntifungica) {
-    return ativAntifungicaService.save(ativAntifungica);
+  public Publicacao create(@RequestBody Publicacao publicacao) {
+    return publicacaoRepository.save(publicacao);
   }
 
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<?> findById(@PathVariable Long id) {
-    return ativAntifungicaService
+    return publicacaoRepository
         .findById(id)
         .map(record -> ResponseEntity.ok().body(record))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping(value = "/{id}")
-  public ResponseEntity<AtivAntifungica> update(
-      @PathVariable("id") Long id, @RequestBody AtivAntifungica ativAntifungica) {
-    return ativAntifungicaService
+  public ResponseEntity<Publicacao> update(
+      @PathVariable("id") Long id, @RequestBody Publicacao publicacao) {
+    return publicacaoRepository
         .findById(id)
         .map(
             record -> {
-              record.setAtivAntiFungDesc(ativAntifungica.getAtivAntiFungDesc());
-              record.setPeptideo(ativAntifungica.getPeptideo());
-              AtivAntifungica updated = ativAntifungicaService.save(record);
+              record.setPublicac(publicacao.getPublicac());
+              record.setPeptideo(publicacao.getPeptideo());
+              Publicacao updated = publicacaoRepository.save(record);
               return ResponseEntity.ok().body(updated);
             })
         .orElse(ResponseEntity.notFound().build());
@@ -61,11 +67,11 @@ public class AtivAntifungicaResource {
 
   @DeleteMapping(path = {"/{id}"})
   public ResponseEntity<?> delete(@PathVariable Long id) {
-    return ativAntifungicaService
+    return publicacaoRepository
         .findById(id)
         .map(
             record -> {
-              ativAntifungicaService.deleteById(id);
+              publicacaoRepository.deleteById(id);
               return ResponseEntity.ok().build();
             })
         .orElse(ResponseEntity.notFound().build());

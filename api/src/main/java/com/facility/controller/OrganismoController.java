@@ -1,11 +1,13 @@
-package com.facility.resources;
+package com.facility.controller;
 
-import com.facility.domain.Organismo;
-import com.facility.dto.OrganismoDTO;
-import com.facility.service.OrganismoService;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,15 +20,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/v1/organismos")
-public class OrganismoResource {
+import com.facility.domain.Organismo;
+import com.facility.dto.OrganismoDTO;
+import com.facility.repository.OrganismoRepository;
 
-  @Autowired private OrganismoService organismoService;
+@RestController
+@RequestMapping("v1/organismos")
+public class OrganismoController {
+
+  @Autowired private OrganismoRepository organismoRepository;
 
   @GetMapping
   public ResponseEntity<List<OrganismoDTO>> findAll() {
-    List<OrganismoDTO> organismos = organismoService.findAll();
+    List<OrganismoDTO> organismos = organismoRepository
+        .findAll().stream()
+        .map(organismo -> new OrganismoDTO(organismo))
+        .collect(Collectors.toList());
     if (organismos == null || organismos.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -52,18 +61,23 @@ public class OrganismoResource {
     if (nomeCientifico.isPresent()) {
       organismo.setNomeCientifico(nomeCientifico.get());
     }
-    var organismos = organismoService.query(organismo);
+    var organismos = organismoRepository.findAll(
+            Example.of(
+                organismo, ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING)))
+        .stream()
+        .map(o -> new OrganismoDTO(o))
+        .collect(Collectors.toList());
     return new ResponseEntity<>(organismos, HttpStatus.OK);
   }
 
   @PostMapping
   public Organismo create(@RequestBody Organismo organismo) {
-    return organismoService.save(organismo);
+    return organismoRepository.save(organismo);
   }
 
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<?> findById(@PathVariable Long id) {
-    return organismoService
+    return organismoRepository
         .findById(id)
         .map(record -> ResponseEntity.ok().body(record))
         .orElse(ResponseEntity.notFound().build());
@@ -72,7 +86,7 @@ public class OrganismoResource {
   @PutMapping(value = "/{id}")
   public ResponseEntity<Organismo> update(
       @PathVariable("id") Long id, @RequestBody Organismo organismo) {
-    return organismoService
+    return organismoRepository
         .findById(id)
         .map(
             record -> {
@@ -80,7 +94,7 @@ public class OrganismoResource {
               record.setOrigem(organismo.getOrigem());
               record.setFamilia(organismo.getFamilia());
               record.setNomeCientifico(organismo.getNomeCientifico());
-              Organismo updated = organismoService.save(record);
+              Organismo updated = organismoRepository.save(record);
               return ResponseEntity.ok().body(updated);
             })
         .orElse(ResponseEntity.notFound().build());
@@ -88,11 +102,11 @@ public class OrganismoResource {
 
   @DeleteMapping(path = {"/{id}"})
   public ResponseEntity<?> delete(@PathVariable Long id) {
-    return organismoService
+    return organismoRepository
         .findById(id)
         .map(
             record -> {
-              organismoService.deleteById(id);
+              organismoRepository.deleteById(id);
               return ResponseEntity.ok().build();
             })
         .orElse(ResponseEntity.notFound().build());

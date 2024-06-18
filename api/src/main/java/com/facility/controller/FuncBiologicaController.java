@@ -1,9 +1,8 @@
-package com.facility.resources;
+package com.facility.controller;
 
-import com.facility.domain.FuncBiologica;
-import com.facility.dto.FuncBiologicaDTO;
-import com.facility.service.FuncBiologicaService;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +15,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/v1/funcoesbiologicas")
-public class FuncBiologicaResource {
+import com.facility.domain.FuncBiologica;
+import com.facility.dto.FuncBiologicaDTO;
+import com.facility.repository.FuncBiologicaRepository;
 
-  @Autowired private FuncBiologicaService funcBiologicaService;
+@RestController
+@RequestMapping("v1/funcoesbiologicas")
+public class FuncBiologicaController {
+
+  @Autowired private FuncBiologicaRepository funcBiologicaRepository;
 
   @GetMapping
   public ResponseEntity<List<FuncBiologicaDTO>> findAll() {
-    List<FuncBiologicaDTO> funcsBiologicas = funcBiologicaService.findAll();
+    List<FuncBiologicaDTO> funcsBiologicas = funcBiologicaRepository
+        .findAll().stream()
+        .map(funcBiologica -> new FuncBiologicaDTO(funcBiologica))
+        .collect(Collectors.toList());
     if (funcsBiologicas == null || funcsBiologicas.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -33,12 +39,12 @@ public class FuncBiologicaResource {
 
   @PostMapping
   public FuncBiologica create(@RequestBody FuncBiologica funcBiologica) {
-    return funcBiologicaService.save(funcBiologica);
+    return funcBiologicaRepository.save(funcBiologica);
   }
 
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<?> findById(@PathVariable Long id) {
-    return funcBiologicaService
+    return funcBiologicaRepository
         .findById(id)
         .map(record -> ResponseEntity.ok().body(record))
         .orElse(ResponseEntity.notFound().build());
@@ -47,13 +53,13 @@ public class FuncBiologicaResource {
   @PutMapping(value = "/{id}")
   public ResponseEntity<FuncBiologica> update(
       @PathVariable("id") Long id, @RequestBody FuncBiologica funcBiologica) {
-    return funcBiologicaService
+    return funcBiologicaRepository
         .findById(id)
         .map(
             record -> {
               record.setFuncBiolDesc(funcBiologica.getFuncBiolDesc());
               record.setPeptideo(funcBiologica.getPeptideo());
-              FuncBiologica updated = funcBiologicaService.save(record);
+              FuncBiologica updated = funcBiologicaRepository.save(record);
               return ResponseEntity.ok().body(updated);
             })
         .orElse(ResponseEntity.notFound().build());
@@ -61,11 +67,11 @@ public class FuncBiologicaResource {
 
   @DeleteMapping(path = {"/{id}"})
   public ResponseEntity<?> delete(@PathVariable Long id) {
-    return funcBiologicaService
+    return funcBiologicaRepository
         .findById(id)
         .map(
             record -> {
-              funcBiologicaService.deleteById(id);
+              funcBiologicaRepository.deleteById(id);
               return ResponseEntity.ok().build();
             })
         .orElse(ResponseEntity.notFound().build());
