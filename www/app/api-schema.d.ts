@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
   "/peptideos/{id}": {
     get: operations["findById_1"];
@@ -193,7 +192,6 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
   findById_1: {
     parameters: {
       path: {
