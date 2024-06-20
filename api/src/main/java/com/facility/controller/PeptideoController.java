@@ -25,8 +25,9 @@ public class PeptideoController {
   @Autowired private PeptideoRepository peptideoRepository;
 
   @PostMapping
-  public Peptideo save(@RequestBody PeptideoDTO peptideoDTO) {
-    return peptideoRepository.save(peptideoDTO.toEntity());
+  public ResponseEntity<PeptideoDTO> save(@RequestBody PeptideoDTO peptideoDTO) {
+    var saved = new PeptideoDTO(peptideoRepository.save(peptideoDTO.toEntity()));
+    return new ResponseEntity<>(saved, HttpStatus.CREATED);
   }
 
   @GetMapping

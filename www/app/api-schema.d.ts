@@ -5,59 +5,15 @@
 
 
 export interface paths {
-  "/publicacoes/{id}": {
-    get: operations["findById"];
-    put: operations["update"];
-    delete: operations["delete"];
-  };
   "/peptideos/{id}": {
     get: operations["findById_1"];
-    put: operations["update_1"];
+    put: operations["update"];
     delete: operations["delete_1"];
   };
   "/organismos/{id}": {
     get: operations["findById_2"];
-    put: operations["update_2"];
+    put: operations["update_1"];
     delete: operations["delete_2"];
-  };
-  "/nomes-populares/{id}": {
-    get: operations["findById_3"];
-    put: operations["update_3"];
-    delete: operations["delete_3"];
-  };
-  "/funcoes-biologicas/{id}": {
-    get: operations["findById_4"];
-    put: operations["update_4"];
-    delete: operations["delete_4"];
-  };
-  "/caso-sucesso/{id}": {
-    get: operations["findById_5"];
-    put: operations["update_5"];
-    delete: operations["delete_5"];
-  };
-  "/caracteristicas-adicionais/{id}": {
-    get: operations["findById_6"];
-    put: operations["update_6"];
-    delete: operations["delete_6"];
-  };
-  "/atividades-citotoxicas/{id}": {
-    get: operations["findById_7"];
-    put: operations["update_7"];
-    delete: operations["delete_7"];
-  };
-  "/atividades-antifungicas/{id}": {
-    get: operations["findById_8"];
-    put: operations["update_8"];
-    delete: operations["delete_8"];
-  };
-  "/atividades-antibacterianas/{id}": {
-    get: operations["findById_9"];
-    put: operations["update_9"];
-    delete: operations["delete_9"];
-  };
-  "/publicacoes": {
-    get: operations["findAll"];
-    post: operations["create"];
   };
   "/peptideos": {
     get: operations["findAll_1"];
@@ -65,35 +21,14 @@ export interface paths {
   };
   "/organismos": {
     get: operations["findAll_2"];
-    post: operations["create_1"];
+    post: operations["create"];
   };
-  "/nomes-populares": {
-    get: operations["findAll_3"];
-    post: operations["create_2"];
+  "/publicacoes": {
+    get: operations["findAll"];
   };
-  "/funcoes-biologicas": {
-    get: operations["findAll_4"];
-    post: operations["create_3"];
-  };
-  "/caso-sucesso": {
-    get: operations["findAll_5"];
-    post: operations["create_4"];
-  };
-  "/caracteristicas-adicionais": {
-    get: operations["findAll_6"];
-    post: operations["create_5"];
-  };
-  "/atividades-citotoxicas": {
-    get: operations["findAll_7"];
-    post: operations["create_6"];
-  };
-  "/atividades-antifungicas": {
-    get: operations["findAll_8"];
-    post: operations["create_7"];
-  };
-  "/atividades-antibacterianas": {
-    get: operations["findAll_9"];
-    post: operations["create_8"];
+  "/publicacoes/{id}": {
+    get: operations["findById"];
+    delete: operations["delete"];
   };
   "/peptideos/tipoPeptideo/{tipoPeptideo}": {
     get: operations["findByTipoPeptideo"];
@@ -101,108 +36,61 @@ export interface paths {
   "/organismos/query": {
     get: operations["query"];
   };
+  "/nomes-populares": {
+    get: operations["findAll_3"];
+  };
+  "/nomes-populares/{id}": {
+    get: operations["findById_3"];
+    delete: operations["delete_3"];
+  };
+  "/funcoes-biologicas": {
+    get: operations["findAll_4"];
+  };
+  "/funcoes-biologicas/{id}": {
+    get: operations["findById_4"];
+    delete: operations["delete_4"];
+  };
+  "/caso-sucesso": {
+    get: operations["findAll_5"];
+  };
+  "/caso-sucesso/{id}": {
+    get: operations["findById_5"];
+    delete: operations["delete_5"];
+  };
+  "/caracteristicas-adicionais": {
+    get: operations["findAll_6"];
+  };
+  "/caracteristicas-adicionais/{id}": {
+    get: operations["findById_6"];
+    delete: operations["delete_6"];
+  };
+  "/atividades-citotoxicas": {
+    get: operations["findAll_7"];
+  };
+  "/atividades-citotoxicas/{id}": {
+    get: operations["findById_7"];
+    delete: operations["delete_7"];
+  };
+  "/atividades-antifungicas": {
+    get: operations["findAll_8"];
+  };
+  "/atividades-antifungicas/{id}": {
+    get: operations["findById_8"];
+    delete: operations["delete_8"];
+  };
+  "/atividades-antibacterianas": {
+    get: operations["findAll_9"];
+  };
+  "/atividades-antibacterianas/{id}": {
+    get: operations["findById_9"];
+    delete: operations["delete_9"];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    AtivAntibacteriana: {
-      /** Format: int64 */
-      id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    AtivAntifungica: {
-      /** Format: int64 */
-      id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    AtivCitotoxica: {
-      /** Format: int64 */
-      id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    CaracterisAdicionais: {
-      /** Format: int64 */
-      id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    CasoSucesso: {
-      /** Format: int64 */
-      id?: number;
-      caso: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    FuncBiologica: {
-      /** Format: int64 */
-      id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    NomePopular: {
-      /** Format: int64 */
-      id?: number;
-      nome: string;
-      organismo?: components["schemas"]["Organismo"];
-    };
-    Organismo: {
-      /** Format: int64 */
-      id?: number;
-      especie: string;
-      origem: string;
-      familia: string;
-      nomeCientifico: string;
-      nomesPopulares?: components["schemas"]["NomePopular"][];
-      peptideos?: components["schemas"]["Peptideo"][];
-    };
-    Peptideo: {
-      /** Format: int64 */
-      id?: number;
-      peptideo?: string;
-      /** Format: int32 */
-      quantidadeAminoacidos: number;
-      /** @enum {string} */
-      tipoPeptideo: "SINTETIZADO" | "NATURAL";
-      sequencia: string;
-      estruturaTridimensional?: string;
-      /** Format: double */
-      massaMolecular?: number;
-      /** Format: double */
-      impedimentoEsterico?: number;
-      /** Format: double */
-      hidrofobicidade?: number;
-      /** Format: double */
-      pontoIsoeletrico?: number;
-      /** Format: double */
-      hidropatia?: number;
-      /** Format: double */
-      anfipaticidade?: number;
-      /** Format: double */
-      hidrofilicidade?: number;
-      /** Format: int32 */
-      cargaLiquidaTotal?: number;
-      /** Format: double */
-      indiceBoman?: number;
-      descricao?: string;
-      organismo?: components["schemas"]["Organismo"];
-      funcBiologicas?: components["schemas"]["FuncBiologica"][];
-      ativAntibacterianas?: components["schemas"]["AtivAntibacteriana"][];
-      ativAntifungicas?: components["schemas"]["AtivAntifungica"][];
-      ativCitotoxicas?: components["schemas"]["AtivCitotoxica"][];
-      casosSucesso?: components["schemas"]["CasoSucesso"][];
-      caracterisAdicionais?: components["schemas"]["CaracterisAdicionais"][];
-      publicacoes?: components["schemas"]["Publicacao"][];
-    };
-    Publicacao: {
-      /** Format: int64 */
-      id?: number;
-      url: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
     AtivAntibacterianaDTO: {
       /** Format: int64 */
       id?: number;
@@ -306,56 +194,6 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-  findById: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Publicacao"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["Publicacao"];
-        };
-      };
-    };
-  };
-  delete: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
   findById_1: {
     parameters: {
       path: {
@@ -371,7 +209,7 @@ export interface operations {
       };
     };
   };
-  update_1: {
+  update: {
     parameters: {
       path: {
         id: number;
@@ -421,7 +259,7 @@ export interface operations {
       };
     };
   };
-  update_2: {
+  update_1: {
     parameters: {
       path: {
         id: number;
@@ -456,381 +294,6 @@ export interface operations {
       };
     };
   };
-  findById_3: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update_3: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["NomePopular"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["NomePopular"];
-        };
-      };
-    };
-  };
-  delete_3: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  findById_4: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update_4: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["FuncBiologica"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["FuncBiologica"];
-        };
-      };
-    };
-  };
-  delete_4: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  findById_5: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update_5: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CasoSucesso"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["CasoSucesso"];
-        };
-      };
-    };
-  };
-  delete_5: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  findById_6: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update_6: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CaracterisAdicionais"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["CaracterisAdicionais"];
-        };
-      };
-    };
-  };
-  delete_6: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  findById_7: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update_7: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AtivCitotoxica"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivCitotoxica"];
-        };
-      };
-    };
-  };
-  delete_7: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  findById_8: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update_8: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AtivAntifungica"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivAntifungica"];
-        };
-      };
-    };
-  };
-  delete_8: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  findById_9: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  update_9: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AtivAntibacteriana"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivAntibacteriana"];
-        };
-      };
-    };
-  };
-  delete_9: {
-    parameters: {
-      path: {
-        id: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": Record<string, never>;
-        };
-      };
-    };
-  };
-  findAll: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["PublicacaoDTO"][];
-        };
-      };
-    };
-  };
-  create: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Publicacao"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["Publicacao"];
-        };
-      };
-    };
-  };
   findAll_1: {
     responses: {
       /** @description OK */
@@ -851,7 +314,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["Peptideo"];
+          "*/*": components["schemas"]["PeptideoDTO"];
         };
       };
     };
@@ -866,7 +329,7 @@ export interface operations {
       };
     };
   };
-  create_1: {
+  create: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["OrganismoDTO"];
@@ -881,177 +344,42 @@ export interface operations {
       };
     };
   };
-  findAll_3: {
+  findAll: {
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["NomePopularDTO"][];
+          "*/*": components["schemas"]["PublicacaoDTO"][];
         };
       };
     };
   };
-  create_2: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["NomePopular"];
+  findById: {
+    parameters: {
+      path: {
+        id: number;
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["NomePopular"];
+          "*/*": components["schemas"]["PublicacaoDTO"];
         };
       };
     };
   };
-  findAll_4: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["FuncBiologicaDTO"][];
-        };
-      };
-    };
-  };
-  create_3: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["FuncBiologica"];
+  delete: {
+    parameters: {
+      path: {
+        id: number;
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["FuncBiologica"];
-        };
-      };
-    };
-  };
-  findAll_5: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["CasoSucessoDTO"][];
-        };
-      };
-    };
-  };
-  create_4: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CasoSucesso"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["CasoSucesso"];
-        };
-      };
-    };
-  };
-  findAll_6: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["CaracterisAdicionaisDTO"][];
-        };
-      };
-    };
-  };
-  create_5: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CaracterisAdicionais"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["CaracterisAdicionais"];
-        };
-      };
-    };
-  };
-  findAll_7: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivCitotoxicaDTO"][];
-        };
-      };
-    };
-  };
-  create_6: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AtivCitotoxica"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivCitotoxica"];
-        };
-      };
-    };
-  };
-  findAll_8: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivAntifungicaDTO"][];
-        };
-      };
-    };
-  };
-  create_7: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AtivAntifungica"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivAntifungica"];
-        };
-      };
-    };
-  };
-  findAll_9: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivAntibacterianaDTO"][];
-        };
-      };
-    };
-  };
-  create_8: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AtivAntibacteriana"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AtivAntibacteriana"];
+          "*/*": Record<string, never>;
         };
       };
     };
@@ -1085,6 +413,286 @@ export interface operations {
       200: {
         content: {
           "*/*": components["schemas"]["OrganismoDTO"][];
+        };
+      };
+    };
+  };
+  findAll_3: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["NomePopularDTO"][];
+        };
+      };
+    };
+  };
+  findById_3: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["NomePopularDTO"];
+        };
+      };
+    };
+  };
+  delete_3: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  findAll_4: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["FuncBiologicaDTO"][];
+        };
+      };
+    };
+  };
+  findById_4: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["FuncBiologicaDTO"];
+        };
+      };
+    };
+  };
+  delete_4: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  findAll_5: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["CasoSucessoDTO"][];
+        };
+      };
+    };
+  };
+  findById_5: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["CasoSucessoDTO"];
+        };
+      };
+    };
+  };
+  delete_5: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  findAll_6: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["CaracterisAdicionaisDTO"][];
+        };
+      };
+    };
+  };
+  findById_6: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["CaracterisAdicionaisDTO"];
+        };
+      };
+    };
+  };
+  delete_6: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  findAll_7: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["AtivCitotoxicaDTO"][];
+        };
+      };
+    };
+  };
+  findById_7: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["AtivCitotoxicaDTO"];
+        };
+      };
+    };
+  };
+  delete_7: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  findAll_8: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["AtivAntifungicaDTO"][];
+        };
+      };
+    };
+  };
+  findById_8: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  delete_8: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
+        };
+      };
+    };
+  };
+  findAll_9: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["AtivAntibacterianaDTO"][];
+        };
+      };
+    };
+  };
+  findById_9: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["AtivAntibacterianaDTO"];
+        };
+      };
+    };
+  };
+  delete_9: {
+    parameters: {
+      path: {
+        id: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": Record<string, never>;
         };
       };
     };

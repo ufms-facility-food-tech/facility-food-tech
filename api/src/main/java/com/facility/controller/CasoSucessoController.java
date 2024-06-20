@@ -1,7 +1,6 @@
 package com.facility.controller;
 
 import com.facility.dto.CasoSucessoDTO;
-import com.facility.model.CasoSucesso;
 import com.facility.repository.CasoSucessoRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,31 +28,11 @@ public class CasoSucessoController {
     return new ResponseEntity<>(casosSucessos, HttpStatus.OK);
   }
 
-  @PostMapping
-  public CasoSucesso create(@RequestBody CasoSucesso casoSucesso) {
-    return casoSucessoRepository.save(casoSucesso);
-  }
-
   @GetMapping(path = {"/{id}"})
-  public ResponseEntity<?> findById(@PathVariable Long id) {
+  public ResponseEntity<CasoSucessoDTO> findById(@PathVariable Long id) {
     return casoSucessoRepository
         .findById(id)
-        .map(record -> ResponseEntity.ok().body(record))
-        .orElse(ResponseEntity.notFound().build());
-  }
-
-  @PutMapping(value = "/{id}")
-  public ResponseEntity<CasoSucesso> update(
-      @PathVariable("id") Long id, @RequestBody CasoSucesso casoSucesso) {
-    return casoSucessoRepository
-        .findById(id)
-        .map(
-            record -> {
-              record.setCaso(casoSucesso.getCaso());
-              record.setPeptideo(casoSucesso.getPeptideo());
-              CasoSucesso updated = casoSucessoRepository.save(record);
-              return ResponseEntity.ok().body(updated);
-            })
+        .map(record -> ResponseEntity.ok().body(new CasoSucessoDTO(record)))
         .orElse(ResponseEntity.notFound().build());
   }
 

@@ -1,7 +1,6 @@
 package com.facility.controller;
 
 import com.facility.dto.AtivAntifungicaDTO;
-import com.facility.model.AtivAntifungica;
 import com.facility.repository.AtivAntifungicaRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,31 +28,11 @@ public class AtivAntifungicaController {
     return new ResponseEntity<>(ativsAntifungicas, HttpStatus.OK);
   }
 
-  @PostMapping
-  public AtivAntifungica create(@RequestBody AtivAntifungica ativAntifungica) {
-    return ativAntiFungicaRepository.save(ativAntifungica);
-  }
-
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<?> findById(@PathVariable Long id) {
     return ativAntiFungicaRepository
         .findById(id)
-        .map(record -> ResponseEntity.ok().body(record))
-        .orElse(ResponseEntity.notFound().build());
-  }
-
-  @PutMapping(value = "/{id}")
-  public ResponseEntity<AtivAntifungica> update(
-      @PathVariable("id") Long id, @RequestBody AtivAntifungica ativAntifungica) {
-    return ativAntiFungicaRepository
-        .findById(id)
-        .map(
-            record -> {
-              record.setDescricao(ativAntifungica.getDescricao());
-              record.setPeptideo(ativAntifungica.getPeptideo());
-              AtivAntifungica updated = ativAntiFungicaRepository.save(record);
-              return ResponseEntity.ok().body(updated);
-            })
+        .map(record -> ResponseEntity.ok().body(new AtivAntifungicaDTO(record)))
         .orElse(ResponseEntity.notFound().build());
   }
 

@@ -1,7 +1,6 @@
 package com.facility.controller;
 
 import com.facility.dto.CaracterisAdicionaisDTO;
-import com.facility.model.CaracterisAdicionais;
 import com.facility.repository.CaracterisAdicionaisRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,31 +28,11 @@ public class CaracterisAdicionaisController {
     return new ResponseEntity<>(caracterisAdicionaisList, HttpStatus.OK);
   }
 
-  @PostMapping
-  public CaracterisAdicionais create(@RequestBody CaracterisAdicionais CaracterisAdicionaisDTO) {
-    return caracterisAdicionaisRepository.save(CaracterisAdicionaisDTO);
-  }
-
   @GetMapping(path = {"/{id}"})
-  public ResponseEntity<?> findById(@PathVariable Long id) {
+  public ResponseEntity<CaracterisAdicionaisDTO> findById(@PathVariable Long id) {
     return caracterisAdicionaisRepository
         .findById(id)
-        .map(record -> ResponseEntity.ok().body(record))
-        .orElse(ResponseEntity.notFound().build());
-  }
-
-  @PutMapping(value = "/{id}")
-  public ResponseEntity<CaracterisAdicionais> update(
-      @PathVariable("id") Long id, @RequestBody CaracterisAdicionais caracterisAdicionais) {
-    return caracterisAdicionaisRepository
-        .findById(id)
-        .map(
-            record -> {
-              record.setDescricao(caracterisAdicionais.getDescricao());
-              record.setPeptideo(caracterisAdicionais.getPeptideo());
-              CaracterisAdicionais updated = caracterisAdicionaisRepository.save(record);
-              return ResponseEntity.ok().body(updated);
-            })
+        .map(record -> ResponseEntity.ok().body(new CaracterisAdicionaisDTO(record)))
         .orElse(ResponseEntity.notFound().build());
   }
 
