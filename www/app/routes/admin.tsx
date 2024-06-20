@@ -1,25 +1,53 @@
 import { NavLink, Outlet } from "@remix-run/react";
 import { Container } from "~/components/container";
+import type { paths } from "~/api-schema";
 
 export default function Admin() {
   const navLinks = [
-    { name: "Organismos", path: "organismos" },
-    { name: "Peptideos", path: "peptideos" },
-    { name: "Publicações", path: "publicacoes" },
-    { name: "Nomes Populares", path: "nomes-populares" },
-    { name: "Funções Biológicas", path: "funcoes-biologicas" },
-    { name: "Casos de Sucesso", path: "caso-sucesso" },
     {
-      name: "Características Adicionais",
-      path: "caracteristicas-adicionais",
+      label: "Organismos",
+      route: "organismos",
     },
     {
-      name: "Atividades Antibacterianas",
-      path: "atividades-antibacterianas",
+      label: "Peptideos",
+      route: "peptideos",
     },
-    { name: "Atividades Antifungicas", path: "atividades-antifungicas" },
-    { name: "Atividades Citotoxicas", path: "atividades-citotoxicas" },
-  ];
+    {
+      label: "Publicações",
+      route: "publicacoes",
+    },
+    {
+      label: "Nomes Populares",
+      route: "nomes-populares",
+    },
+    {
+      label: "Funções Biológicas",
+      route: "funcoes-biologicas",
+    },
+    {
+      label: "Casos de Sucesso",
+      route: "caso-sucesso",
+    },
+    {
+      label: "Características Adicionais",
+      route: "caracteristicas-adicionais",
+    },
+    {
+      label: "Atividades Antibacterianas",
+      route: "atividades-antibacterianas",
+    },
+    {
+      label: "Atividades Antifungicas",
+      route: "atividades-antifungicas",
+    },
+    {
+      label: "Atividades Citotoxicas",
+      route: "atividades-citotoxicas",
+    },
+  ] satisfies Array<{
+    label: string;
+    route: `${string & keyof paths extends `/${infer U}` ? U : never}`;
+  }>;
 
   return (
     <Container title="Área Administrativa">
@@ -27,21 +55,21 @@ export default function Admin() {
         <aside className="py-6 pr-6">
           <nav>
             <ul className="flex flex-col gap-4">
-              {navLinks.map(({ name, path }) => (
-                <li key={path}>
-                  <AdminNavItem name={name} path={path} />
+              {navLinks.map(({ label, route }) => (
+                <li key={route}>
+                  <AdminNavItem label={label} route={route} />
                 </li>
               ))}
             </ul>
           </nav>
         </aside>
-        <Outlet />
+        <Outlet context={{ navLinks }} />
       </div>
     </Container>
   );
 }
 
-function AdminNavItem({ name, path }: { name: string; path: string }) {
+function AdminNavItem({ label, route }: { label: string; route: string }) {
   return (
     <NavLink
       prefetch="intent"
@@ -50,9 +78,9 @@ function AdminNavItem({ name, path }: { name: string; path: string }) {
           isActive ? "underline" : ""
         } text-cyan-700 underline-offset-4 hover:underline`
       }
-      to={path}
+      to={route}
     >
-      {name}
+      {label}
     </NavLink>
   );
 }
