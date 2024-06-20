@@ -1,11 +1,14 @@
 package com.facility.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class Organismo implements Serializable {
@@ -20,6 +23,12 @@ public class Organismo implements Serializable {
   @NotNull private String origem;
   @NotNull private String familia;
   @NotNull private String nomeCientifico;
+
+  @OneToMany(mappedBy = "organismo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<NomePopular> nomesPopulares;
+
+  @OneToMany(mappedBy = "organismo", cascade = CascadeType.ALL, orphanRemoval = false)
+  private Set<Peptideo> peptideos;
 
   public Organismo() {}
 
@@ -65,5 +74,21 @@ public class Organismo implements Serializable {
 
   public void setNomeCientifico(String nomeCientifico) {
     this.nomeCientifico = nomeCientifico;
+  }
+
+  public Set<NomePopular> getNomesPopulares() {
+    return nomesPopulares;
+  }
+
+  public void setNomesPopulares(Set<NomePopular> nomesPopulares) {
+    this.nomesPopulares = nomesPopulares;
+  }
+
+  public Set<Peptideo> getPeptideos() {
+    return peptideos;
+  }
+
+  public void setPeptideos(Set<Peptideo> peptideos) {
+    this.peptideos = peptideos;
   }
 }

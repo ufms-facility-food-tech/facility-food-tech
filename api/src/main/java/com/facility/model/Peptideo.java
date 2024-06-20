@@ -1,13 +1,16 @@
 package com.facility.model;
 
 import com.facility.enums.TipoPeptideo;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 public class Peptideo {
@@ -37,6 +40,27 @@ public class Peptideo {
   @ManyToOne
   @JoinColumn(name = "id_organismo", nullable = true, updatable = true)
   private Organismo organismo;
+
+  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<FuncBiologica> funcBiologicas;
+
+  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<AtivAntibacteriana> ativAntibacterianas;
+
+  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<AtivAntifungica> ativAntifungicas;
+
+  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<AtivCitotoxica> ativCitotoxicas;
+
+  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<CasoSucesso> casosSucesso;
+
+  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<CaracterisAdicionais> caracterisAdicionais;
+
+  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Publicacao> publicacoes;
 
   public Organismo getOrganismo() {
     return organismo;
@@ -178,5 +202,61 @@ public class Peptideo {
 
   public void setCargaLiquidaTotal(Integer cargaLiquidaTotal) {
     this.cargaLiquidaTotal = cargaLiquidaTotal;
+  }
+
+  public Set<Publicacao> getPublicacoes() {
+    return publicacoes;
+  }
+
+  public void setPublicacoes(Set<Publicacao> publicacoes) {
+    this.publicacoes = publicacoes;
+  }
+
+  public Set<CaracterisAdicionais> getCaracterisAdicionais() {
+    return caracterisAdicionais;
+  }
+
+  public void setCaracterisAdicionais(Set<CaracterisAdicionais> caracterisAdicionais) {
+    this.caracterisAdicionais = caracterisAdicionais;
+  }
+
+  public Set<CasoSucesso> getCasosSucesso() {
+    return casosSucesso;
+  }
+
+  public void setCasosSucesso(Set<CasoSucesso> casosSucesso) {
+    this.casosSucesso = casosSucesso;
+  }
+
+  public Set<AtivCitotoxica> getAtivCitotoxicas() {
+    return ativCitotoxicas;
+  }
+
+  public void setAtivCitotoxicas(Set<AtivCitotoxica> ativCitotoxicas) {
+    this.ativCitotoxicas = ativCitotoxicas;
+  }
+
+  public Set<AtivAntifungica> getAtivAntifungicas() {
+    return ativAntifungicas;
+  }
+
+  public void setAtivAntifungicas(Set<AtivAntifungica> ativAntifungicas) {
+    this.ativAntifungicas = ativAntifungicas;
+  }
+
+  public Set<AtivAntibacteriana> getAtivAntibacterianas() {
+    return ativAntibacterianas;
+  }
+
+  public void setAtivAntibacterianas(Set<AtivAntibacteriana> ativAntibacterianas) {
+    this.ativAntibacterianas = ativAntibacterianas;
+  }
+
+  public Set<FuncBiologica> getFuncBiologicas() {
+    return funcBiologicas;
+  }
+
+  public void setFuncBiologicas(Set<FuncBiologica> funcBiologicas) {
+    this.funcBiologicas = funcBiologicas;
   }
 }

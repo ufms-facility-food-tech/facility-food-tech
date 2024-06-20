@@ -107,6 +107,48 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    AtivAntibacteriana: {
+      /** Format: int64 */
+      id?: number;
+      descricao: string;
+      peptideo?: components["schemas"]["Peptideo"];
+    };
+    AtivAntifungica: {
+      /** Format: int64 */
+      id?: number;
+      descricao: string;
+      peptideo?: components["schemas"]["Peptideo"];
+    };
+    AtivCitotoxica: {
+      /** Format: int64 */
+      id?: number;
+      descricao: string;
+      peptideo?: components["schemas"]["Peptideo"];
+    };
+    CaracterisAdicionais: {
+      /** Format: int64 */
+      id?: number;
+      descricao: string;
+      peptideo?: components["schemas"]["Peptideo"];
+    };
+    CasoSucesso: {
+      /** Format: int64 */
+      id?: number;
+      caso: string;
+      peptideo?: components["schemas"]["Peptideo"];
+    };
+    FuncBiologica: {
+      /** Format: int64 */
+      id?: number;
+      descricao: string;
+      peptideo?: components["schemas"]["Peptideo"];
+    };
+    NomePopular: {
+      /** Format: int64 */
+      id?: number;
+      nome: string;
+      organismo?: components["schemas"]["Organismo"];
+    };
     Organismo: {
       /** Format: int64 */
       id?: number;
@@ -114,6 +156,8 @@ export interface components {
       origem: string;
       familia: string;
       nomeCientifico: string;
+      nomesPopulares?: components["schemas"]["NomePopular"][];
+      peptideos?: components["schemas"]["Peptideo"][];
     };
     Peptideo: {
       /** Format: int64 */
@@ -145,6 +189,13 @@ export interface components {
       indiceBoman?: number;
       descricao?: string;
       organismo?: components["schemas"]["Organismo"];
+      funcBiologicas?: components["schemas"]["FuncBiologica"][];
+      ativAntibacterianas?: components["schemas"]["AtivAntibacteriana"][];
+      ativAntifungicas?: components["schemas"]["AtivAntifungica"][];
+      ativCitotoxicas?: components["schemas"]["AtivCitotoxica"][];
+      casosSucesso?: components["schemas"]["CasoSucesso"][];
+      caracterisAdicionais?: components["schemas"]["CaracterisAdicionais"][];
+      publicacoes?: components["schemas"]["Publicacao"][];
     };
     Publicacao: {
       /** Format: int64 */
@@ -152,53 +203,35 @@ export interface components {
       url: string;
       peptideo?: components["schemas"]["Peptideo"];
     };
-    NomePopular: {
+    AtivAntibacterianaDTO: {
       /** Format: int64 */
       id?: number;
-      nome: string;
-      organismo?: components["schemas"]["Organismo"];
+      descricao?: string;
     };
-    FuncBiologica: {
+    AtivAntifungicaDTO: {
       /** Format: int64 */
       id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
+      descricao?: string;
     };
-    CasoSucesso: {
+    AtivCitotoxicaDTO: {
       /** Format: int64 */
       id?: number;
-      caso: string;
-      peptideo?: components["schemas"]["Peptideo"];
+      descricao?: string;
     };
-    CaracterisAdicionais: {
+    CaracterisAdicionaisDTO: {
       /** Format: int64 */
       id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
+      descricao?: string;
     };
-    AtivCitotoxica: {
+    CasoSucessoDTO: {
       /** Format: int64 */
       id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
+      caso?: string;
     };
-    AtivAntifungica: {
+    FuncBiologicaDTO: {
       /** Format: int64 */
       id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    AtivAntibacteriana: {
-      /** Format: int64 */
-      id?: number;
-      descricao: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    PublicacaoDTO: {
-      /** Format: int64 */
-      id?: number;
-      url?: string;
-      peptideo?: components["schemas"]["Peptideo"];
+      descricao?: string;
     };
     PeptideoDTO: {
       /** Format: int64 */
@@ -215,6 +248,8 @@ export interface components {
       /** Format: double */
       impedimentoEsterico?: number;
       /** Format: double */
+      hidrofobicidade?: number;
+      /** Format: double */
       hidrofibocidade?: number;
       /** Format: double */
       pontoIsoeletrico?: number;
@@ -229,7 +264,23 @@ export interface components {
       /** Format: double */
       indiceBoman?: number;
       descricao?: string;
-      organismo?: components["schemas"]["Organismo"];
+      funcBiologicas?: components["schemas"]["FuncBiologicaDTO"][];
+      ativAntibacterianas?: components["schemas"]["AtivAntibacterianaDTO"][];
+      ativAntifungicas?: components["schemas"]["AtivAntifungicaDTO"][];
+      ativCitotoxicas?: components["schemas"]["AtivCitotoxicaDTO"][];
+      casosSucesso?: components["schemas"]["CasoSucessoDTO"][];
+      caracterisAdicionais?: components["schemas"]["CaracterisAdicionaisDTO"][];
+      publicacoes?: components["schemas"]["PublicacaoDTO"][];
+    };
+    PublicacaoDTO: {
+      /** Format: int64 */
+      id?: number;
+      url?: string;
+    };
+    NomePopularDTO: {
+      /** Format: int64 */
+      id?: number;
+      nome?: string;
     };
     OrganismoDTO: {
       /** Format: int64 */
@@ -238,48 +289,8 @@ export interface components {
       origem?: string;
       familia?: string;
       nomeCientifico?: string;
-    };
-    NomePopularDTO: {
-      /** Format: int64 */
-      id?: number;
-      nome?: string;
-      organismo?: components["schemas"]["Organismo"];
-    };
-    FuncBiologicaDTO: {
-      /** Format: int64 */
-      id?: number;
-      descricao?: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    CasoSucessoDTO: {
-      /** Format: int64 */
-      id?: number;
-      caso?: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    CaracterisAdicionaisDTO: {
-      /** Format: int64 */
-      id?: number;
-      descricao?: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    AtivCitotoxicaDTO: {
-      /** Format: int64 */
-      id?: number;
-      descricao?: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    AtivAntifungicaDTO: {
-      /** Format: int64 */
-      id?: number;
-      descricao?: string;
-      peptideo?: components["schemas"]["Peptideo"];
-    };
-    AtivAntibacterianaDTO: {
-      /** Format: int64 */
-      id?: number;
-      descricao?: string;
-      peptideo?: components["schemas"]["Peptideo"];
+      nomesPopulares?: components["schemas"]["NomePopularDTO"][];
+      peptideos?: components["schemas"]["PeptideoDTO"][];
     };
   };
   responses: never;
@@ -355,7 +366,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": Record<string, never>;
+          "*/*": components["schemas"]["PeptideoDTO"];
         };
       };
     };
@@ -368,14 +379,14 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Peptideo"];
+        "application/json": components["schemas"]["PeptideoDTO"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["Peptideo"];
+          "*/*": components["schemas"]["PeptideoDTO"];
         };
       };
     };
@@ -405,7 +416,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": Record<string, never>;
+          "*/*": components["schemas"]["OrganismoDTO"];
         };
       };
     };
@@ -418,14 +429,14 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Organismo"];
+        "application/json": components["schemas"]["OrganismoDTO"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["Organismo"];
+          "*/*": components["schemas"]["OrganismoDTO"];
         };
       };
     };
@@ -833,7 +844,7 @@ export interface operations {
   save: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Peptideo"];
+        "application/json": components["schemas"]["PeptideoDTO"];
       };
     };
     responses: {
@@ -858,14 +869,14 @@ export interface operations {
   create_1: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Organismo"];
+        "application/json": components["schemas"]["OrganismoDTO"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["Organismo"];
+          "*/*": components["schemas"]["OrganismoDTO"];
         };
       };
     };
@@ -1055,7 +1066,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": Record<string, never>;
+          "*/*": components["schemas"]["PeptideoDTO"][];
         };
       };
     };

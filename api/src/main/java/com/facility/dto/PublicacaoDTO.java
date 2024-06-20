@@ -1,20 +1,18 @@
 package com.facility.dto;
 
-import com.facility.model.Peptideo;
 import com.facility.model.Publicacao;
 
 public class PublicacaoDTO {
 
   private Long id;
   private String url;
-  private Peptideo peptideo;
 
-  public PublicacaoDTO(Publicacao publicac) {
-
-    this.id = publicac.getId();
-    this.url = publicac.getUrl();
-    this.peptideo = publicac.getPeptideo();
+  public PublicacaoDTO(Publicacao publicacao) {
+    this.id = publicacao.getId();
+    this.url = publicacao.getUrl();
   }
+
+  public PublicacaoDTO() {}
 
   public Long getId() {
     return id;
@@ -22,14 +20,6 @@ public class PublicacaoDTO {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public Peptideo getPeptideo() {
-    return peptideo;
-  }
-
-  public void setPeptideo(Peptideo peptideo) {
-    this.peptideo = peptideo;
   }
 
   public String getUrl() {

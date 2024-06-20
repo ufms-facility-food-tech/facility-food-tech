@@ -29,9 +29,6 @@ public class PublicacaoController {
         publicacaoRepository.findAll().stream()
             .map(puplicacao -> new PublicacaoDTO(puplicacao))
             .collect(Collectors.toList());
-    if (publicacoes == null || publicacoes.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(publicacoes, HttpStatus.OK);
   }
 

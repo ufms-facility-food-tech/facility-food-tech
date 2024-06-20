@@ -29,9 +29,6 @@ public class AtivCitotoxicaController {
         ativCitotoxicaRepository.findAll().stream()
             .map(ativCitotoxica -> new AtivCitotoxicaDTO(ativCitotoxica))
             .collect(Collectors.toList());
-    if (ativsCitotoxicas == null || ativsCitotoxicas.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(ativsCitotoxicas, HttpStatus.OK);
   }
 

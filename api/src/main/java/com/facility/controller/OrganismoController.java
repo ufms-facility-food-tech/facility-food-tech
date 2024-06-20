@@ -31,12 +31,7 @@ public class OrganismoController {
   @GetMapping
   public ResponseEntity<List<OrganismoDTO>> findAll() {
     List<OrganismoDTO> organismos =
-        organismoRepository.findAll().stream()
-            .map(organismo -> new OrganismoDTO(organismo))
-            .collect(Collectors.toList());
-    if (organismos == null || organismos.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+        organismoRepository.findAll().stream().map(OrganismoDTO::new).collect(Collectors.toList());
     return new ResponseEntity<>(organismos, HttpStatus.OK);
   }
 
@@ -66,37 +61,34 @@ public class OrganismoController {
                     organismo,
                     ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING)))
             .stream()
-            .map(o -> new OrganismoDTO(o))
+            .map(OrganismoDTO::new)
             .collect(Collectors.toList());
     return new ResponseEntity<>(organismos, HttpStatus.OK);
   }
 
   @PostMapping
-  public Organismo create(@RequestBody Organismo organismo) {
-    return organismoRepository.save(organismo);
+  public OrganismoDTO create(@RequestBody OrganismoDTO organismoDTO) {
+    return new OrganismoDTO(organismoRepository.save(organismoDTO.toEntity()));
   }
 
   @GetMapping(path = {"/{id}"})
-  public ResponseEntity<?> findById(@PathVariable Long id) {
+  public ResponseEntity<OrganismoDTO> findById(@PathVariable Long id) {
     return organismoRepository
         .findById(id)
-        .map(record -> ResponseEntity.ok().body(record))
+        .map(record -> ResponseEntity.ok().body(new OrganismoDTO(record)))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping(value = "/{id}")
-  public ResponseEntity<Organismo> update(
-      @PathVariable("id") Long id, @RequestBody Organismo organismo) {
+  public ResponseEntity<OrganismoDTO> update(
+      @PathVariable("id") Long id, @RequestBody OrganismoDTO organismoDTO) {
     return organismoRepository
         .findById(id)
         .map(
-            record -> {
-              record.setEspecie(organismo.getEspecie());
-              record.setOrigem(organismo.getOrigem());
-              record.setFamilia(organismo.getFamilia());
-              record.setNomeCientifico(organismo.getNomeCientifico());
-              Organismo updated = organismoRepository.save(record);
-              return ResponseEntity.ok().body(updated);
+            organismo -> {
+              organismoDTO.setId(id);
+              Organismo updated = organismoRepository.save(organismoDTO.toEntity());
+              return ResponseEntity.ok().body(new OrganismoDTO(updated));
             })
         .orElse(ResponseEntity.notFound().build());
   }

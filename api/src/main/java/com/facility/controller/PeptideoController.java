@@ -25,55 +25,35 @@ public class PeptideoController {
   @Autowired private PeptideoRepository peptideoRepository;
 
   @PostMapping
-  public Peptideo save(@RequestBody Peptideo peptideo) {
-    return peptideoRepository.save(peptideo);
+  public Peptideo save(@RequestBody PeptideoDTO peptideoDTO) {
+    return peptideoRepository.save(peptideoDTO.toEntity());
   }
 
   @GetMapping
   public ResponseEntity<List<PeptideoDTO>> findAll() {
     List<PeptideoDTO> peptideos =
-        peptideoRepository.findAll().stream()
-            .map(peptideo -> new PeptideoDTO(peptideo))
-            .collect(Collectors.toList());
-    if (peptideos == null || peptideos.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+        peptideoRepository.findAll().stream().map(PeptideoDTO::new).collect(Collectors.toList());
     return new ResponseEntity<>(peptideos, HttpStatus.OK);
   }
 
   @GetMapping(path = {"/{id}"})
-  public ResponseEntity<?> findById(@PathVariable Long id) {
+  public ResponseEntity<PeptideoDTO> findById(@PathVariable Long id) {
     return peptideoRepository
         .findById(id)
-        .map(record -> ResponseEntity.ok().body(record))
+        .map(record -> ResponseEntity.ok().body(new PeptideoDTO(record)))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping(value = "/{id}")
-  public ResponseEntity<Peptideo> update(
-      @PathVariable("id") Long id, @RequestBody Peptideo peptideo) {
+  public ResponseEntity<PeptideoDTO> update(
+      @PathVariable("id") Long id, @RequestBody PeptideoDTO peptideoDTO) {
     return peptideoRepository
         .findById(id)
         .map(
-            record -> {
-              record.setPeptideo(peptideo.getPeptideo());
-              record.setQuantidadeAminoacidos(peptideo.getQuantidadeAminoacidos());
-              record.setTipoPeptideo(peptideo.getTipoPeptideo());
-              record.setSequencia(peptideo.getSequencia());
-              record.setEstruturaTridimensional(peptideo.getEstruturaTridimensional());
-              record.setMassaMolecular(peptideo.getMassaMolecular());
-              record.setImpedimentoEsterico(peptideo.getImpedimentoEsterico());
-              record.setHidrofobicidade(peptideo.getHidrofobicidade());
-              record.setPontoIsoeletrico(peptideo.getPontoIsoeletrico());
-              record.setHidropatia(peptideo.getHidropatia());
-              record.setAnfipaticidade(peptideo.getAnfipaticidade());
-              record.setHidrofilicidade(peptideo.getHidrofilicidade());
-              record.setCargaLiquidaTotal(peptideo.getCargaLiquidaTotal());
-              record.setIndiceBoman(peptideo.getIndiceBoman());
-              record.setDescricao(peptideo.getDescricao());
-              record.setOrganismo(peptideo.getOrganismo());
-              Peptideo updated = peptideoRepository.save(record);
-              return ResponseEntity.ok().body(updated);
+            peptideo -> {
+              peptideoDTO.setId(id);
+              Peptideo updated = peptideoRepository.save(peptideoDTO.toEntity());
+              return ResponseEntity.ok().body(new PeptideoDTO(updated));
             })
         .orElse(ResponseEntity.notFound().build());
   }
@@ -91,14 +71,12 @@ public class PeptideoController {
   }
 
   @GetMapping(path = {"tipoPeptideo/{tipoPeptideo}"})
-  public ResponseEntity<?> findByTipoPeptideo(
+  public ResponseEntity<List<PeptideoDTO>> findByTipoPeptideo(
       @PathVariable("tipoPeptideo") TipoPeptideo tipoPeptideo) {
     List<PeptideoDTO> peptideos =
         peptideoRepository.findByTipoPeptideo(tipoPeptideo).stream()
-            .map(peptideo -> new PeptideoDTO(peptideo))
+            .map(PeptideoDTO::new)
             .collect(Collectors.toList());
-    return peptideos == null || peptideos.isEmpty()
-        ? ResponseEntity.noContent().build()
-        : ResponseEntity.ok(peptideos);
+    return ResponseEntity.ok(peptideos);
   }
 }

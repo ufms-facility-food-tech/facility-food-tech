@@ -29,9 +29,6 @@ public class AtivAntifungicaController {
         ativAntiFungicaRepository.findAll().stream()
             .map(ativAntifungica -> new AtivAntifungicaDTO(ativAntifungica))
             .collect(Collectors.toList());
-    if (ativsAntifungicas == null || ativsAntifungicas.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(ativsAntifungicas, HttpStatus.OK);
   }
 

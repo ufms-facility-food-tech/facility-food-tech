@@ -29,9 +29,6 @@ public class CasoSucessoController {
         casoSucessoRepository.findAll().stream()
             .map(casoSucesso -> new CasoSucessoDTO(casoSucesso))
             .collect(Collectors.toList());
-    if (casosSucessos == null || casosSucessos.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(casosSucessos, HttpStatus.OK);
   }
 

@@ -27,11 +27,8 @@ public class NomePopularController {
   public ResponseEntity<List<NomePopularDTO>> findAll() {
     List<NomePopularDTO> nomesPopulares =
         nomePopularRepository.findAll().stream()
-            .map(nomePopular -> new NomePopularDTO(nomePopular))
+            .map(NomePopularDTO::new)
             .collect(Collectors.toList());
-    if (nomesPopulares == null || nomesPopulares.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(nomesPopulares, HttpStatus.OK);
   }
 

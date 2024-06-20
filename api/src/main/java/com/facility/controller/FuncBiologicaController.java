@@ -29,9 +29,6 @@ public class FuncBiologicaController {
         funcBiologicaRepository.findAll().stream()
             .map(funcBiologica -> new FuncBiologicaDTO(funcBiologica))
             .collect(Collectors.toList());
-    if (funcsBiologicas == null || funcsBiologicas.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(funcsBiologicas, HttpStatus.OK);
   }
 

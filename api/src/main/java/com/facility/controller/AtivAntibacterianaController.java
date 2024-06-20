@@ -29,9 +29,6 @@ public class AtivAntibacterianaController {
         ativAntibacterianaRepository.findAll().stream()
             .map(ativAntibacteriana -> new AtivAntibacterianaDTO(ativAntibacteriana))
             .collect(Collectors.toList());
-    if (ativAntibacterianas == null || ativAntibacterianas.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(ativAntibacterianas, HttpStatus.OK);
   }
 

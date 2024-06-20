@@ -29,10 +29,6 @@ public class CaracterisAdicionaisController {
         caracterisAdicionaisRepository.findAll().stream()
             .map(caracterisAdicionais -> new CaracterisAdicionaisDTO(caracterisAdicionais))
             .collect(Collectors.toList());
-
-    if (caracterisAdicionaisList == null || caracterisAdicionaisList.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     return new ResponseEntity<>(caracterisAdicionaisList, HttpStatus.OK);
   }
 
