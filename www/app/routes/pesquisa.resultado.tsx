@@ -10,7 +10,7 @@ export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
   const url = new URL(request.url);
 
   const res = await fetch(
-    `${url.origin}/api/v1/organismos/query?` + url.searchParams.toString(),
+    `${url.origin}/api/organismos/query?` + url.searchParams.toString(),
   );
 
   if (!res.ok) {
