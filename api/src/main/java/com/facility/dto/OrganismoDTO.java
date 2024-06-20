@@ -45,8 +45,8 @@ public class OrganismoDTO {
     organismo.setOrigem(this.getOrigem());
     organismo.setNomeCientifico(this.getNomeCientifico());
 
+    Set<NomePopular> nomesPopularesEntity = new HashSet<>();
     if (this.getNomesPopulares() != null) {
-      Set<NomePopular> nomesPopularesEntity = new HashSet<>();
       for (NomePopularDTO nomePopularDTO : this.getNomesPopulares()) {
         NomePopular nomePopular = new NomePopular();
         nomePopular.setId(nomePopularDTO.getId());
@@ -54,16 +54,16 @@ public class OrganismoDTO {
         nomePopular.setOrganismo(organismo);
         nomesPopularesEntity.add(nomePopular);
       }
-      organismo.setNomesPopulares(nomesPopularesEntity);
     }
+    organismo.setNomesPopulares(nomesPopularesEntity);
 
+    Set<Peptideo> peptideosEntity = new HashSet<>();
     if (this.getPeptideos() != null) {
-      Set<Peptideo> peptideosEntity = new HashSet<>();
       for (PeptideoDTO peptideoDTO : this.getPeptideos()) {
         peptideosEntity.add(peptideoDTO.toEntity());
       }
-      organismo.setPeptideos(peptideosEntity);
     }
+    organismo.setPeptideos(peptideosEntity);
 
     return organismo;
   }

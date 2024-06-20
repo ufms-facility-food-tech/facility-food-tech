@@ -120,8 +120,8 @@ public class PeptideoDTO {
     peptideoEntity.setIndiceBoman(this.getIndiceBoman());
     peptideoEntity.setDescricao(this.getDescricao());
 
+    Set<FuncBiologica> funcBiologicasEntity = new HashSet<>();
     if (this.getFuncBiologicas() != null) {
-      Set<FuncBiologica> funcBiologicasEntity = new HashSet<>();
       for (FuncBiologicaDTO funcBiologicaDTO : this.getFuncBiologicas()) {
         FuncBiologica funcBiologica = new FuncBiologica();
         funcBiologica.setId(funcBiologicaDTO.getId());
@@ -129,11 +129,11 @@ public class PeptideoDTO {
         funcBiologica.setPeptideo(peptideoEntity);
         funcBiologicasEntity.add(funcBiologica);
       }
-      peptideoEntity.setFuncBiologicas(funcBiologicasEntity);
     }
+    peptideoEntity.setFuncBiologicas(funcBiologicasEntity);
 
+    Set<AtivAntibacteriana> ativAntibacterianasEntity = new HashSet<>();
     if (this.getAtivAntibacterianas() != null) {
-      Set<AtivAntibacteriana> ativAntibacterianasEntity = new HashSet<>();
       for (AtivAntibacterianaDTO ativAntibacterianaDTO : this.getAtivAntibacterianas()) {
         AtivAntibacteriana ativAntibacteriana = new AtivAntibacteriana();
         ativAntibacteriana.setId(ativAntibacterianaDTO.getId());
@@ -141,11 +141,11 @@ public class PeptideoDTO {
         ativAntibacteriana.setPeptideo(peptideoEntity);
         ativAntibacterianasEntity.add(ativAntibacteriana);
       }
-      peptideoEntity.setAtivAntibacterianas(ativAntibacterianasEntity);
     }
+    peptideoEntity.setAtivAntibacterianas(ativAntibacterianasEntity);
 
+    Set<AtivAntifungica> ativAntifungicasEntity = new HashSet<>();
     if (this.getAtivAntifungicas() != null) {
-      Set<AtivAntifungica> ativAntifungicasEntity = new HashSet<>();
       for (AtivAntifungicaDTO ativAntifungicaDTO : this.getAtivAntifungicas()) {
         AtivAntifungica ativAntifungica = new AtivAntifungica();
         ativAntifungica.setId(ativAntifungicaDTO.getId());
@@ -153,11 +153,11 @@ public class PeptideoDTO {
         ativAntifungica.setPeptideo(peptideoEntity);
         ativAntifungicasEntity.add(ativAntifungica);
       }
-      peptideoEntity.setAtivAntifungicas(ativAntifungicasEntity);
     }
+    peptideoEntity.setAtivAntifungicas(ativAntifungicasEntity);
 
+    Set<AtivCitotoxica> ativCitotoxicasEntity = new HashSet<>();
     if (this.getAtivCitotoxicas() != null) {
-      Set<AtivCitotoxica> ativCitotoxicasEntity = new HashSet<>();
       for (AtivCitotoxicaDTO ativCitotoxicaDTO : this.getAtivCitotoxicas()) {
         AtivCitotoxica ativCitotoxica = new AtivCitotoxica();
         ativCitotoxica.setId(ativCitotoxicaDTO.getId());
@@ -165,11 +165,11 @@ public class PeptideoDTO {
         ativCitotoxica.setPeptideo(peptideoEntity);
         ativCitotoxicasEntity.add(ativCitotoxica);
       }
-      peptideoEntity.setAtivCitotoxicas(ativCitotoxicasEntity);
     }
+    peptideoEntity.setAtivCitotoxicas(ativCitotoxicasEntity);
 
+    Set<CasoSucesso> casosSucessoEntity = new HashSet<>();
     if (this.getCasosSucesso() != null) {
-      Set<CasoSucesso> casosSucessoEntity = new HashSet<>();
       for (CasoSucessoDTO casoSucessoDTO : this.getCasosSucesso()) {
         CasoSucesso casoSucesso = new CasoSucesso();
         casoSucesso.setId(casoSucessoDTO.getId());
@@ -177,11 +177,11 @@ public class PeptideoDTO {
         casoSucesso.setPeptideo(peptideoEntity);
         casosSucessoEntity.add(casoSucesso);
       }
-      peptideoEntity.setCasosSucesso(casosSucessoEntity);
     }
+    peptideoEntity.setCasosSucesso(casosSucessoEntity);
 
+    Set<CaracterisAdicionais> caracterisAdicionaisEntity = new HashSet<>();
     if (this.getCaracterisAdicionais() != null) {
-      Set<CaracterisAdicionais> caracterisAdicionaisEntity = new HashSet<>();
       for (CaracterisAdicionaisDTO caracterisAdicionaisDTO : this.getCaracterisAdicionais()) {
         CaracterisAdicionais caracterisAdicional = new CaracterisAdicionais();
         caracterisAdicional.setId(caracterisAdicionaisDTO.getId());
@@ -189,11 +189,11 @@ public class PeptideoDTO {
         caracterisAdicional.setPeptideo(peptideoEntity);
         caracterisAdicionaisEntity.add(caracterisAdicional);
       }
-      peptideoEntity.setCaracterisAdicionais(caracterisAdicionaisEntity);
     }
+    peptideoEntity.setCaracterisAdicionais(caracterisAdicionaisEntity);
 
+    Set<Publicacao> publicacoesEntity = new HashSet<>();
     if (this.getPublicacoes() != null) {
-      Set<Publicacao> publicacoesEntity = new HashSet<>();
       for (PublicacaoDTO publicacaoDTO : this.getPublicacoes()) {
         Publicacao publicacao = new Publicacao();
         publicacao.setId(publicacaoDTO.getId());
@@ -201,8 +201,8 @@ public class PeptideoDTO {
         publicacao.setPeptideo(peptideoEntity);
         publicacoesEntity.add(publicacao);
       }
-      peptideoEntity.setPublicacoes(publicacoesEntity);
     }
+    peptideoEntity.setPublicacoes(publicacoesEntity);
 
     return peptideoEntity;
   }
