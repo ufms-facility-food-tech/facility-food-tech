@@ -1,9 +1,10 @@
-package com.facility.domain;
+package com.facility.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -15,10 +16,10 @@ public class Organismo implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String especie;
-  private String origem;
-  private String familia;
-  private String nomeCientifico;
+  @NotNull private String especie;
+  @NotNull private String origem;
+  @NotNull private String familia;
+  @NotNull private String nomeCientifico;
 
   public Organismo() {}
 

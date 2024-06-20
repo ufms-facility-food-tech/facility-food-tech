@@ -1,7 +1,7 @@
 package com.facility.dto;
 
-import com.facility.domain.CasoSucesso;
-import com.facility.domain.Peptideo;
+import com.facility.model.CasoSucesso;
+import com.facility.model.Peptideo;
 
 public class CasoSucessoDTO {
 

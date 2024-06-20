@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.FuncBiologica;
 import com.facility.dto.FuncBiologicaDTO;
+import com.facility.model.FuncBiologica;
 import com.facility.repository.FuncBiologicaRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/funcoesbiologicas")
+@RequestMapping("funcoes-biologicas")
 public class FuncBiologicaController {
 
   @Autowired private FuncBiologicaRepository funcBiologicaRepository;
@@ -55,7 +55,7 @@ public class FuncBiologicaController {
         .findById(id)
         .map(
             record -> {
-              record.setFuncBiolDesc(funcBiologica.getFuncBiolDesc());
+              record.setDescricao(funcBiologica.getDescricao());
               record.setPeptideo(funcBiologica.getPeptideo());
               FuncBiologica updated = funcBiologicaRepository.save(record);
               return ResponseEntity.ok().body(updated);

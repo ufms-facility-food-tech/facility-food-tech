@@ -1,17 +1,17 @@
 package com.facility.dto;
 
-import com.facility.domain.AtivCitotoxica;
-import com.facility.domain.Peptideo;
+import com.facility.model.AtivCitotoxica;
+import com.facility.model.Peptideo;
 
 public class AtivCitotoxicaDTO {
 
   private Long id;
-  private String ativCitotoxicDesc;
+  private String descricao;
   private Peptideo peptideo;
 
   public AtivCitotoxicaDTO(AtivCitotoxica ativCitotoxica) {
     this.id = ativCitotoxica.getId();
-    this.ativCitotoxicDesc = ativCitotoxica.getAtivCitotoxicDesc();
+    this.descricao = ativCitotoxica.getDescricao();
     this.peptideo = ativCitotoxica.getPeptideo();
   }
 
@@ -31,11 +31,11 @@ public class AtivCitotoxicaDTO {
     this.peptideo = peptideo;
   }
 
-  public String getAtivCitotoxicDesc() {
-    return ativCitotoxicDesc;
+  public String getDescricao() {
+    return descricao;
   }
 
-  public void setAtivCitotoxicDesc(String ativCitotoxicDesc) {
-    this.ativCitotoxicDesc = ativCitotoxicDesc;
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
   }
 }

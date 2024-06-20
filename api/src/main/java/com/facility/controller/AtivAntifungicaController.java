@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.AtivAntifungica;
 import com.facility.dto.AtivAntifungicaDTO;
+import com.facility.model.AtivAntifungica;
 import com.facility.repository.AtivAntifungicaRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/atividadesantifungicas")
+@RequestMapping("atividades-antifungicas")
 public class AtivAntifungicaController {
 
   @Autowired private AtivAntifungicaRepository ativAntiFungicaRepository;
@@ -55,7 +55,7 @@ public class AtivAntifungicaController {
         .findById(id)
         .map(
             record -> {
-              record.setAtivAntiFungDesc(ativAntifungica.getAtivAntiFungDesc());
+              record.setDescricao(ativAntifungica.getDescricao());
               record.setPeptideo(ativAntifungica.getPeptideo());
               AtivAntifungica updated = ativAntiFungicaRepository.save(record);
               return ResponseEntity.ok().body(updated);

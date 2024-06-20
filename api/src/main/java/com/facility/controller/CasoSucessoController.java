@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.CasoSucesso;
 import com.facility.dto.CasoSucessoDTO;
+import com.facility.model.CasoSucesso;
 import com.facility.repository.CasoSucessoRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/casossucesso")
+@RequestMapping("caso-sucesso")
 public class CasoSucessoController {
 
   @Autowired private CasoSucessoRepository casoSucessoRepository;

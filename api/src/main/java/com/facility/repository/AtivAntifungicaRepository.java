@@ -1,6 +1,6 @@
 package com.facility.repository;
 
-import com.facility.domain.AtivAntifungica;
+import com.facility.model.AtivAntifungica;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

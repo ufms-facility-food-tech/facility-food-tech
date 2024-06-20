@@ -1,17 +1,17 @@
 package com.facility.dto;
 
-import com.facility.domain.FuncBiologica;
-import com.facility.domain.Peptideo;
+import com.facility.model.FuncBiologica;
+import com.facility.model.Peptideo;
 
 public class FuncBiologicaDTO {
 
   private Long id;
-  private String funcBiolDesc;
+  private String descricao;
   private Peptideo peptideo;
 
   public FuncBiologicaDTO(FuncBiologica funcBiologica) {
     this.id = funcBiologica.getId();
-    this.funcBiolDesc = funcBiologica.getFuncBiolDesc();
+    this.descricao = funcBiologica.getDescricao();
     this.peptideo = funcBiologica.getPeptideo();
   }
 
@@ -31,11 +31,11 @@ public class FuncBiologicaDTO {
     this.peptideo = peptideo;
   }
 
-  public String getFuncBiolDesc() {
-    return funcBiolDesc;
+  public String getDescricao() {
+    return descricao;
   }
 
-  public void setFuncBiolDesc(String funcBiolDesc) {
-    this.funcBiolDesc = funcBiolDesc;
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
   }
 }

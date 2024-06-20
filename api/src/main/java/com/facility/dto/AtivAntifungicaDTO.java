@@ -1,17 +1,17 @@
 package com.facility.dto;
 
-import com.facility.domain.AtivAntifungica;
-import com.facility.domain.Peptideo;
+import com.facility.model.AtivAntifungica;
+import com.facility.model.Peptideo;
 
 public class AtivAntifungicaDTO {
 
   private Long id;
-  private String ativAntiFungDesc;
+  private String descricao;
   private Peptideo peptideo;
 
   public AtivAntifungicaDTO(AtivAntifungica ativAntifung) {
     this.id = ativAntifung.getId();
-    this.ativAntiFungDesc = ativAntifung.getAtivAntiFungDesc();
+    this.descricao = ativAntifung.getDescricao();
     this.peptideo = ativAntifung.getPeptideo();
   }
 
@@ -23,19 +23,19 @@ public class AtivAntifungicaDTO {
     this.id = id;
   }
 
-  public String getAtivAntiFungDesc() {
-    return ativAntiFungDesc;
-  }
-
-  public void setAtivAntiFungDesc(String ativAntiFungDesc) {
-    this.ativAntiFungDesc = ativAntiFungDesc;
-  }
-
   public Peptideo getPeptideo() {
     return peptideo;
   }
 
   public void setPeptideo(Peptideo peptideo) {
     this.peptideo = peptideo;
+  }
+
+  public String getDescricao() {
+    return descricao;
+  }
+
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
   }
 }

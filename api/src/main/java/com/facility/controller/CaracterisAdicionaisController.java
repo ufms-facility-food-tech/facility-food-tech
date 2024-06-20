@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.CaracterisAdicionais;
 import com.facility.dto.CaracterisAdicionaisDTO;
+import com.facility.model.CaracterisAdicionais;
 import com.facility.repository.CaracterisAdicionaisRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/caracterisadicionais")
+@RequestMapping("caracteristicas-adicionais")
 public class CaracterisAdicionaisController {
 
   @Autowired private CaracterisAdicionaisRepository caracterisAdicionaisRepository;
@@ -56,7 +56,7 @@ public class CaracterisAdicionaisController {
         .findById(id)
         .map(
             record -> {
-              record.setCaracAdicionaisDesc(caracterisAdicionais.getCaracAdicionaisDesc());
+              record.setDescricao(caracterisAdicionais.getDescricao());
               record.setPeptideo(caracterisAdicionais.getPeptideo());
               CaracterisAdicionais updated = caracterisAdicionaisRepository.save(record);
               return ResponseEntity.ok().body(updated);

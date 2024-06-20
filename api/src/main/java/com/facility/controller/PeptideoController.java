@@ -1,8 +1,8 @@
 package com.facility.controller;
 
-import com.facility.domain.Peptideo;
 import com.facility.dto.PeptideoDTO;
 import com.facility.enums.TipoPeptideo;
+import com.facility.model.Peptideo;
 import com.facility.repository.PeptideoRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/peptideos")
+@RequestMapping("peptideos")
 public class PeptideoController {
 
   @Autowired private PeptideoRepository peptideoRepository;
@@ -57,18 +57,18 @@ public class PeptideoController {
         .map(
             record -> {
               record.setPeptideo(peptideo.getPeptideo());
-              record.setQuantAas(peptideo.getQuantAas());
+              record.setQuantidadeAminoacidos(peptideo.getQuantidadeAminoacidos());
               record.setTipoPeptideo(peptideo.getTipoPeptideo());
               record.setSequencia(peptideo.getSequencia());
               record.setEstruturaTridimensional(peptideo.getEstruturaTridimensional());
               record.setMassaMolecular(peptideo.getMassaMolecular());
-              record.setImpediEsterico(peptideo.getImpediEsterico());
-              record.setHidrofobocidade(peptideo.getHidrofobocidade());
+              record.setImpedimentoEsterico(peptideo.getImpedimentoEsterico());
+              record.setHidrofobicidade(peptideo.getHidrofobicidade());
               record.setPontoIsoeletrico(peptideo.getPontoIsoeletrico());
               record.setHidropatia(peptideo.getHidropatia());
               record.setAnfipaticidade(peptideo.getAnfipaticidade());
               record.setHidrofilicidade(peptideo.getHidrofilicidade());
-              record.setCargaLiquiTotal(peptideo.getCargaLiquiTotal());
+              record.setCargaLiquidaTotal(peptideo.getCargaLiquidaTotal());
               record.setIndiceBoman(peptideo.getIndiceBoman());
               record.setDescricao(peptideo.getDescricao());
               record.setOrganismo(peptideo.getOrganismo());

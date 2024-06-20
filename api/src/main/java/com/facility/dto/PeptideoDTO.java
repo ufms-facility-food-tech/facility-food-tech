@@ -1,25 +1,25 @@
 package com.facility.dto;
 
-import com.facility.domain.Organismo;
-import com.facility.domain.Peptideo;
 import com.facility.enums.TipoPeptideo;
+import com.facility.model.Organismo;
+import com.facility.model.Peptideo;
 
 public class PeptideoDTO {
 
   private Long id;
   private String peptideo;
-  private Integer quantAas;
+  private Integer quantidadeAminoacidos;
   private TipoPeptideo tipoPeptideo;
   private String sequencia;
   private String estruturaTridimensional;
   private Double massaMolecular;
-  private Double impediEsterico;
-  private Double hidrofobocidade;
+  private Double impedimentoEsterico;
+  private Double hidrofibocidade;
   private Double pontoIsoeletrico;
   private Double hidropatia;
   private Double anfipaticidade;
   private Double hidrofilicidade;
-  private Integer cargaLiquiTotal;
+  private Integer cargaLiquidaTotal;
   private Double indiceBoman;
   private String descricao;
   private Organismo organismo;
@@ -27,18 +27,18 @@ public class PeptideoDTO {
   public PeptideoDTO(Peptideo peptideo) {
     this.id = peptideo.getId();
     this.peptideo = peptideo.getPeptideo();
-    this.quantAas = peptideo.getQuantAas();
+    this.quantidadeAminoacidos = peptideo.getQuantidadeAminoacidos();
     this.tipoPeptideo = peptideo.getTipoPeptideo();
     this.sequencia = peptideo.getSequencia();
     this.estruturaTridimensional = peptideo.getEstruturaTridimensional();
     this.massaMolecular = peptideo.getMassaMolecular();
-    this.impediEsterico = peptideo.getImpediEsterico();
-    this.hidrofobocidade = peptideo.getHidrofobocidade();
+    this.impedimentoEsterico = peptideo.getImpedimentoEsterico();
+    this.hidrofibocidade = peptideo.getHidrofobicidade();
     this.pontoIsoeletrico = peptideo.getPontoIsoeletrico();
     this.hidropatia = peptideo.getHidropatia();
     this.anfipaticidade = peptideo.getAnfipaticidade();
     this.hidrofilicidade = peptideo.getHidrofilicidade();
-    this.cargaLiquiTotal = peptideo.getCargaLiquiTotal();
+    this.cargaLiquidaTotal = peptideo.getCargaLiquidaTotal();
     this.indiceBoman = peptideo.getIndiceBoman();
     this.descricao = peptideo.getDescricao();
     this.organismo = peptideo.getOrganismo();
@@ -60,12 +60,12 @@ public class PeptideoDTO {
     this.peptideo = peptideo;
   }
 
-  public Integer getQuantAas() {
-    return quantAas;
+  public Integer getQuantidadeAminoacidos() {
+    return quantidadeAminoacidos;
   }
 
-  public void setQuantAas(Integer quantAas) {
-    this.quantAas = quantAas;
+  public void setQuantidadeAminoacidos(Integer quantidadeAminoacidos) {
+    this.quantidadeAminoacidos = quantidadeAminoacidos;
   }
 
   public TipoPeptideo getTipoPeptideo() {
@@ -100,20 +100,20 @@ public class PeptideoDTO {
     this.massaMolecular = massaMolecular;
   }
 
-  public Double getImpediEsterico() {
-    return impediEsterico;
+  public Double getImpedimentoEsterico() {
+    return impedimentoEsterico;
   }
 
-  public void setImpediEsterico(Double impediEsterico) {
-    this.impediEsterico = impediEsterico;
+  public void setImpedimentoEsterico(Double impedimentoEsterico) {
+    this.impedimentoEsterico = impedimentoEsterico;
   }
 
-  public Double getHidrofobocidade() {
-    return hidrofobocidade;
+  public Double getHidrofibocidade() {
+    return hidrofibocidade;
   }
 
-  public void setHidrofobocidade(Double hidrofobocidade) {
-    this.hidrofobocidade = hidrofobocidade;
+  public void setHidrofibocidade(Double hidrofibocidade) {
+    this.hidrofibocidade = hidrofibocidade;
   }
 
   public Double getPontoIsoeletrico() {
@@ -148,12 +148,12 @@ public class PeptideoDTO {
     this.hidrofilicidade = hidrofilicidade;
   }
 
-  public Integer getCargaLiquiTotal() {
-    return cargaLiquiTotal;
+  public Integer getCargaLiquidaTotal() {
+    return cargaLiquidaTotal;
   }
 
-  public void setCargaLiquiTotal(Integer cargaLiquiTotal) {
-    this.cargaLiquiTotal = cargaLiquiTotal;
+  public void setCargaLiquidaTotal(Integer cargaLiquidaTotal) {
+    this.cargaLiquidaTotal = cargaLiquidaTotal;
   }
 
   public Double getIndiceBoman() {

@@ -1,17 +1,17 @@
 package com.facility.dto;
 
-import com.facility.domain.CaracterisAdicionais;
-import com.facility.domain.Peptideo;
+import com.facility.model.CaracterisAdicionais;
+import com.facility.model.Peptideo;
 
 public class CaracterisAdicionaisDTO {
 
   private Long id;
-  private String caracAdicionaisDesc;
+  private String descricao;
   private Peptideo peptideo;
 
   public CaracterisAdicionaisDTO(CaracterisAdicionais caracterisAdicionais) {
     this.id = caracterisAdicionais.getId();
-    this.caracAdicionaisDesc = caracterisAdicionais.getCaracAdicionaisDesc();
+    this.descricao = caracterisAdicionais.getDescricao();
     this.peptideo = caracterisAdicionais.getPeptideo();
   }
 
@@ -31,11 +31,11 @@ public class CaracterisAdicionaisDTO {
     this.peptideo = peptideo;
   }
 
-  public String getCaracAdicionaisDesc() {
-    return caracAdicionaisDesc;
+  public String getDescricao() {
+    return descricao;
   }
 
-  public void setCaracAdicionaisDesc(String caracAdicionaisDesc) {
-    this.caracAdicionaisDesc = caracAdicionaisDesc;
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
   }
 }

@@ -1,4 +1,4 @@
-package com.facility.domain;
+package com.facility.model;
 
 import com.facility.enums.TipoPeptideo;
 import jakarta.persistence.Entity;
@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Peptideo {
@@ -18,18 +19,18 @@ public class Peptideo {
   private Long id;
 
   private String peptideo;
-  private Integer quantAas;
-  private TipoPeptideo tipoPeptideo;
-  private String sequencia;
+  @NotNull private Integer quantidadeAminoacidos;
+  @NotNull private TipoPeptideo tipoPeptideo;
+  @NotNull private String sequencia;
   private String estruturaTridimensional;
   private Double massaMolecular;
-  private Double impediEsterico;
-  private Double hidrofobocidade;
+  private Double impedimentoEsterico;
+  private Double hidrofobicidade;
   private Double pontoIsoeletrico;
   private Double hidropatia;
   private Double anfipaticidade;
   private Double hidrofilicidade;
-  private Integer cargaLiquiTotal;
+  private Integer cargaLiquidaTotal;
   private Double indiceBoman;
   private String descricao;
 
@@ -61,14 +62,6 @@ public class Peptideo {
 
   public void setPeptideo(String peptideo) {
     this.peptideo = peptideo;
-  }
-
-  public Integer getQuantAas() {
-    return quantAas;
-  }
-
-  public void setQuantAas(Integer quantAas) {
-    this.quantAas = quantAas;
   }
 
   public TipoPeptideo getTipoPeptideo() {
@@ -103,22 +96,6 @@ public class Peptideo {
     this.massaMolecular = massaMolecular;
   }
 
-  public Double getImpediEsterico() {
-    return impediEsterico;
-  }
-
-  public void setImpediEsterico(Double impediEsterico) {
-    this.impediEsterico = impediEsterico;
-  }
-
-  public Double getHidrofobocidade() {
-    return hidrofobocidade;
-  }
-
-  public void setHidrofobocidade(Double hidrofobocidade) {
-    this.hidrofobocidade = hidrofobocidade;
-  }
-
   public Double getPontoIsoeletrico() {
     return pontoIsoeletrico;
   }
@@ -151,14 +128,6 @@ public class Peptideo {
     this.hidrofilicidade = hidrofilicidade;
   }
 
-  public Integer getCargaLiquiTotal() {
-    return cargaLiquiTotal;
-  }
-
-  public void setCargaLiquiTotal(Integer cargaLiquiTotal) {
-    this.cargaLiquiTotal = cargaLiquiTotal;
-  }
-
   public Double getIndiceBoman() {
     return indiceBoman;
   }
@@ -177,5 +146,37 @@ public class Peptideo {
 
   public static long getSerialversionuid() {
     return serialVersionUID;
+  }
+
+  public Integer getQuantidadeAminoacidos() {
+    return quantidadeAminoacidos;
+  }
+
+  public void setQuantidadeAminoacidos(Integer quantidadeAminoacidos) {
+    this.quantidadeAminoacidos = quantidadeAminoacidos;
+  }
+
+  public Double getImpedimentoEsterico() {
+    return impedimentoEsterico;
+  }
+
+  public void setImpedimentoEsterico(Double impedimentoEsterico) {
+    this.impedimentoEsterico = impedimentoEsterico;
+  }
+
+  public Double getHidrofobicidade() {
+    return hidrofobicidade;
+  }
+
+  public void setHidrofobicidade(Double hidrofobicidade) {
+    this.hidrofobicidade = hidrofobicidade;
+  }
+
+  public Integer getCargaLiquidaTotal() {
+    return cargaLiquidaTotal;
+  }
+
+  public void setCargaLiquidaTotal(Integer cargaLiquidaTotal) {
+    this.cargaLiquidaTotal = cargaLiquidaTotal;
   }
 }

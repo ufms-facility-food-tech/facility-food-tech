@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.Organismo;
 import com.facility.dto.OrganismoDTO;
+import com.facility.model.Organismo;
 import com.facility.repository.OrganismoRepository;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/organismos")
+@RequestMapping("organismos")
 public class OrganismoController {
 
   @Autowired private OrganismoRepository organismoRepository;

@@ -1,4 +1,4 @@
-package com.facility.domain;
+package com.facility.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -17,7 +18,7 @@ public class AtivAntifungica implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String ativAntiFungDesc;
+  @NotNull private String descricao;
 
   @ManyToOne
   @JoinColumn(name = "id_peptideo", nullable = false, updatable = true)
@@ -33,14 +34,6 @@ public class AtivAntifungica implements Serializable {
     this.id = id;
   }
 
-  public String getAtivAntiFungDesc() {
-    return ativAntiFungDesc;
-  }
-
-  public void setAtivAntiFungDesc(String ativAntiFungDesc) {
-    this.ativAntiFungDesc = ativAntiFungDesc;
-  }
-
   public Peptideo getPeptideo() {
     return peptideo;
   }
@@ -51,5 +44,13 @@ public class AtivAntifungica implements Serializable {
 
   public static long getSerialversionuid() {
     return serialVersionUID;
+  }
+
+  public String getDescricao() {
+    return descricao;
+  }
+
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
   }
 }

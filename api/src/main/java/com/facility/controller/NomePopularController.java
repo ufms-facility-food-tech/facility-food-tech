@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.NomePopular;
 import com.facility.dto.NomePopularDTO;
+import com.facility.model.NomePopular;
 import com.facility.repository.NomePopularRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/nomespopulares")
+@RequestMapping("nomes-populares")
 public class NomePopularController {
 
   @Autowired private NomePopularRepository nomePopularRepository;

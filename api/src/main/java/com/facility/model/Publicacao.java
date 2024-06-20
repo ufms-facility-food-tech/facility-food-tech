@@ -1,4 +1,4 @@
-package com.facility.domain;
+package com.facility.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,10 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-public class NomePopular implements Serializable {
+public class Publicacao implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -17,13 +18,13 @@ public class NomePopular implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String nome;
+  @NotNull private String url;
 
   @ManyToOne
-  @JoinColumn(name = "id_organismo", nullable = false, updatable = true)
-  private Organismo organismo;
+  @JoinColumn(name = "id_peptideo", nullable = false, updatable = true)
+  private Peptideo peptideo;
 
-  public NomePopular() {}
+  public Publicacao() {}
 
   public Long getId() {
     return id;
@@ -33,20 +34,20 @@ public class NomePopular implements Serializable {
     this.id = id;
   }
 
-  public String getNome() {
-    return nome;
+  public String getUrl() {
+    return url;
   }
 
-  public void setNome(String nome) {
-    this.nome = nome;
+  public void setUrl(String url) {
+    this.url = url;
   }
 
-  public Organismo getOrganismo() {
-    return organismo;
+  public Peptideo getPeptideo() {
+    return peptideo;
   }
 
-  public void setOrganismo(Organismo organismo) {
-    this.organismo = organismo;
+  public void setPeptideo(Peptideo peptideo) {
+    this.peptideo = peptideo;
   }
 
   public static long getSerialversionuid() {

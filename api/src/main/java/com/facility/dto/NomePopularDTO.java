@@ -1,7 +1,7 @@
 package com.facility.dto;
 
-import com.facility.domain.NomePopular;
-import com.facility.domain.Organismo;
+import com.facility.model.NomePopular;
+import com.facility.model.Organismo;
 
 public class NomePopularDTO {
 

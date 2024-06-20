@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.Publicacao;
 import com.facility.dto.PublicacaoDTO;
+import com.facility.model.Publicacao;
 import com.facility.repository.PublicacaoRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/publicacoes")
+@RequestMapping("publicacoes")
 public class PublicacaoController {
 
   @Autowired private PublicacaoRepository publicacaoRepository;
@@ -55,7 +55,7 @@ public class PublicacaoController {
         .findById(id)
         .map(
             record -> {
-              record.setPublicac(publicacao.getPublicac());
+              record.setUrl(publicacao.getUrl());
               record.setPeptideo(publicacao.getPeptideo());
               Publicacao updated = publicacaoRepository.save(record);
               return ResponseEntity.ok().body(updated);

@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.AtivCitotoxica;
 import com.facility.dto.AtivCitotoxicaDTO;
+import com.facility.model.AtivCitotoxica;
 import com.facility.repository.AtivCitotoxicaRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/ativcitotoxica")
+@RequestMapping("atividades-citotoxicas")
 public class AtivCitotoxicaController {
 
   @Autowired private AtivCitotoxicaRepository ativCitotoxicaRepository;
@@ -55,7 +55,7 @@ public class AtivCitotoxicaController {
         .findById(id)
         .map(
             record -> {
-              record.setAtivCitotoxicDesc(ativCitotoxica.getAtivCitotoxicDesc());
+              record.setDescricao(ativCitotoxica.getDescricao());
               record.setPeptideo(ativCitotoxica.getPeptideo());
               AtivCitotoxica updated = ativCitotoxicaRepository.save(record);
               return ResponseEntity.ok().body(updated);

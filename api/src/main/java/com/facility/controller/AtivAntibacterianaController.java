@@ -1,7 +1,7 @@
 package com.facility.controller;
 
-import com.facility.domain.AtivAntibacteriana;
 import com.facility.dto.AtivAntibacterianaDTO;
+import com.facility.model.AtivAntibacteriana;
 import com.facility.repository.AtivAntibacterianaRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v1/ativantibacteriana")
+@RequestMapping("atividades-antibacterianas")
 public class AtivAntibacterianaController {
 
   @Autowired private AtivAntibacterianaRepository ativAntibacterianaRepository;
@@ -55,7 +55,7 @@ public class AtivAntibacterianaController {
         .findById(id)
         .map(
             record -> {
-              record.setAtivAntibacterDesc(ativAntibacteriana.getAtivAntibacterDesc());
+              record.setDescricao(ativAntibacteriana.getDescricao());
               record.setPeptideo(ativAntibacteriana.getPeptideo());
               AtivAntibacteriana updated = ativAntibacterianaRepository.save(record);
               return ResponseEntity.ok().body(updated);

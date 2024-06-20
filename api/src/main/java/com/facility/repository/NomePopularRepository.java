@@ -1,6 +1,6 @@
 package com.facility.repository;
 
-import com.facility.domain.NomePopular;
+import com.facility.model.NomePopular;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
