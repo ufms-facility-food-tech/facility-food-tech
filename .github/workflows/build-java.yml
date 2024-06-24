@@ -1,0 +1,30 @@
+name: build (java)
+
+on:
+  push:
+    branches:
+      - main
+      - renovate/*
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+      - name: setup java
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+      - name: maven
+        run: ./mvnw clean package
+        working-directory: ./api
