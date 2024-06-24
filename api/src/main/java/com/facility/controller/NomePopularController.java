@@ -17,34 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("nomes-populares")
 public class NomePopularController {
 
-  @Autowired private NomePopularRepository nomePopularRepository;
+  @Autowired
+  private NomePopularRepository nomePopularRepository;
 
   @GetMapping
   public ResponseEntity<List<NomePopularDTO>> findAll() {
-    List<NomePopularDTO> nomesPopulares =
-        nomePopularRepository.findAll().stream()
-            .map(NomePopularDTO::new)
-            .collect(Collectors.toList());
+    List<NomePopularDTO> nomesPopulares = nomePopularRepository
+      .findAll()
+      .stream()
+      .map(NomePopularDTO::new)
+      .collect(Collectors.toList());
     return new ResponseEntity<>(nomesPopulares, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<NomePopularDTO> findById(@PathVariable Long id) {
     return nomePopularRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new NomePopularDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new NomePopularDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return nomePopularRepository
-        .findById(id)
-        .map(
-            record -> {
-              nomePopularRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        nomePopularRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 }

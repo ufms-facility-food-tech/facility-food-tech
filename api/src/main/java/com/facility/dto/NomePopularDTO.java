@@ -3,6 +3,7 @@ package com.facility.dto;
 import com.facility.model.NomePopular;
 
 public class NomePopularDTO {
+
   private Long id;
   private String nome;
 

@@ -22,9 +22,16 @@ public class Peptideo {
   private Long id;
 
   private String peptideo;
-  @NotNull private Integer quantidadeAminoacidos;
-  @NotNull private TipoPeptideo tipoPeptideo;
-  @NotNull private String sequencia;
+
+  @NotNull
+  private Integer quantidadeAminoacidos;
+
+  @NotNull
+  private TipoPeptideo tipoPeptideo;
+
+  @NotNull
+  private String sequencia;
+
   private String estruturaTridimensional;
   private Double massaMolecular;
   private Double impedimentoEsterico;
@@ -41,25 +48,53 @@ public class Peptideo {
   @JoinColumn(name = "id_organismo", nullable = true, updatable = true)
   private Organismo organismo;
 
-  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+    mappedBy = "peptideo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<FuncBiologica> funcBiologicas;
 
-  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+    mappedBy = "peptideo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<AtivAntibacteriana> ativAntibacterianas;
 
-  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+    mappedBy = "peptideo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<AtivAntifungica> ativAntifungicas;
 
-  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+    mappedBy = "peptideo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<AtivCitotoxica> ativCitotoxicas;
 
-  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+    mappedBy = "peptideo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<CasoSucesso> casosSucesso;
 
-  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+    mappedBy = "peptideo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<CaracterisAdicionais> caracterisAdicionais;
 
-  @OneToMany(mappedBy = "peptideo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+    mappedBy = "peptideo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<Publicacao> publicacoes;
 
   public Organismo getOrganismo() {
@@ -216,7 +251,9 @@ public class Peptideo {
     return caracterisAdicionais;
   }
 
-  public void setCaracterisAdicionais(Set<CaracterisAdicionais> caracterisAdicionais) {
+  public void setCaracterisAdicionais(
+    Set<CaracterisAdicionais> caracterisAdicionais
+  ) {
     this.caracterisAdicionais = caracterisAdicionais;
   }
 
@@ -248,7 +285,9 @@ public class Peptideo {
     return ativAntibacterianas;
   }
 
-  public void setAtivAntibacterianas(Set<AtivAntibacteriana> ativAntibacterianas) {
+  public void setAtivAntibacterianas(
+    Set<AtivAntibacteriana> ativAntibacterianas
+  ) {
     this.ativAntibacterianas = ativAntibacterianas;
   }
 

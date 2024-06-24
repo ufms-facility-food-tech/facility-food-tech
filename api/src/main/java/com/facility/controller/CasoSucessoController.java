@@ -17,34 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("caso-sucesso")
 public class CasoSucessoController {
 
-  @Autowired private CasoSucessoRepository casoSucessoRepository;
+  @Autowired
+  private CasoSucessoRepository casoSucessoRepository;
 
   @GetMapping
   public ResponseEntity<List<CasoSucessoDTO>> findAll() {
-    List<CasoSucessoDTO> casosSucessos =
-        casoSucessoRepository.findAll().stream()
-            .map(casoSucesso -> new CasoSucessoDTO(casoSucesso))
-            .collect(Collectors.toList());
+    List<CasoSucessoDTO> casosSucessos = casoSucessoRepository
+      .findAll()
+      .stream()
+      .map(casoSucesso -> new CasoSucessoDTO(casoSucesso))
+      .collect(Collectors.toList());
     return new ResponseEntity<>(casosSucessos, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<CasoSucessoDTO> findById(@PathVariable Long id) {
     return casoSucessoRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new CasoSucessoDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new CasoSucessoDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return casoSucessoRepository
-        .findById(id)
-        .map(
-            record -> {
-              casoSucessoRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        casoSucessoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 }

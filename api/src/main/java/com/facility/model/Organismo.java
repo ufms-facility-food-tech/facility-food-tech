@@ -19,15 +19,30 @@ public class Organismo implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull private String especie;
-  @NotNull private String origem;
-  @NotNull private String familia;
-  @NotNull private String nomeCientifico;
+  @NotNull
+  private String especie;
 
-  @OneToMany(mappedBy = "organismo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @NotNull
+  private String origem;
+
+  @NotNull
+  private String familia;
+
+  @NotNull
+  private String nomeCientifico;
+
+  @OneToMany(
+    mappedBy = "organismo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private Set<NomePopular> nomesPopulares;
 
-  @OneToMany(mappedBy = "organismo", cascade = CascadeType.ALL, orphanRemoval = false)
+  @OneToMany(
+    mappedBy = "organismo",
+    cascade = CascadeType.ALL,
+    orphanRemoval = false
+  )
   private Set<Peptideo> peptideos;
 
   public Organismo() {}

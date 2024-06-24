@@ -17,34 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("atividades-antifungicas")
 public class AtivAntifungicaController {
 
-  @Autowired private AtivAntifungicaRepository ativAntiFungicaRepository;
+  @Autowired
+  private AtivAntifungicaRepository ativAntiFungicaRepository;
 
   @GetMapping
   public ResponseEntity<List<AtivAntifungicaDTO>> findAll() {
-    List<AtivAntifungicaDTO> ativsAntifungicas =
-        ativAntiFungicaRepository.findAll().stream()
-            .map(ativAntifungica -> new AtivAntifungicaDTO(ativAntifungica))
-            .collect(Collectors.toList());
+    List<AtivAntifungicaDTO> ativsAntifungicas = ativAntiFungicaRepository
+      .findAll()
+      .stream()
+      .map(ativAntifungica -> new AtivAntifungicaDTO(ativAntifungica))
+      .collect(Collectors.toList());
     return new ResponseEntity<>(ativsAntifungicas, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<?> findById(@PathVariable Long id) {
     return ativAntiFungicaRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new AtivAntifungicaDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new AtivAntifungicaDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return ativAntiFungicaRepository
-        .findById(id)
-        .map(
-            record -> {
-              ativAntiFungicaRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        ativAntiFungicaRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 }

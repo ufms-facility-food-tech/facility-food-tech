@@ -17,34 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("publicacoes")
 public class PublicacaoController {
 
-  @Autowired private PublicacaoRepository publicacaoRepository;
+  @Autowired
+  private PublicacaoRepository publicacaoRepository;
 
   @GetMapping
   public ResponseEntity<List<PublicacaoDTO>> findAll() {
-    List<PublicacaoDTO> publicacoes =
-        publicacaoRepository.findAll().stream()
-            .map(puplicacao -> new PublicacaoDTO(puplicacao))
-            .collect(Collectors.toList());
+    List<PublicacaoDTO> publicacoes = publicacaoRepository
+      .findAll()
+      .stream()
+      .map(puplicacao -> new PublicacaoDTO(puplicacao))
+      .collect(Collectors.toList());
     return new ResponseEntity<>(publicacoes, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<PublicacaoDTO> findById(@PathVariable Long id) {
     return publicacaoRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new PublicacaoDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new PublicacaoDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return publicacaoRepository
-        .findById(id)
-        .map(
-            record -> {
-              publicacaoRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        publicacaoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 }

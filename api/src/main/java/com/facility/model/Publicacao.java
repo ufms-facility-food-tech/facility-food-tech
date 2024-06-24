@@ -18,7 +18,8 @@ public class Publicacao implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull private String url;
+  @NotNull
+  private String url;
 
   @ManyToOne
   @JoinColumn(name = "id_peptideo", nullable = false, updatable = true)

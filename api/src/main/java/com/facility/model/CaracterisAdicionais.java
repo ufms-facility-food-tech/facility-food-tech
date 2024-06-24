@@ -18,7 +18,8 @@ public class CaracterisAdicionais implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull private String descricao;
+  @NotNull
+  private String descricao;
 
   @ManyToOne
   @JoinColumn(name = "id_peptideo", nullable = false, updatable = true)

@@ -22,62 +22,72 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("peptideos")
 public class PeptideoController {
 
-  @Autowired private PeptideoRepository peptideoRepository;
+  @Autowired
+  private PeptideoRepository peptideoRepository;
 
   @PostMapping
-  public ResponseEntity<PeptideoDTO> save(@RequestBody PeptideoDTO peptideoDTO) {
-    var saved = new PeptideoDTO(peptideoRepository.save(peptideoDTO.toEntity()));
+  public ResponseEntity<PeptideoDTO> save(
+    @RequestBody PeptideoDTO peptideoDTO
+  ) {
+    var saved = new PeptideoDTO(
+      peptideoRepository.save(peptideoDTO.toEntity())
+    );
     return new ResponseEntity<>(saved, HttpStatus.CREATED);
   }
 
   @GetMapping
   public ResponseEntity<List<PeptideoDTO>> findAll() {
-    List<PeptideoDTO> peptideos =
-        peptideoRepository.findAll().stream().map(PeptideoDTO::new).collect(Collectors.toList());
+    List<PeptideoDTO> peptideos = peptideoRepository
+      .findAll()
+      .stream()
+      .map(PeptideoDTO::new)
+      .collect(Collectors.toList());
     return new ResponseEntity<>(peptideos, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<PeptideoDTO> findById(@PathVariable Long id) {
     return peptideoRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new PeptideoDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new PeptideoDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping(value = "/{id}")
   public ResponseEntity<PeptideoDTO> update(
-      @PathVariable("id") Long id, @RequestBody PeptideoDTO peptideoDTO) {
+    @PathVariable("id") Long id,
+    @RequestBody PeptideoDTO peptideoDTO
+  ) {
     return peptideoRepository
-        .findById(id)
-        .map(
-            peptideo -> {
-              peptideoDTO.setId(id);
-              Peptideo updated = peptideoRepository.save(peptideoDTO.toEntity());
-              return ResponseEntity.ok().body(new PeptideoDTO(updated));
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(peptideo -> {
+        peptideoDTO.setId(id);
+        Peptideo updated = peptideoRepository.save(peptideoDTO.toEntity());
+        return ResponseEntity.ok().body(new PeptideoDTO(updated));
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return peptideoRepository
-        .findById(id)
-        .map(
-            record -> {
-              peptideoRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        peptideoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @GetMapping(path = {"tipoPeptideo/{tipoPeptideo}"})
+  @GetMapping(path = { "tipoPeptideo/{tipoPeptideo}" })
   public ResponseEntity<List<PeptideoDTO>> findByTipoPeptideo(
-      @PathVariable("tipoPeptideo") TipoPeptideo tipoPeptideo) {
-    List<PeptideoDTO> peptideos =
-        peptideoRepository.findByTipoPeptideo(tipoPeptideo).stream()
-            .map(PeptideoDTO::new)
-            .collect(Collectors.toList());
+    @PathVariable("tipoPeptideo") TipoPeptideo tipoPeptideo
+  ) {
+    List<PeptideoDTO> peptideos = peptideoRepository
+      .findByTipoPeptideo(tipoPeptideo)
+      .stream()
+      .map(PeptideoDTO::new)
+      .collect(Collectors.toList());
     return ResponseEntity.ok(peptideos);
   }
 }

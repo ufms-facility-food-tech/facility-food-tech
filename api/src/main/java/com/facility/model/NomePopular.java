@@ -18,7 +18,8 @@ public class NomePopular implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull private String nome;
+  @NotNull
+  private String nome;
 
   @ManyToOne
   @JoinColumn(name = "id_organismo", nullable = false, updatable = true)

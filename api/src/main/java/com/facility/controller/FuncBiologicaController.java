@@ -17,34 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("funcoes-biologicas")
 public class FuncBiologicaController {
 
-  @Autowired private FuncBiologicaRepository funcBiologicaRepository;
+  @Autowired
+  private FuncBiologicaRepository funcBiologicaRepository;
 
   @GetMapping
   public ResponseEntity<List<FuncBiologicaDTO>> findAll() {
-    List<FuncBiologicaDTO> funcsBiologicas =
-        funcBiologicaRepository.findAll().stream()
-            .map(funcBiologica -> new FuncBiologicaDTO(funcBiologica))
-            .collect(Collectors.toList());
+    List<FuncBiologicaDTO> funcsBiologicas = funcBiologicaRepository
+      .findAll()
+      .stream()
+      .map(funcBiologica -> new FuncBiologicaDTO(funcBiologica))
+      .collect(Collectors.toList());
     return new ResponseEntity<>(funcsBiologicas, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<FuncBiologicaDTO> findById(@PathVariable Long id) {
     return funcBiologicaRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new FuncBiologicaDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new FuncBiologicaDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return funcBiologicaRepository
-        .findById(id)
-        .map(
-            record -> {
-              funcBiologicaRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        funcBiologicaRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 }

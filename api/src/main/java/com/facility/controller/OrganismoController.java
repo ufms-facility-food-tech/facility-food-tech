@@ -26,21 +26,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("organismos")
 public class OrganismoController {
 
-  @Autowired private OrganismoRepository organismoRepository;
+  @Autowired
+  private OrganismoRepository organismoRepository;
 
   @GetMapping
   public ResponseEntity<List<OrganismoDTO>> findAll() {
-    List<OrganismoDTO> organismos =
-        organismoRepository.findAll().stream().map(OrganismoDTO::new).collect(Collectors.toList());
+    List<OrganismoDTO> organismos = organismoRepository
+      .findAll()
+      .stream()
+      .map(OrganismoDTO::new)
+      .collect(Collectors.toList());
     return new ResponseEntity<>(organismos, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/query"})
+  @GetMapping(path = { "/query" })
   public ResponseEntity<List<OrganismoDTO>> query(
-      @RequestParam Optional<String> especie,
-      @RequestParam Optional<String> familia,
-      @RequestParam Optional<String> origem,
-      @RequestParam Optional<String> nomeCientifico) {
+    @RequestParam Optional<String> especie,
+    @RequestParam Optional<String> familia,
+    @RequestParam Optional<String> origem,
+    @RequestParam Optional<String> nomeCientifico
+  ) {
     Organismo organismo = new Organismo();
     if (especie.isPresent()) {
       organismo.setEspecie(especie.get());
@@ -54,55 +59,60 @@ public class OrganismoController {
     if (nomeCientifico.isPresent()) {
       organismo.setNomeCientifico(nomeCientifico.get());
     }
-    var organismos =
-        organismoRepository
-            .findAll(
-                Example.of(
-                    organismo,
-                    ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING)))
-            .stream()
-            .map(OrganismoDTO::new)
-            .collect(Collectors.toList());
+    var organismos = organismoRepository
+      .findAll(
+        Example.of(
+          organismo,
+          ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING)
+        )
+      )
+      .stream()
+      .map(OrganismoDTO::new)
+      .collect(Collectors.toList());
     return new ResponseEntity<>(organismos, HttpStatus.OK);
   }
 
   @PostMapping
-  public ResponseEntity<OrganismoDTO> create(@RequestBody OrganismoDTO organismoDTO) {
-    var saved = new OrganismoDTO(organismoRepository.save(organismoDTO.toEntity()));
+  public ResponseEntity<OrganismoDTO> create(
+    @RequestBody OrganismoDTO organismoDTO
+  ) {
+    var saved = new OrganismoDTO(
+      organismoRepository.save(organismoDTO.toEntity())
+    );
     return new ResponseEntity<>(saved, HttpStatus.CREATED);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<OrganismoDTO> findById(@PathVariable Long id) {
     return organismoRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new OrganismoDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new OrganismoDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping(value = "/{id}")
   public ResponseEntity<OrganismoDTO> update(
-      @PathVariable("id") Long id, @RequestBody OrganismoDTO organismoDTO) {
+    @PathVariable("id") Long id,
+    @RequestBody OrganismoDTO organismoDTO
+  ) {
     return organismoRepository
-        .findById(id)
-        .map(
-            organismo -> {
-              organismoDTO.setId(id);
-              Organismo updated = organismoRepository.save(organismoDTO.toEntity());
-              return ResponseEntity.ok().body(new OrganismoDTO(updated));
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(organismo -> {
+        organismoDTO.setId(id);
+        Organismo updated = organismoRepository.save(organismoDTO.toEntity());
+        return ResponseEntity.ok().body(new OrganismoDTO(updated));
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return organismoRepository
-        .findById(id)
-        .map(
-            record -> {
-              organismoRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        organismoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 }

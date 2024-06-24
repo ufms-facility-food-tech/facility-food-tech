@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PeptideoRepository extends JpaRepository<Peptideo, Long> {
-
   List<Peptideo> findByTipoPeptideo(TipoPeptideo tipoPeptideo);
 }

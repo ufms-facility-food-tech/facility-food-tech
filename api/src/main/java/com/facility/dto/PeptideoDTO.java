@@ -60,42 +60,53 @@ public class PeptideoDTO {
     this.indiceBoman = peptideo.getIndiceBoman();
     this.descricao = peptideo.getDescricao();
     if (peptideo.getFuncBiologicas() != null) {
-      this.funcBiologicas =
-          peptideo.getFuncBiologicas().stream()
-              .map(FuncBiologicaDTO::new)
-              .collect(Collectors.toList());
+      this.funcBiologicas = peptideo
+        .getFuncBiologicas()
+        .stream()
+        .map(FuncBiologicaDTO::new)
+        .collect(Collectors.toList());
     }
     if (peptideo.getAtivAntibacterianas() != null) {
-      this.ativAntibacterianas =
-          peptideo.getAtivAntibacterianas().stream()
-              .map(AtivAntibacterianaDTO::new)
-              .collect(Collectors.toList());
+      this.ativAntibacterianas = peptideo
+        .getAtivAntibacterianas()
+        .stream()
+        .map(AtivAntibacterianaDTO::new)
+        .collect(Collectors.toList());
     }
     if (peptideo.getAtivAntifungicas() != null) {
-      this.ativAntifungicas =
-          peptideo.getAtivAntifungicas().stream()
-              .map(AtivAntifungicaDTO::new)
-              .collect(Collectors.toList());
+      this.ativAntifungicas = peptideo
+        .getAtivAntifungicas()
+        .stream()
+        .map(AtivAntifungicaDTO::new)
+        .collect(Collectors.toList());
     }
     if (peptideo.getAtivCitotoxicas() != null) {
-      this.ativCitotoxicas =
-          peptideo.getAtivCitotoxicas().stream()
-              .map(AtivCitotoxicaDTO::new)
-              .collect(Collectors.toList());
+      this.ativCitotoxicas = peptideo
+        .getAtivCitotoxicas()
+        .stream()
+        .map(AtivCitotoxicaDTO::new)
+        .collect(Collectors.toList());
     }
     if (peptideo.getCasosSucesso() != null) {
-      this.casosSucesso =
-          peptideo.getCasosSucesso().stream().map(CasoSucessoDTO::new).collect(Collectors.toList());
+      this.casosSucesso = peptideo
+        .getCasosSucesso()
+        .stream()
+        .map(CasoSucessoDTO::new)
+        .collect(Collectors.toList());
     }
     if (peptideo.getCaracterisAdicionais() != null) {
-      this.caracterisAdicionais =
-          peptideo.getCaracterisAdicionais().stream()
-              .map(CaracterisAdicionaisDTO::new)
-              .collect(Collectors.toList());
+      this.caracterisAdicionais = peptideo
+        .getCaracterisAdicionais()
+        .stream()
+        .map(CaracterisAdicionaisDTO::new)
+        .collect(Collectors.toList());
     }
     if (peptideo.getPublicacoes() != null) {
-      this.publicacoes =
-          peptideo.getPublicacoes().stream().map(PublicacaoDTO::new).collect(Collectors.toList());
+      this.publicacoes = peptideo
+        .getPublicacoes()
+        .stream()
+        .map(PublicacaoDTO::new)
+        .collect(Collectors.toList());
     }
   }
 
@@ -108,7 +119,9 @@ public class PeptideoDTO {
     peptideoEntity.setQuantidadeAminoacidos(this.getQuantidadeAminoacidos());
     peptideoEntity.setTipoPeptideo(this.getTipoPeptideo());
     peptideoEntity.setSequencia(this.getSequencia());
-    peptideoEntity.setEstruturaTridimensional(this.getEstruturaTridimensional());
+    peptideoEntity.setEstruturaTridimensional(
+      this.getEstruturaTridimensional()
+    );
     peptideoEntity.setMassaMolecular(this.getMassaMolecular());
     peptideoEntity.setImpedimentoEsterico(this.getImpedimentoEsterico());
     peptideoEntity.setHidrofobicidade(this.getHidrofobicidade());
@@ -185,7 +198,9 @@ public class PeptideoDTO {
       for (CaracterisAdicionaisDTO caracterisAdicionaisDTO : this.getCaracterisAdicionais()) {
         CaracterisAdicionais caracterisAdicional = new CaracterisAdicionais();
         caracterisAdicional.setId(caracterisAdicionaisDTO.getId());
-        caracterisAdicional.setDescricao(caracterisAdicionaisDTO.getDescricao());
+        caracterisAdicional.setDescricao(
+          caracterisAdicionaisDTO.getDescricao()
+        );
         caracterisAdicional.setPeptideo(peptideoEntity);
         caracterisAdicionaisEntity.add(caracterisAdicional);
       }
@@ -347,7 +362,9 @@ public class PeptideoDTO {
     return ativAntibacterianas;
   }
 
-  public void setAtivAntibacterianas(List<AtivAntibacterianaDTO> ativAntibacterianas) {
+  public void setAtivAntibacterianas(
+    List<AtivAntibacterianaDTO> ativAntibacterianas
+  ) {
     this.ativAntibacterianas = ativAntibacterianas;
   }
 
@@ -379,7 +396,9 @@ public class PeptideoDTO {
     return caracterisAdicionais;
   }
 
-  public void setCaracterisAdicionais(List<CaracterisAdicionaisDTO> caracterisAdicionais) {
+  public void setCaracterisAdicionais(
+    List<CaracterisAdicionaisDTO> caracterisAdicionais
+  ) {
     this.caracterisAdicionais = caracterisAdicionais;
   }
 

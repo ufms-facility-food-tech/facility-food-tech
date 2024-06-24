@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OrganismoDTO {
+
   private Long id;
   private String especie;
   private String origem;
@@ -24,14 +25,18 @@ public class OrganismoDTO {
     this.familia = organismo.getFamilia();
     this.nomeCientifico = organismo.getNomeCientifico();
     if (organismo.getNomesPopulares() != null) {
-      this.nomesPopulares =
-          organismo.getNomesPopulares().stream()
-              .map(NomePopularDTO::new)
-              .collect(Collectors.toList());
+      this.nomesPopulares = organismo
+        .getNomesPopulares()
+        .stream()
+        .map(NomePopularDTO::new)
+        .collect(Collectors.toList());
     }
     if (organismo.getPeptideos() != null) {
-      this.peptideos =
-          organismo.getPeptideos().stream().map(PeptideoDTO::new).collect(Collectors.toList());
+      this.peptideos = organismo
+        .getPeptideos()
+        .stream()
+        .map(PeptideoDTO::new)
+        .collect(Collectors.toList());
     }
   }
 

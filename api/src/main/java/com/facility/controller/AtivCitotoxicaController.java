@@ -17,34 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("atividades-citotoxicas")
 public class AtivCitotoxicaController {
 
-  @Autowired private AtivCitotoxicaRepository ativCitotoxicaRepository;
+  @Autowired
+  private AtivCitotoxicaRepository ativCitotoxicaRepository;
 
   @GetMapping
   public ResponseEntity<List<AtivCitotoxicaDTO>> findAll() {
-    List<AtivCitotoxicaDTO> ativsCitotoxicas =
-        ativCitotoxicaRepository.findAll().stream()
-            .map(ativCitotoxica -> new AtivCitotoxicaDTO(ativCitotoxica))
-            .collect(Collectors.toList());
+    List<AtivCitotoxicaDTO> ativsCitotoxicas = ativCitotoxicaRepository
+      .findAll()
+      .stream()
+      .map(ativCitotoxica -> new AtivCitotoxicaDTO(ativCitotoxica))
+      .collect(Collectors.toList());
     return new ResponseEntity<>(ativsCitotoxicas, HttpStatus.OK);
   }
 
-  @GetMapping(path = {"/{id}"})
+  @GetMapping(path = { "/{id}" })
   public ResponseEntity<AtivCitotoxicaDTO> findById(@PathVariable Long id) {
     return ativCitotoxicaRepository
-        .findById(id)
-        .map(record -> ResponseEntity.ok().body(new AtivCitotoxicaDTO(record)))
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> ResponseEntity.ok().body(new AtivCitotoxicaDTO(record)))
+      .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = {"/{id}"})
+  @DeleteMapping(path = { "/{id}" })
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return ativCitotoxicaRepository
-        .findById(id)
-        .map(
-            record -> {
-              ativCitotoxicaRepository.deleteById(id);
-              return ResponseEntity.ok().build();
-            })
-        .orElse(ResponseEntity.notFound().build());
+      .findById(id)
+      .map(record -> {
+        ativCitotoxicaRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+      })
+      .orElse(ResponseEntity.notFound().build());
   }
 }
