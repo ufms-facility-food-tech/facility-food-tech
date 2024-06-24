@@ -27,7 +27,7 @@ jobs:
       - name: run prettier
         run: |
           npm ci
-          npx prettier -w .. --config .prettierrc --ignore-path .gitignore --ignore-path ../.gitignore --ignore-path ../api/.gitignore --ignore-unknown
+          npx prettier -w . --ignore-path .gitignore --ignore-path api/.gitignore
       - name: diff
         id: diff
         run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
