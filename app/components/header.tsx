@@ -6,12 +6,6 @@ export function Header() {
   const routes = [
     { name: "Início", path: "/" },
     { name: "Pesquisar", path: "/pesquisa" },
-    { name: "Transcriptômica", path: "/transcriptomica" },
-    { name: "Proteômica", path: "/proteomica" },
-    { name: "Genômica", path: "/genomica" },
-    { name: "Predição de Peptídeos", path: "/predicao-de-peptideos" },
-    { name: "Missão", path: "/missao" },
-    { name: "Quem Somos", path: "/quem-somos" },
     { name: "Glossário", path: "/glossario" },
     { name: "Fotos", path: "/fotos" },
   ];
@@ -29,12 +23,12 @@ export function Header() {
         ) : (
           <div className="flex gap-4">
             <NavLink prefetch="intent" to="/entrar">
-              <button className="rounded-full bg-cyan-400 px-5 py-1 text-lg font-bold text-white">
+              <button className="rounded-full bg-cyan-600 px-5 py-1 text-lg font-bold text-white">
                 Entrar
               </button>
             </NavLink>
             <NavLink prefetch="intent" to="/cadastrar">
-              <button className="rounded-full bg-neutral-400 px-5 py-1 text-lg font-bold text-white">
+              <button className="rounded-full bg-neutral-600 px-5 py-1 text-lg font-bold text-white">
                 Cadastrar
               </button>
             </NavLink>
