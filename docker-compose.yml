@@ -23,7 +23,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   facility-ui:
-    build: www
+    build: .
     ports:
       - "80:80"
       - "443:443"

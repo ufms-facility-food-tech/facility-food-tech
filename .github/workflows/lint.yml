@@ -25,7 +25,6 @@ jobs:
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
       - name: run prettier
-        working-directory: ./www
         run: |
           npm ci
           npx prettier -w .. --config .prettierrc --ignore-path .gitignore --ignore-path ../.gitignore --ignore-path ../api/.gitignore --ignore-unknown
