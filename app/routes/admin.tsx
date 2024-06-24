@@ -12,38 +12,6 @@ export default function Admin() {
       label: "Peptideos",
       route: "peptideos",
     },
-    {
-      label: "Publicações",
-      route: "publicacoes",
-    },
-    {
-      label: "Nomes Populares",
-      route: "nomes-populares",
-    },
-    {
-      label: "Funções Biológicas",
-      route: "funcoes-biologicas",
-    },
-    {
-      label: "Casos de Sucesso",
-      route: "caso-sucesso",
-    },
-    {
-      label: "Características Adicionais",
-      route: "caracteristicas-adicionais",
-    },
-    {
-      label: "Atividades Antibacterianas",
-      route: "atividades-antibacterianas",
-    },
-    {
-      label: "Atividades Antifungicas",
-      route: "atividades-antifungicas",
-    },
-    {
-      label: "Atividades Citotoxicas",
-      route: "atividades-citotoxicas",
-    },
   ] satisfies Array<{
     label: string;
     route: `${string & keyof paths extends `/${infer U}` ? U : never}`;
