@@ -1,4 +1,4 @@
-name: build (java)
+name: build
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  lint:
+  build-java:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -28,3 +28,22 @@ jobs:
       - name: maven
         run: ./mvnw clean package
         working-directory: ./api
+
+  build-npm:
+      runs-on: ubuntu-latest
+      steps:
+        - name: checkout
+          uses: actions/checkout@v4
+          with:
+            ref: ${{ github.head_ref || github.ref_name }}
+            fetch-depth: 0
+        - name: setup node
+          uses: actions/setup-node@v4
+          with:
+            node-version: "lts/*"
+            cache: "npm"
+            cache-dependency-path: "**/package-lock.json"
+        - name: run prettier
+          run: |
+            npm ci
+            npm run build
