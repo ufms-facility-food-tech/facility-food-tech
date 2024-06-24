@@ -7,9 +7,6 @@ on:
       - renovate/*
   pull_request:
 
-permissions:
-  contents: write
-
 jobs:
   build-java:
     runs-on: ubuntu-latest
