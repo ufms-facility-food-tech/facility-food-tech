@@ -1,17 +1,10 @@
-{$DOMAIN:localhost} {
-	header {
-		Strict-Transport-Security max-age=31536000;
-	}
-
-	encode zstd gzip
-
+localhost {
 	handle /api/* {
-		reverse_proxy facility-api:8080
+		reverse_proxy localhost:8080
 	}
 
 	handle {
-		root * /srv
-		try_files {path} index.html
+		reverse_proxy localhost:5173
 		file_server
 	}
 }

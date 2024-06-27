@@ -30,7 +30,7 @@ services:
     environment:
       - DOMAIN=${DOMAIN}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./Caddyfile-prod:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
 
