@@ -23,12 +23,18 @@ export function Header() {
         ) : (
           <div className="flex gap-4">
             <NavLink prefetch="intent" to="/entrar">
-              <button className="rounded-full bg-cyan-600 px-5 py-1 text-lg font-bold text-white">
+              <button
+                type="button"
+                className="rounded-full bg-cyan-600 px-5 py-1 text-lg font-bold text-white"
+              >
                 Entrar
               </button>
             </NavLink>
             <NavLink prefetch="intent" to="/cadastrar">
-              <button className="rounded-full bg-neutral-600 px-5 py-1 text-lg font-bold text-white">
+              <button
+                type="button"
+                className="rounded-full bg-neutral-600 px-5 py-1 text-lg font-bold text-white"
+              >
                 Cadastrar
               </button>
             </NavLink>

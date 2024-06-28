@@ -1,9 +1,15 @@
+import type {
+  ButtonHTMLAttributes,
+  HTMLInputTypeAttribute,
+  ReactNode,
+} from "react";
+
 export function SubmitButton({
   children,
   type,
 }: {
-  children: React.ReactNode;
-  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  children: ReactNode;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }) {
   return (
     <button
@@ -18,7 +24,7 @@ export function SubmitButton({
 export function TextInput(props: {
   name: string;
   label: string;
-  type?: React.HTMLInputTypeAttribute;
+  type?: HTMLInputTypeAttribute;
 }) {
   return (
     <label className="flex flex-col text-xl text-cyan-700">

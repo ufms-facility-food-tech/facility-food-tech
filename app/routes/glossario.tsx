@@ -137,6 +137,7 @@ export default function Faq() {
     <Container title="Glossário">
       <ul className="flex flex-col gap-6">
         {glossary.map((item, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: don't care about the order in this case
           <GlossaryListItem key={index} item={item} />
         ))}
       </ul>

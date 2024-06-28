@@ -3,7 +3,7 @@ export function Table({
   data,
 }: {
   tableHeader: Array<{ propertyName: string; label: string }>;
-  data: Array<any>;
+  data: Array<Record<string, string | number | undefined>>;
 }) {
   if (Array.isArray(data) === false) {
     return null;

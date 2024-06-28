@@ -1,17 +1,17 @@
-import { Container } from "~/components/container";
-import { SubmitButton, TextInput } from "~/components/form";
 import {
   type ClientActionFunctionArgs,
   Form,
   redirect,
 } from "@remix-run/react";
+import { Container } from "~/components/container";
+import { SubmitButton, TextInput } from "~/components/form";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
   const nome = formData.get("nome");
   const email = formData.get("email");
   const senha = formData.get("senha");
-  const confirmarSenha = formData.get("confirmarSenha");
+  // const confirmarSenha = formData.get("confirmarSenha");
 
   const newUser = {
     nome,

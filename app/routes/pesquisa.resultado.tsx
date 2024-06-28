@@ -1,16 +1,16 @@
-import { Table } from "~/components/table";
-import { Container } from "~/components/container";
 import {
+  type ClientLoaderFunctionArgs,
   json,
   useLoaderData,
-  type ClientLoaderFunctionArgs,
 } from "@remix-run/react";
+import { Container } from "~/components/container";
+import { Table } from "~/components/table";
 
 export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
   const url = new URL(request.url);
 
   const res = await fetch(
-    `${url.origin}/api/organismos/query?` + url.searchParams.toString(),
+    `${url.origin}/api/organismos/query?${url.searchParams.toString()}`,
   );
 
   if (!res.ok) {

@@ -24,15 +24,27 @@ jobs:
           node-version: "lts/*"
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
-      - name: run prettier
-        run: |
-          npm ci
-          npx prettier -w . --ignore-path .gitignore --ignore-path api/.gitignore
+      - name: install dependencies
+        run: npm ci
+      - name: run biome
+        run: npx biome check --write --unsafe .
       - name: diff
-        id: diff
+        id: diff_biome
         run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
       - name: commit
-        if: steps.diff.outputs.modified == 'true'
+        if: steps.diff_biome.outputs.modified == 'true'
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+          git commit -am "chore: fix linting errors"
+          git push
+      - name: run prettier
+        run: npx prettier -w . --ignore-path .gitignore --ignore-path api/.gitignore
+      - name: diff
+        id: diff_prettier
+        run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
+      - name: commit
+        if: steps.diff_prettier.outputs.modified == 'true'
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "GitHub Actions"

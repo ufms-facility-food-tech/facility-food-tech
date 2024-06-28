@@ -28,9 +28,9 @@ export default function Entrar() {
         <TextInput name="email" label="Email" type="email" />
         <div>
           <TextInput name="senha" label="Senha" type="password" />
-          <a className="mx-2 flex justify-end text-cyan-700 underline">
+          <div className="mx-2 flex justify-end text-cyan-700 underline">
             Esqueceu a senha?
-          </a>
+          </div>
         </div>
         <div className="m-4 flex justify-center">
           <SubmitButton>

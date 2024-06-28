@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
+
 export function Container({
   children,
   title,
 }: {
-  children?: React.ReactNode;
+  children?: ReactNode;
   title?: string;
 }) {
   return (

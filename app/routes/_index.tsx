@@ -21,9 +21,11 @@ export default function Index() {
               Facility FoodTech do Cerrado-Pantanal
             </h1>
           </div>
+          {/* biome-ignore lint/style/useSelfClosingElements: temporary */}
           <div className="flex flex-col"></div>
         </div>
       </div>
+      {/* biome-ignore lint/style/useSelfClosingElements: temporary */}
       <div className="h-40 bg-gradient-to-b from-orange-50 via-white to-orange-100"></div>
       <div className="flex flex-col gap-4 bg-white p-12 font-sans">
         <h2 className="text-xl font-bold">Introdução</h2>

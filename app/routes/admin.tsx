@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "@remix-run/react";
-import { Container } from "~/components/container";
 import type { paths } from "~/api-schema";
+import { Container } from "~/components/container";
 
 export default function Admin() {
   const navLinks = [

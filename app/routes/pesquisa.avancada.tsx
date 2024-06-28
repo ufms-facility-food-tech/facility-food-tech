@@ -38,7 +38,7 @@ export default function PesquisaAvancada() {
               label="Estrutura Tridimensional"
             />
             <fieldset className="flex gap-8">
-              <span className="text-xl text-cyan-700" role="legend">
+              <span className="text-xl text-cyan-700">
                 Propriedades Físico-Químicas
               </span>
               <div className="flex-grow">
