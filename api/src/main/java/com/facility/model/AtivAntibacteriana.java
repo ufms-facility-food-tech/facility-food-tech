@@ -7,13 +7,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity
-public class AtivAntibacteriana implements Serializable {
-
-  private static final long serialVersionUID = 1L;
-
+public class AtivAntibacteriana {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -41,10 +37,6 @@ public class AtivAntibacteriana implements Serializable {
 
   public void setPeptideo(Peptideo peptideo) {
     this.peptideo = peptideo;
-  }
-
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 
   public String getDescricao() {

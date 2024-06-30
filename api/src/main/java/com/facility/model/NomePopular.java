@@ -7,12 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity
-public class NomePopular implements Serializable {
+public class NomePopular {
 
-  private static final long serialVersionUID = 1L;
+
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +48,5 @@ public class NomePopular implements Serializable {
 
   public void setOrganismo(Organismo organismo) {
     this.organismo = organismo;
-  }
-
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 }

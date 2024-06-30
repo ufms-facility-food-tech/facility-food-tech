@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 public class Peptideo {
 
-  private static final long serialVersionUID = 1L;
+
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -194,10 +194,6 @@ public class Peptideo {
 
   public void setDescricao(String descricao) {
     this.descricao = descricao;
-  }
-
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 
   public Integer getQuantidadeAminoacidos() {

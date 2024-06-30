@@ -6,14 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Organismo implements Serializable {
+public class Organismo {
 
-  private static final long serialVersionUID = 1L;
+
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,10 +68,6 @@ public class Organismo implements Serializable {
 
   public void setFamilia(String familia) {
     this.familia = familia;
-  }
-
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 
   public Set<NomePopular> getNomesPopulares() {
