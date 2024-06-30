@@ -1,11 +1,19 @@
 package com.facility.dto;
 
 import com.facility.enums.TipoPeptideo;
+import com.facility.model.AtivAntibacteriana;
+import com.facility.model.AtivAntifungica;
+import com.facility.model.AtivCitotoxica;
+import com.facility.model.CaracterisAdicionais;
+import com.facility.model.CasoSucesso;
+import com.facility.model.FuncBiologica;
 import com.facility.model.Peptideo;
+import com.facility.model.Publicacao;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PeptideoDTO {
+
   private Long id;
   private String peptideo;
   private Integer quantidadeAminoacidos;
@@ -23,13 +31,14 @@ public class PeptideoDTO {
   private Integer cargaLiquidaTotal;
   private Double indiceBoman;
   private String descricao;
-  List<FuncBiologicaDTO> funcBiologicas;
-  List<AtivAntibacterianaDTO> ativAntibacterianas;
-  List<AtivAntifungicaDTO> ativAntifungicas;
-  List<AtivCitotoxicaDTO> ativCitotoxicas;
-  List<CasoSucessoDTO> casosSucesso;
-  List<CaracterisAdicionaisDTO> caracterisAdicionais;
-  List<PublicacaoDTO> publicacoes;
+  List<FuncBiologica> funcBiologicas;
+  List<AtivAntibacteriana> ativAntibacterianas;
+  List<AtivAntifungica> ativAntifungicas;
+  List<AtivCitotoxica> ativCitotoxicas;
+  List<CasoSucesso> casosSucesso;
+  List<CaracterisAdicionais> caracterisAdicionais;
+  List<Publicacao> publicacoes;
+  OrganismoDTO organismo;
 
   public PeptideoDTO(Peptideo peptideo) {
     this.id = peptideo.getId();
@@ -49,20 +58,18 @@ public class PeptideoDTO {
     this.cargaLiquidaTotal = peptideo.getCargaLiquidaTotal();
     this.indiceBoman = peptideo.getIndiceBoman();
     this.descricao = peptideo.getDescricao();
-
-    if (peptideo.getFuncBiologicas() != null) {
+    this.organismo = new OrganismoDTO(peptideo.getOrganismo());
+    if (peptideo.getAtivAntibacterianas() != null) {
       this.funcBiologicas = peptideo
         .getFuncBiologicas()
         .stream()
-        .map(FuncBiologicaDTO::new)
         .collect(Collectors.toList());
     }
 
-    if (peptideo.getAtivAntibacterianas() != null) {
+    if (peptideo.getAtivAntifungicas() != null) {
       this.ativAntibacterianas = peptideo
         .getAtivAntibacterianas()
         .stream()
-        .map(AtivAntibacterianaDTO::new)
         .collect(Collectors.toList());
     }
 
@@ -70,7 +77,6 @@ public class PeptideoDTO {
       this.ativAntifungicas = peptideo
         .getAtivAntifungicas()
         .stream()
-        .map(AtivAntifungicaDTO::new)
         .collect(Collectors.toList());
     }
 
@@ -78,7 +84,6 @@ public class PeptideoDTO {
       this.ativCitotoxicas = peptideo
         .getAtivCitotoxicas()
         .stream()
-        .map(AtivCitotoxicaDTO::new)
         .collect(Collectors.toList());
     }
 
@@ -86,7 +91,6 @@ public class PeptideoDTO {
       this.casosSucesso = peptideo
         .getCasosSucesso()
         .stream()
-        .map(CasoSucessoDTO::new)
         .collect(Collectors.toList());
     }
 
@@ -94,7 +98,6 @@ public class PeptideoDTO {
       this.caracterisAdicionais = peptideo
         .getCaracterisAdicionais()
         .stream()
-        .map(CaracterisAdicionaisDTO::new)
         .collect(Collectors.toList());
     }
 
@@ -102,7 +105,6 @@ public class PeptideoDTO {
       this.publicacoes = peptideo
         .getPublicacoes()
         .stream()
-        .map(PublicacaoDTO::new)
         .collect(Collectors.toList());
     }
   }
@@ -131,46 +133,44 @@ public class PeptideoDTO {
     peptideoEntity.setDescricao(this.getDescricao());
 
     if (this.getFuncBiologicas() != null) {
-      for (FuncBiologicaDTO funcBiologica : this.getFuncBiologicas()) {
-        peptideoEntity.addFuncBiologica(funcBiologica.toEntity());
+      for (FuncBiologica funcBiologica : this.getFuncBiologicas()) {
+        peptideoEntity.addFuncBiologica(funcBiologica);
       }
     }
 
     if (this.getAtivAntibacterianas() != null) {
-      for (AtivAntibacterianaDTO ativAntibacteriana : this.getAtivAntibacterianas()) {
-        peptideoEntity.addAtivAntibacteriana(ativAntibacteriana.toEntity());
+      for (AtivAntibacteriana ativAntibacteriana : this.getAtivAntibacterianas()) {
+        peptideoEntity.addAtivAntibacteriana(ativAntibacteriana);
       }
     }
 
     if (this.getAtivAntifungicas() != null) {
-      for (AtivAntifungicaDTO ativAntifungica : this.getAtivAntifungicas()) {
-        peptideoEntity.addAtivAntifungica(ativAntifungica.toEntity());
+      for (AtivAntifungica ativAntifungica : this.getAtivAntifungicas()) {
+        peptideoEntity.addAtivAntifungica(ativAntifungica);
       }
     }
 
     if (this.getAtivCitotoxicas() != null) {
-      for (AtivCitotoxicaDTO ativCitotoxicaDTO : this.getAtivCitotoxicas()) {
-        peptideoEntity.addAtivCitotoxica(ativCitotoxicaDTO.toEntity());
+      for (AtivCitotoxica ativCitotoxica : this.getAtivCitotoxicas()) {
+        peptideoEntity.addAtivCitotoxica(ativCitotoxica);
       }
     }
 
     if (this.getCasosSucesso() != null) {
-      for (CasoSucessoDTO casoSucessoDTO : this.getCasosSucesso()) {
-        peptideoEntity.addCasoSucesso(casoSucessoDTO.toEntity());
+      for (CasoSucesso casoSucesso : this.getCasosSucesso()) {
+        peptideoEntity.addCasoSucesso(casoSucesso);
       }
     }
 
     if (this.getCaracterisAdicionais() != null) {
-      for (CaracterisAdicionaisDTO caracterisAdicionaisDTO : this.getCaracterisAdicionais()) {
-        peptideoEntity.addCaracterisAdicionais(
-          caracterisAdicionaisDTO.toEntity()
-        );
+      for (CaracterisAdicionais caracterAdicionais : this.getCaracterisAdicionais()) {
+        peptideoEntity.addCaracterisAdicionais(caracterAdicionais);
       }
     }
 
     if (this.getPublicacoes() != null) {
-      for (PublicacaoDTO publicacaoDTO : this.getPublicacoes()) {
-        peptideoEntity.addPublicacao(publicacaoDTO.toEntity());
+      for (Publicacao publicacao : this.getPublicacoes()) {
+        peptideoEntity.addPublicacao(publicacao);
       }
     }
 
@@ -305,63 +305,63 @@ public class PeptideoDTO {
     this.descricao = descricao;
   }
 
-  public List<FuncBiologicaDTO> getFuncBiologicas() {
+  public List<FuncBiologica> getFuncBiologicas() {
     return funcBiologicas;
   }
 
-  public void setFuncBiologicas(List<FuncBiologicaDTO> funcBiologicas) {
+  public void setFuncBiologicas(List<FuncBiologica> funcBiologicas) {
     this.funcBiologicas = funcBiologicas;
   }
 
-  public List<AtivAntibacterianaDTO> getAtivAntibacterianas() {
+  public List<AtivAntibacteriana> getAtivAntibacterianas() {
     return ativAntibacterianas;
   }
 
   public void setAtivAntibacterianas(
-    List<AtivAntibacterianaDTO> ativAntibacterianas
+    List<AtivAntibacteriana> ativAntibacterianas
   ) {
     this.ativAntibacterianas = ativAntibacterianas;
   }
 
-  public List<AtivAntifungicaDTO> getAtivAntifungicas() {
+  public List<AtivAntifungica> getAtivAntifungicas() {
     return ativAntifungicas;
   }
 
-  public void setAtivAntifungicas(List<AtivAntifungicaDTO> ativAntifungicas) {
+  public void setAtivAntifungicas(List<AtivAntifungica> ativAntifungicas) {
     this.ativAntifungicas = ativAntifungicas;
   }
 
-  public List<AtivCitotoxicaDTO> getAtivCitotoxicas() {
+  public List<AtivCitotoxica> getAtivCitotoxicas() {
     return ativCitotoxicas;
   }
 
-  public void setAtivCitotoxicas(List<AtivCitotoxicaDTO> ativCitotoxicas) {
+  public void setAtivCitotoxicas(List<AtivCitotoxica> ativCitotoxicas) {
     this.ativCitotoxicas = ativCitotoxicas;
   }
 
-  public List<CasoSucessoDTO> getCasosSucesso() {
+  public List<CasoSucesso> getCasosSucesso() {
     return casosSucesso;
   }
 
-  public void setCasosSucesso(List<CasoSucessoDTO> casosSucesso) {
+  public void setCasosSucesso(List<CasoSucesso> casosSucesso) {
     this.casosSucesso = casosSucesso;
   }
 
-  public List<CaracterisAdicionaisDTO> getCaracterisAdicionais() {
+  public List<CaracterisAdicionais> getCaracterisAdicionais() {
     return caracterisAdicionais;
   }
 
   public void setCaracterisAdicionais(
-    List<CaracterisAdicionaisDTO> caracterisAdicionais
+    List<CaracterisAdicionais> caracterisAdicionais
   ) {
     this.caracterisAdicionais = caracterisAdicionais;
   }
 
-  public List<PublicacaoDTO> getPublicacoes() {
+  public List<Publicacao> getPublicacoes() {
     return publicacoes;
   }
 
-  public void setPublicacoes(List<PublicacaoDTO> publicacoes) {
+  public void setPublicacoes(List<Publicacao> publicacoes) {
     this.publicacoes = publicacoes;
   }
 
@@ -371,5 +371,13 @@ public class PeptideoDTO {
 
   public void setHidrofobicidade(Double hidrofobicidade) {
     this.hidrofobicidade = hidrofobicidade;
+  }
+
+  public OrganismoDTO getOrganismo() {
+    return organismo;
+  }
+
+  public void setOrganismo(OrganismoDTO organismo) {
+    this.organismo = organismo;
   }
 }

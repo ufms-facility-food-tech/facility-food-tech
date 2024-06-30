@@ -1,6 +1,9 @@
 package com.facility.model;
 
 import com.facility.enums.TipoPeptideo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,13 +12,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
 import java.util.HashSet;
 import java.util.Set;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 @Entity
 public class Peptideo {
-
-
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +50,7 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<FuncBiologica> funcBiologicas = new HashSet<>();
 
   @OneToMany(
@@ -53,6 +58,7 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<AtivAntibacteriana> ativAntibacterianas = new HashSet<>();
 
   @OneToMany(
@@ -60,6 +66,7 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<AtivAntifungica> ativAntifungicas = new HashSet<>();
 
   @OneToMany(
@@ -67,6 +74,7 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<AtivCitotoxica> ativCitotoxicas = new HashSet<>();
 
   @OneToMany(
@@ -74,6 +82,7 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<CasoSucesso> casosSucesso = new HashSet<>();
 
   @OneToMany(
@@ -81,6 +90,7 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<CaracterisAdicionais> caracterisAdicionais = new HashSet<>();
 
   @OneToMany(
@@ -88,8 +98,11 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<Publicacao> publicacoes = new HashSet<>();
 
+  @JsonBackReference
+  @Hidden
   public Organismo getOrganismo() {
     return organismo;
   }

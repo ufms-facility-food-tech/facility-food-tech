@@ -1,5 +1,7 @@
 package com.facility.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,8 +13,6 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class FuncBiologica {
 
-
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -22,6 +22,8 @@ public class FuncBiologica {
 
   @ManyToOne
   @JoinColumn(name = "peptideo_id", nullable = false)
+  @JsonBackReference
+  @Hidden
   private Peptideo peptideo;
 
   public FuncBiologica() {}

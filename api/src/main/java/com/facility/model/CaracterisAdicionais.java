@@ -1,5 +1,8 @@
 package com.facility.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +25,8 @@ public class CaracterisAdicionais {
 
   @ManyToOne
   @JoinColumn(name = "peptideo_id", nullable = false)
+  @JsonBackReference
+  @Hidden
   private Peptideo peptideo;
 
   public CaracterisAdicionais() {}

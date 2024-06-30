@@ -6,8 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Organismo {
@@ -27,6 +30,7 @@ public class Organismo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<NomePopular> nomesPopulares = new HashSet<>();
 
   @OneToMany(
@@ -34,6 +38,7 @@ public class Organismo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
+  @JsonManagedReference
   private Set<Peptideo> peptideos = new HashSet<>();
 
   public Organismo() {}
