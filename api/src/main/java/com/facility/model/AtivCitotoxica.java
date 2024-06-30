@@ -22,7 +22,7 @@ public class AtivCitotoxica implements Serializable {
   private String descricao;
 
   @ManyToOne
-  @JoinColumn(name = "id_peptideo", nullable = false, updatable = true)
+  @JoinColumn(name = "peptideo_id", nullable = false)
   private Peptideo peptideo;
 
   public AtivCitotoxica() {}

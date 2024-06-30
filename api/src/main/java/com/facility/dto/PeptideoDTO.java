@@ -1,21 +1,11 @@
 package com.facility.dto;
 
 import com.facility.enums.TipoPeptideo;
-import com.facility.model.AtivAntibacteriana;
-import com.facility.model.AtivAntifungica;
-import com.facility.model.AtivCitotoxica;
-import com.facility.model.CaracterisAdicionais;
-import com.facility.model.CasoSucesso;
-import com.facility.model.FuncBiologica;
 import com.facility.model.Peptideo;
-import com.facility.model.Publicacao;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PeptideoDTO {
-
   private Long id;
   private String peptideo;
   private Integer quantidadeAminoacidos;
@@ -59,6 +49,7 @@ public class PeptideoDTO {
     this.cargaLiquidaTotal = peptideo.getCargaLiquidaTotal();
     this.indiceBoman = peptideo.getIndiceBoman();
     this.descricao = peptideo.getDescricao();
+
     if (peptideo.getFuncBiologicas() != null) {
       this.funcBiologicas = peptideo
         .getFuncBiologicas()
@@ -66,6 +57,7 @@ public class PeptideoDTO {
         .map(FuncBiologicaDTO::new)
         .collect(Collectors.toList());
     }
+
     if (peptideo.getAtivAntibacterianas() != null) {
       this.ativAntibacterianas = peptideo
         .getAtivAntibacterianas()
@@ -73,6 +65,7 @@ public class PeptideoDTO {
         .map(AtivAntibacterianaDTO::new)
         .collect(Collectors.toList());
     }
+
     if (peptideo.getAtivAntifungicas() != null) {
       this.ativAntifungicas = peptideo
         .getAtivAntifungicas()
@@ -80,6 +73,7 @@ public class PeptideoDTO {
         .map(AtivAntifungicaDTO::new)
         .collect(Collectors.toList());
     }
+
     if (peptideo.getAtivCitotoxicas() != null) {
       this.ativCitotoxicas = peptideo
         .getAtivCitotoxicas()
@@ -87,6 +81,7 @@ public class PeptideoDTO {
         .map(AtivCitotoxicaDTO::new)
         .collect(Collectors.toList());
     }
+
     if (peptideo.getCasosSucesso() != null) {
       this.casosSucesso = peptideo
         .getCasosSucesso()
@@ -94,6 +89,7 @@ public class PeptideoDTO {
         .map(CasoSucessoDTO::new)
         .collect(Collectors.toList());
     }
+
     if (peptideo.getCaracterisAdicionais() != null) {
       this.caracterisAdicionais = peptideo
         .getCaracterisAdicionais()
@@ -101,6 +97,7 @@ public class PeptideoDTO {
         .map(CaracterisAdicionaisDTO::new)
         .collect(Collectors.toList());
     }
+
     if (peptideo.getPublicacoes() != null) {
       this.publicacoes = peptideo
         .getPublicacoes()
@@ -133,91 +130,49 @@ public class PeptideoDTO {
     peptideoEntity.setIndiceBoman(this.getIndiceBoman());
     peptideoEntity.setDescricao(this.getDescricao());
 
-    Set<FuncBiologica> funcBiologicasEntity = new HashSet<>();
     if (this.getFuncBiologicas() != null) {
-      for (FuncBiologicaDTO funcBiologicaDTO : this.getFuncBiologicas()) {
-        FuncBiologica funcBiologica = new FuncBiologica();
-        funcBiologica.setId(funcBiologicaDTO.getId());
-        funcBiologica.setDescricao(funcBiologicaDTO.getDescricao());
-        funcBiologica.setPeptideo(peptideoEntity);
-        funcBiologicasEntity.add(funcBiologica);
+      for (FuncBiologicaDTO funcBiologica : this.getFuncBiologicas()) {
+        peptideoEntity.addFuncBiologica(funcBiologica.toEntity());
       }
     }
-    peptideoEntity.setFuncBiologicas(funcBiologicasEntity);
 
-    Set<AtivAntibacteriana> ativAntibacterianasEntity = new HashSet<>();
     if (this.getAtivAntibacterianas() != null) {
-      for (AtivAntibacterianaDTO ativAntibacterianaDTO : this.getAtivAntibacterianas()) {
-        AtivAntibacteriana ativAntibacteriana = new AtivAntibacteriana();
-        ativAntibacteriana.setId(ativAntibacterianaDTO.getId());
-        ativAntibacteriana.setDescricao(ativAntibacterianaDTO.getDescricao());
-        ativAntibacteriana.setPeptideo(peptideoEntity);
-        ativAntibacterianasEntity.add(ativAntibacteriana);
+      for (AtivAntibacterianaDTO ativAntibacteriana : this.getAtivAntibacterianas()) {
+        peptideoEntity.addAtivAntibacteriana(ativAntibacteriana.toEntity());
       }
     }
-    peptideoEntity.setAtivAntibacterianas(ativAntibacterianasEntity);
 
-    Set<AtivAntifungica> ativAntifungicasEntity = new HashSet<>();
     if (this.getAtivAntifungicas() != null) {
-      for (AtivAntifungicaDTO ativAntifungicaDTO : this.getAtivAntifungicas()) {
-        AtivAntifungica ativAntifungica = new AtivAntifungica();
-        ativAntifungica.setId(ativAntifungicaDTO.getId());
-        ativAntifungica.setDescricao(ativAntifungicaDTO.getDescricao());
-        ativAntifungica.setPeptideo(peptideoEntity);
-        ativAntifungicasEntity.add(ativAntifungica);
+      for (AtivAntifungicaDTO ativAntifungica : this.getAtivAntifungicas()) {
+        peptideoEntity.addAtivAntifungica(ativAntifungica.toEntity());
       }
     }
-    peptideoEntity.setAtivAntifungicas(ativAntifungicasEntity);
 
-    Set<AtivCitotoxica> ativCitotoxicasEntity = new HashSet<>();
     if (this.getAtivCitotoxicas() != null) {
       for (AtivCitotoxicaDTO ativCitotoxicaDTO : this.getAtivCitotoxicas()) {
-        AtivCitotoxica ativCitotoxica = new AtivCitotoxica();
-        ativCitotoxica.setId(ativCitotoxicaDTO.getId());
-        ativCitotoxica.setDescricao(ativCitotoxicaDTO.getDescricao());
-        ativCitotoxica.setPeptideo(peptideoEntity);
-        ativCitotoxicasEntity.add(ativCitotoxica);
+        peptideoEntity.addAtivCitotoxica(ativCitotoxicaDTO.toEntity());
       }
     }
-    peptideoEntity.setAtivCitotoxicas(ativCitotoxicasEntity);
 
-    Set<CasoSucesso> casosSucessoEntity = new HashSet<>();
     if (this.getCasosSucesso() != null) {
       for (CasoSucessoDTO casoSucessoDTO : this.getCasosSucesso()) {
-        CasoSucesso casoSucesso = new CasoSucesso();
-        casoSucesso.setId(casoSucessoDTO.getId());
-        casoSucesso.setCaso(casoSucessoDTO.getCaso());
-        casoSucesso.setPeptideo(peptideoEntity);
-        casosSucessoEntity.add(casoSucesso);
+        peptideoEntity.addCasoSucesso(casoSucessoDTO.toEntity());
       }
     }
-    peptideoEntity.setCasosSucesso(casosSucessoEntity);
 
-    Set<CaracterisAdicionais> caracterisAdicionaisEntity = new HashSet<>();
     if (this.getCaracterisAdicionais() != null) {
       for (CaracterisAdicionaisDTO caracterisAdicionaisDTO : this.getCaracterisAdicionais()) {
-        CaracterisAdicionais caracterisAdicional = new CaracterisAdicionais();
-        caracterisAdicional.setId(caracterisAdicionaisDTO.getId());
-        caracterisAdicional.setDescricao(
-          caracterisAdicionaisDTO.getDescricao()
+        peptideoEntity.addCaracterisAdicionais(
+          caracterisAdicionaisDTO.toEntity()
         );
-        caracterisAdicional.setPeptideo(peptideoEntity);
-        caracterisAdicionaisEntity.add(caracterisAdicional);
       }
     }
-    peptideoEntity.setCaracterisAdicionais(caracterisAdicionaisEntity);
 
-    Set<Publicacao> publicacoesEntity = new HashSet<>();
     if (this.getPublicacoes() != null) {
       for (PublicacaoDTO publicacaoDTO : this.getPublicacoes()) {
-        Publicacao publicacao = new Publicacao();
-        publicacao.setId(publicacaoDTO.getId());
-        publicacao.setUrl(publicacaoDTO.getUrl());
-        publicacao.setPeptideo(peptideoEntity);
-        publicacoesEntity.add(publicacao);
+        peptideoEntity.addPublicacao(publicacaoDTO.toEntity());
       }
     }
-    peptideoEntity.setPublicacoes(publicacoesEntity);
 
     return peptideoEntity;
   }

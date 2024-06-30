@@ -14,6 +14,13 @@ public class AtivAntifungicaDTO {
 
   public AtivAntifungicaDTO() {}
 
+  public AtivAntifungica toEntity() {
+    AtivAntifungica ativAntifungica = new AtivAntifungica();
+    ativAntifungica.setId(this.getId());
+    ativAntifungica.setDescricao(this.getDescricao());
+    return ativAntifungica;
+  }
+
   public Long getId() {
     return id;
   }

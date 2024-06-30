@@ -14,6 +14,13 @@ public class CasoSucessoDTO {
 
   public CasoSucessoDTO() {}
 
+  public CasoSucesso toEntity() {
+    CasoSucesso casoSucesso = new CasoSucesso();
+    casoSucesso.setId(this.getId());
+    casoSucesso.setCaso(this.getCaso());
+    return casoSucesso;
+  }
+
   public Long getId() {
     return id;
   }

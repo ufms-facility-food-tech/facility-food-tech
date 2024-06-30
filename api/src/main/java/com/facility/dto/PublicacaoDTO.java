@@ -14,6 +14,13 @@ public class PublicacaoDTO {
 
   public PublicacaoDTO() {}
 
+  public Publicacao toEntity() {
+    Publicacao publicacao = new Publicacao();
+    publicacao.setId(this.getId());
+    publicacao.setUrl(this.getUrl());
+    return publicacao;
+  }
+
   public Long getId() {
     return id;
   }

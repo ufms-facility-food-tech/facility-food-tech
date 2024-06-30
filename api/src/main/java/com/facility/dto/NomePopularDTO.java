@@ -14,6 +14,13 @@ public class NomePopularDTO {
 
   public NomePopularDTO() {}
 
+  public NomePopular toEntity() {
+    NomePopular nomePopular = new NomePopular();
+    nomePopular.setId(this.getId());
+    nomePopular.setNome(this.getNome());
+    return nomePopular;
+  }
+
   public Long getId() {
     return id;
   }

@@ -43,8 +43,7 @@ public class OrganismoController {
   public ResponseEntity<List<OrganismoDTO>> query(
     @RequestParam Optional<String> especie,
     @RequestParam Optional<String> familia,
-    @RequestParam Optional<String> origem,
-    @RequestParam Optional<String> nomeCientifico
+    @RequestParam Optional<String> origem
   ) {
     Organismo organismo = new Organismo();
     if (especie.isPresent()) {
@@ -55,9 +54,6 @@ public class OrganismoController {
     }
     if (origem.isPresent()) {
       organismo.setOrigem(origem.get());
-    }
-    if (nomeCientifico.isPresent()) {
-      organismo.setNomeCientifico(nomeCientifico.get());
     }
     var organismos = organismoRepository
       .findAll(

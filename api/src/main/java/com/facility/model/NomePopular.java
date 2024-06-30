@@ -22,7 +22,7 @@ public class NomePopular implements Serializable {
   private String nome;
 
   @ManyToOne
-  @JoinColumn(name = "id_organismo", nullable = false, updatable = true)
+  @JoinColumn(name = "organismo_id", nullable = false)
   private Organismo organismo;
 
   public NomePopular() {}

@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,16 +22,9 @@ public class Peptideo {
   private Long id;
 
   private String peptideo;
-
-  @NotNull
   private Integer quantidadeAminoacidos;
-
-  @NotNull
   private TipoPeptideo tipoPeptideo;
-
-  @NotNull
   private String sequencia;
-
   private String estruturaTridimensional;
   private Double massaMolecular;
   private Double impedimentoEsterico;
@@ -45,7 +38,7 @@ public class Peptideo {
   private String descricao;
 
   @ManyToOne
-  @JoinColumn(name = "id_organismo", nullable = true, updatable = true)
+  @JoinColumn(name = "organismo_id", nullable = false)
   private Organismo organismo;
 
   @OneToMany(
@@ -53,49 +46,49 @@ public class Peptideo {
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
-  private Set<FuncBiologica> funcBiologicas;
+  private Set<FuncBiologica> funcBiologicas = new HashSet<>();
 
   @OneToMany(
     mappedBy = "peptideo",
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
-  private Set<AtivAntibacteriana> ativAntibacterianas;
+  private Set<AtivAntibacteriana> ativAntibacterianas = new HashSet<>();
 
   @OneToMany(
     mappedBy = "peptideo",
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
-  private Set<AtivAntifungica> ativAntifungicas;
+  private Set<AtivAntifungica> ativAntifungicas = new HashSet<>();
 
   @OneToMany(
     mappedBy = "peptideo",
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
-  private Set<AtivCitotoxica> ativCitotoxicas;
+  private Set<AtivCitotoxica> ativCitotoxicas = new HashSet<>();
 
   @OneToMany(
     mappedBy = "peptideo",
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
-  private Set<CasoSucesso> casosSucesso;
+  private Set<CasoSucesso> casosSucesso = new HashSet<>();
 
   @OneToMany(
     mappedBy = "peptideo",
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
-  private Set<CaracterisAdicionais> caracterisAdicionais;
+  private Set<CaracterisAdicionais> caracterisAdicionais = new HashSet<>();
 
   @OneToMany(
     mappedBy = "peptideo",
     cascade = CascadeType.ALL,
     orphanRemoval = true
   )
-  private Set<Publicacao> publicacoes;
+  private Set<Publicacao> publicacoes = new HashSet<>();
 
   public Organismo getOrganismo() {
     return organismo;
@@ -297,5 +290,79 @@ public class Peptideo {
 
   public void setFuncBiologicas(Set<FuncBiologica> funcBiologicas) {
     this.funcBiologicas = funcBiologicas;
+  }
+
+  public void addFuncBiologica(FuncBiologica funcBiologica) {
+    funcBiologicas.add(funcBiologica);
+    funcBiologica.setPeptideo(this);
+  }
+
+  public void removeFuncBiologica(FuncBiologica funcBiologica) {
+    funcBiologicas.remove(funcBiologica);
+    funcBiologica.setPeptideo(null);
+  }
+
+  public void addAtivAntibacteriana(AtivAntibacteriana ativAntibacteriana) {
+    ativAntibacterianas.add(ativAntibacteriana);
+    ativAntibacteriana.setPeptideo(this);
+  }
+
+  public void removeAtivAntibacteriana(AtivAntibacteriana ativAntibacteriana) {
+    ativAntibacterianas.remove(ativAntibacteriana);
+    ativAntibacteriana.setPeptideo(null);
+  }
+
+  public void addAtivAntifungica(AtivAntifungica ativAntifungica) {
+    ativAntifungicas.add(ativAntifungica);
+    ativAntifungica.setPeptideo(this);
+  }
+
+  public void removeAtivAntifungica(AtivAntifungica ativAntifungica) {
+    ativAntifungicas.remove(ativAntifungica);
+    ativAntifungica.setPeptideo(null);
+  }
+
+  public void addAtivCitotoxica(AtivCitotoxica ativCitotoxica) {
+    ativCitotoxicas.add(ativCitotoxica);
+    ativCitotoxica.setPeptideo(this);
+  }
+
+  public void removeAtivCitotoxica(AtivCitotoxica ativCitotoxica) {
+    ativCitotoxicas.remove(ativCitotoxica);
+    ativCitotoxica.setPeptideo(null);
+  }
+
+  public void addCasoSucesso(CasoSucesso casoSucesso) {
+    casosSucesso.add(casoSucesso);
+    casoSucesso.setPeptideo(this);
+  }
+
+  public void removeCasoSucesso(CasoSucesso casoSucesso) {
+    casosSucesso.remove(casoSucesso);
+    casoSucesso.setPeptideo(null);
+  }
+
+  public void addCaracterisAdicionais(
+    CaracterisAdicionais caracteristicasAdicionais
+  ) {
+    caracterisAdicionais.add(caracteristicasAdicionais);
+    caracteristicasAdicionais.setPeptideo(this);
+  }
+
+  public void removeCaracterisAdicionais(
+    CaracterisAdicionais caracteristicasAdicionais
+  ) {
+    caracterisAdicionais.remove(caracteristicasAdicionais);
+    caracteristicasAdicionais.setPeptideo(null);
+  }
+
+  public void addPublicacao(Publicacao publicacao) {
+    publicacoes.add(publicacao);
+    publicacao.setPeptideo(this);
+  }
+
+  public void removePublicacao(Publicacao publicacao) {
+    publicacoes.remove(publicacao);
+    publicacao.setPeptideo(null);
   }
 }

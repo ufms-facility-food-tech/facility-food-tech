@@ -14,6 +14,13 @@ public class CaracterisAdicionaisDTO {
 
   public CaracterisAdicionaisDTO() {}
 
+  public CaracterisAdicionais toEntity() {
+    CaracterisAdicionais caracterisAdicionais = new CaracterisAdicionais();
+    caracterisAdicionais.setId(this.getId());
+    caracterisAdicionais.setDescricao(this.getDescricao());
+    return caracterisAdicionais;
+  }
+
   public Long getId() {
     return id;
   }

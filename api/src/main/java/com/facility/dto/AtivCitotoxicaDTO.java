@@ -14,6 +14,13 @@ public class AtivCitotoxicaDTO {
 
   public AtivCitotoxicaDTO() {}
 
+  public AtivCitotoxica toEntity() {
+    AtivCitotoxica ativCitotoxica = new AtivCitotoxica();
+    ativCitotoxica.setId(this.getId());
+    ativCitotoxica.setDescricao(this.getDescricao());
+    return ativCitotoxica;
+  }
+
   public Long getId() {
     return id;
   }

@@ -22,7 +22,7 @@ public class Publicacao implements Serializable {
   private String url;
 
   @ManyToOne
-  @JoinColumn(name = "id_peptideo", nullable = false, updatable = true)
+  @JoinColumn(name = "peptideo_id", nullable = false)
   private Peptideo peptideo;
 
   public Publicacao() {}

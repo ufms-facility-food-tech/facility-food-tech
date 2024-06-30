@@ -14,6 +14,13 @@ public class AtivAntibacterianaDTO {
 
   public AtivAntibacterianaDTO() {}
 
+  public AtivAntibacteriana toEntity() {
+    AtivAntibacteriana ativAntibacteriana = new AtivAntibacteriana();
+    ativAntibacteriana.setId(this.getId());
+    ativAntibacteriana.setDescricao(this.getDescricao());
+    return ativAntibacteriana;
+  }
+
   public Long getId() {
     return id;
   }

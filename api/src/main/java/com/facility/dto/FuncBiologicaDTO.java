@@ -14,6 +14,13 @@ public class FuncBiologicaDTO {
 
   public FuncBiologicaDTO() {}
 
+  public FuncBiologica toEntity() {
+    FuncBiologica funcBiologica = new FuncBiologica();
+    funcBiologica.setId(this.getId());
+    funcBiologica.setDescricao(this.getDescricao());
+    return funcBiologica;
+  }
+
   public Long getId() {
     return id;
   }

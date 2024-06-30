@@ -22,7 +22,7 @@ public class CasoSucesso implements Serializable {
   private String caso;
 
   @ManyToOne
-  @JoinColumn(name = "id_peptideo", nullable = false, updatable = true)
+  @JoinColumn(name = "peptideo_id", nullable = false)
   private Peptideo peptideo;
 
   public CasoSucesso() {}
