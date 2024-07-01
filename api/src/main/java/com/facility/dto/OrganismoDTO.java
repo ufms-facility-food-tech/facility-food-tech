@@ -2,7 +2,6 @@ package com.facility.dto;
 
 import com.facility.model.NomePopular;
 import com.facility.model.Organismo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ public class OrganismoDTO {
   private String origem;
   private String familia;
 
-  @JsonManagedReference
   List<NomePopular> nomesPopulares;
 
   public OrganismoDTO(Organismo organismo) {
@@ -28,6 +26,20 @@ public class OrganismoDTO {
   }
 
   public OrganismoDTO() {}
+
+  public Organismo toEntity() {
+    Organismo organismoEntity = new Organismo();
+    organismoEntity.setId(this.getId());
+    organismoEntity.setEspecie(this.getEspecie());
+    organismoEntity.setOrigem(this.getOrigem());
+    organismoEntity.setFamilia(this.getFamilia());
+    if (this.getNomesPopulares() != null) {
+      for (NomePopular nomePopular : this.getNomesPopulares()) {
+        organismoEntity.addNomePopular(nomePopular);
+      }
+    }
+    return organismoEntity;
+  }
 
   public Long getId() {
     return id;
