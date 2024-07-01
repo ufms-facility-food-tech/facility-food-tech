@@ -38,30 +38,30 @@ public class QueryController {
   ) {
     var peptideo = new Peptideo();
     peptideo.setOrganismo(new Organismo());
-    if (especie.isPresent()) {
+    if (especie.isPresent() && !especie.get().isEmpty()) {
       peptideo.getOrganismo().setEspecie(especie.get());
     }
-    if (origem.isPresent()) {
+    if (origem.isPresent() && !origem.get().isEmpty()) {
       peptideo.getOrganismo().setOrigem(origem.get());
     }
-    if (familia.isPresent()) {
+    if (familia.isPresent() && !familia.get().isEmpty()) {
       peptideo.getOrganismo().setFamilia(familia.get());
     }
-    if (nomePopular.isPresent()) {
+    if (nomePopular.isPresent() && !nomePopular.get().isEmpty()) {
       var nomePopularEntity = new NomePopular();
       nomePopularEntity.setNome(nomePopular.get());
       peptideo.getOrganismo().addNomePopular(nomePopularEntity);
     }
-    if (descricao.isPresent()) {
+    if (descricao.isPresent() && !descricao.get().isEmpty()) {
       peptideo.setDescricao(descricao.get());
     }
-    if (hidrofobicidade.isPresent()) {
+    if (hidrofobicidade.isPresent() && !hidrofobicidade.get().isEmpty()) {
       peptideo.setHidrofobicidade(Double.valueOf(hidrofobicidade.get()));
     }
-    if (estruturaTridimensional.isPresent()) {
+    if (estruturaTridimensional.isPresent() && !estruturaTridimensional.get().isEmpty()) {
       peptideo.setEstruturaTridimensional(estruturaTridimensional.get());
     }
-    if (massaMolecular.isPresent()) {
+    if (massaMolecular.isPresent() && !massaMolecular.get().isEmpty()) {
       peptideo.setMassaMolecular(Double.valueOf(massaMolecular.get()));
     }
     var result = peptideoRepository.findBy(
