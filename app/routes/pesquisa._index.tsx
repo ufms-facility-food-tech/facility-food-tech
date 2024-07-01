@@ -5,7 +5,6 @@ import { SubmitButton, TextInput } from "~/components/form";
 
 export default function Pesquisa() {
   const queryItems = [
-    { value: "nomeCientifico", label: "Nome Científico" },
     { value: "especie", label: "Espécie" },
     { value: "origem", label: "Origem" },
     { value: "familia", label: "Família" },

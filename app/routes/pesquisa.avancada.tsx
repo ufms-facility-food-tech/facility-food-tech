@@ -9,14 +9,13 @@ export default function PesquisaAvancada() {
         <fieldset>
           <legend className="mb-3 text-2xl text-cyan-700">Nomes</legend>
           <div className="mx-2 flex flex-col gap-4">
-            <TextInput name="nomeCientifico" label="Nome Científico" />
-            <TextInput name="nomePopular" label="Nome Popular" />
-            <TextInput name="familia" label="Família" />
             <TextInput name="especie" label="Espécie" />
+            <TextInput name="familia" label="Família" />
+            <TextInput name="nomePopular" label="Nome Popular" />
             <TextAreaInput name="descricao" label="Descrição" />
           </div>
         </fieldset>
-        <fieldset>
+        {/* <fieldset>
           <legend className="mb-3 text-2xl text-cyan-700">
             Funções Biológicas
           </legend>
@@ -26,7 +25,7 @@ export default function PesquisaAvancada() {
               label="Outras Funções Biológicas"
             />
           </div>
-        </fieldset>
+        </fieldset> */}
         <fieldset>
           <legend className="mb-3 text-2xl text-cyan-700">
             Características Físicas
@@ -43,16 +42,16 @@ export default function PesquisaAvancada() {
               </span>
               <div className="flex-grow">
                 <TextInput name="hidrofobicidade" label="Hidrofobicidade" />
-                <TextInput name="solubilidade" label="Solubilidade" />
+                {/* <TextInput name="solubilidade" label="Solubilidade" /> */}
               </div>
             </fieldset>
           </div>
         </fieldset>
-        <TextInput name="alimento" label="Alimento" />
+        {/* <TextInput name="alimento" label="Alimento" />
         <TextInput
           name="propriedadesNutricionais"
           label="Propriedades Nutricionais"
-        />
+        /> */}
         <div className="mx-5 my-9 flex items-center justify-center gap-4">
           <SubmitButton>Pesquisar</SubmitButton>
         </div>
