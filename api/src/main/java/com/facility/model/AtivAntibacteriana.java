@@ -1,7 +1,6 @@
 package com.facility.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class AtivAntibacteriana {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

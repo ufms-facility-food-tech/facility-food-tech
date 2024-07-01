@@ -2,11 +2,9 @@ package com.facility.dto;
 
 import com.facility.model.NomePopular;
 import com.facility.model.Organismo;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 public class OrganismoDTO {
 
@@ -14,6 +12,7 @@ public class OrganismoDTO {
   private String especie;
   private String origem;
   private String familia;
+
   @JsonManagedReference
   List<NomePopular> nomesPopulares;
 
