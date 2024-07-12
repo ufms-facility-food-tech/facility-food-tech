@@ -52,8 +52,8 @@ public class OrganismoController {
     organismo.setId(id);
     return organismoRepository
       .findById(id)
-      .map(
-        record -> ResponseEntity.ok().body(organismoRepository.save(organismo))
+      .map(record ->
+        ResponseEntity.ok().body(organismoRepository.save(organismo))
       )
       .orElse(ResponseEntity.notFound().build());
   }
