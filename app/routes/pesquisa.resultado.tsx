@@ -1,7 +1,7 @@
 import {
   type ClientLoaderFunctionArgs,
-  json,
   NavLink,
+  json,
   useLoaderData,
 } from "@remix-run/react";
 import type { components } from "~/api-schema";

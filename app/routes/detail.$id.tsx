@@ -1,11 +1,11 @@
 import {
+  type ClientLoaderFunctionArgs,
   json,
   useLoaderData,
   useNavigate,
-  type ClientLoaderFunctionArgs,
 } from "@remix-run/react";
-import { Container } from "~/components/container";
 import type { components } from "~/api-schema";
+import { Container } from "~/components/container";
 
 export async function clientLoader({
   request,
