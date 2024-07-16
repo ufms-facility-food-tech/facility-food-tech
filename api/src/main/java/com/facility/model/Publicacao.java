@@ -18,7 +18,9 @@ public class Publicacao {
   private Long id;
 
   @NotNull
-  private String url;
+  private String doi;
+
+  private String titulo;
 
   @ManyToOne
   @JoinColumn(name = "peptideo_id", nullable = false)
@@ -36,19 +38,27 @@ public class Publicacao {
     this.id = id;
   }
 
-  public String getUrl() {
-    return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
   public Peptideo getPeptideo() {
     return peptideo;
   }
 
   public void setPeptideo(Peptideo peptideo) {
     this.peptideo = peptideo;
+  }
+
+  public String getDoi() {
+    return doi;
+  }
+
+  public void setDoi(String doi) {
+    this.doi = doi;
+  }
+
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public void setTitulo(String titulo) {
+    this.titulo = titulo;
   }
 }

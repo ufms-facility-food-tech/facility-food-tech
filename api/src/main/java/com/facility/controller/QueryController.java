@@ -1,7 +1,6 @@
 package com.facility.controller;
 
 import com.facility.dto.PeptideoDTO;
-import com.facility.model.NomePopular;
 import com.facility.model.Organismo;
 import com.facility.model.Peptideo;
 import com.facility.repository.PeptideoRepository;
@@ -48,9 +47,7 @@ public class QueryController {
       peptideo.getOrganismo().setFamilia(familia.get());
     }
     if (nomePopular.isPresent() && !nomePopular.get().isEmpty()) {
-      var nomePopularEntity = new NomePopular();
-      nomePopularEntity.setNome(nomePopular.get());
-      peptideo.getOrganismo().addNomePopular(nomePopularEntity);
+      peptideo.getOrganismo().addNomePopular(nomePopular.get());
     }
     if (descricao.isPresent() && !descricao.get().isEmpty()) {
       peptideo.setDescricao(descricao.get());
@@ -58,7 +55,10 @@ public class QueryController {
     if (hidrofobicidade.isPresent() && !hidrofobicidade.get().isEmpty()) {
       peptideo.setHidrofobicidade(Double.valueOf(hidrofobicidade.get()));
     }
-    if (estruturaTridimensional.isPresent() && !estruturaTridimensional.get().isEmpty()) {
+    if (
+      estruturaTridimensional.isPresent() &&
+      !estruturaTridimensional.get().isEmpty()
+    ) {
       peptideo.setEstruturaTridimensional(estruturaTridimensional.get());
     }
     if (massaMolecular.isPresent() && !massaMolecular.get().isEmpty()) {

@@ -1,7 +1,7 @@
 package com.facility.dto;
 
-import com.facility.model.NomePopular;
 import com.facility.model.Organismo;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,15 +12,15 @@ public class OrganismoDTO {
   private String origem;
   private String familia;
 
-  List<NomePopular> nomesPopulares;
+  List<String> nomePopular;
 
   public OrganismoDTO(Organismo organismo) {
     this.id = organismo.getId();
     this.especie = organismo.getEspecie();
     this.origem = organismo.getOrigem();
     this.familia = organismo.getFamilia();
-    this.nomesPopulares = organismo
-      .getNomesPopulares()
+    this.nomePopular = organismo
+      .getNomePopular()
       .stream()
       .collect(Collectors.toList());
   }
@@ -33,11 +33,7 @@ public class OrganismoDTO {
     organismoEntity.setEspecie(this.getEspecie());
     organismoEntity.setOrigem(this.getOrigem());
     organismoEntity.setFamilia(this.getFamilia());
-    if (this.getNomesPopulares() != null) {
-      for (NomePopular nomePopular : this.getNomesPopulares()) {
-        organismoEntity.addNomePopular(nomePopular);
-      }
-    }
+    organismoEntity.setNomePopular(new HashSet<>(this.getNomePopular()));
     return organismoEntity;
   }
 
@@ -73,11 +69,11 @@ public class OrganismoDTO {
     this.familia = familia;
   }
 
-  public List<NomePopular> getNomesPopulares() {
-    return nomesPopulares;
+  public List<String> getNomePopular() {
+    return nomePopular;
   }
 
-  public void setNomesPopulares(List<NomePopular> nomesPopulares) {
-    this.nomesPopulares = nomesPopulares;
+  public void setNomePopular(List<String> nomePopular) {
+    this.nomePopular = nomePopular;
   }
 }
