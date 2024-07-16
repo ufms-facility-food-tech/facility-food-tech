@@ -2,10 +2,8 @@ import {
   type ClientLoaderFunctionArgs,
   json,
   NavLink,
-  NavLink,
   useLoaderData,
 } from "@remix-run/react";
-import type { components } from "~/api-schema";
 import type { components } from "~/api-schema";
 import { Container } from "~/components/container";
 
@@ -59,7 +57,7 @@ export default function Resultado() {
           </thead>
           <tbody>
             {data.map(
-              ({ peptideo, sequencia, funcBiologicas, organismo, id }) => (
+              ({ peptideo, sequencia, funcaoBiologica, organismo, id }) => (
                 <tr
                   key={id}
                   className="border-b odd:bg-neutral-100 even:bg-neutral-300"
@@ -70,9 +68,7 @@ export default function Resultado() {
                       ? sequencia?.slice(0, 15).concat("...")
                       : sequencia}
                   </td>
-                  <td className="px-4 py-4">
-                    {funcBiologicas?.map((func) => func.descricao).join(", ")}
-                  </td>
+                  <td className="px-4 py-4">{funcaoBiologica?.join(", ")}</td>
                   <td className="px-4 py-4">{organismo?.familia}</td>
                   <td className="px-4 py-4">{organismo?.especie}</td>
                   <td className="px-4 py-4">
