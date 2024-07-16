@@ -2,7 +2,9 @@ package com.facility.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,13 +23,8 @@ public class Organismo {
   private String origem;
   private String familia;
 
-  @OneToMany(
-    mappedBy = "organismo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JsonManagedReference
-  private Set<NomePopular> nomesPopulares = new HashSet<>();
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> nomePopular = new HashSet<>();
 
   @OneToMany(
     mappedBy = "organismo",
@@ -35,7 +32,7 @@ public class Organismo {
     orphanRemoval = true
   )
   @JsonManagedReference
-  private Set<Peptideo> peptideos = new HashSet<>();
+  private Set<Peptideo> peptideo = new HashSet<>();
 
   public Organismo() {}
 
@@ -71,39 +68,37 @@ public class Organismo {
     this.familia = familia;
   }
 
-  public Set<NomePopular> getNomesPopulares() {
-    return nomesPopulares;
+  public Set<String> getNomePopular() {
+    return nomePopular;
   }
 
-  public void setNomesPopulares(Set<NomePopular> nomesPopulares) {
-    this.nomesPopulares = nomesPopulares;
+  public void setNomePopular(Set<String> nomePopular) {
+    this.nomePopular = nomePopular;
   }
 
-  public Set<Peptideo> getPeptideos() {
-    return peptideos;
+  public Set<Peptideo> getPeptideo() {
+    return peptideo;
   }
 
-  public void setPeptideos(Set<Peptideo> peptideos) {
-    this.peptideos = peptideos;
+  public void setPeptideo(Set<Peptideo> peptideo) {
+    this.peptideo = peptideo;
   }
 
   public void addPeptideo(Peptideo peptideo) {
-    peptideos.add(peptideo);
+    this.peptideo.add(peptideo);
     peptideo.setOrganismo(this);
   }
 
   public void removePeptideo(Peptideo peptideo) {
-    peptideos.remove(peptideo);
+    this.peptideo.remove(peptideo);
     peptideo.setOrganismo(null);
   }
 
-  public void addNomePopular(NomePopular nomePopular) {
-    nomesPopulares.add(nomePopular);
-    nomePopular.setOrganismo(this);
+  public void addNomePopular(String nomePopular) {
+    this.nomePopular.add(nomePopular);
   }
 
-  public void removeNomePopular(NomePopular nomePopular) {
-    nomesPopulares.remove(nomePopular);
-    nomePopular.setOrganismo(null);
+  public void removeNomePopular(String nomePopular) {
+    this.nomePopular.remove(nomePopular);
   }
 }

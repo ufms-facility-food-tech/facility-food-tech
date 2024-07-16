@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,7 +24,7 @@ public class Peptideo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String peptideo;
+  private String nome;
   private Integer quantidadeAminoacidos;
   private TipoPeptideo tipoPeptideo;
   private String sequencia;
@@ -42,13 +44,23 @@ public class Peptideo {
   @JoinColumn(name = "organismo_id", nullable = false)
   private Organismo organismo;
 
-  @OneToMany(
-    mappedBy = "peptideo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JsonManagedReference
-  private Set<FuncBiologica> funcBiologicas = new HashSet<>();
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> funcaoBiologica = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> atividadeAntibacteriana = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> atividadeAntifungica = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> atividadeCitotoxica = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> casoSucesso = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> caracteristicasAdicionais = new HashSet<>();
 
   @OneToMany(
     mappedBy = "peptideo",
@@ -56,47 +68,7 @@ public class Peptideo {
     orphanRemoval = true
   )
   @JsonManagedReference
-  private Set<AtivAntibacteriana> ativAntibacterianas = new HashSet<>();
-
-  @OneToMany(
-    mappedBy = "peptideo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JsonManagedReference
-  private Set<AtivAntifungica> ativAntifungicas = new HashSet<>();
-
-  @OneToMany(
-    mappedBy = "peptideo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JsonManagedReference
-  private Set<AtivCitotoxica> ativCitotoxicas = new HashSet<>();
-
-  @OneToMany(
-    mappedBy = "peptideo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JsonManagedReference
-  private Set<CasoSucesso> casosSucesso = new HashSet<>();
-
-  @OneToMany(
-    mappedBy = "peptideo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JsonManagedReference
-  private Set<CaracterisAdicionais> caracterisAdicionais = new HashSet<>();
-
-  @OneToMany(
-    mappedBy = "peptideo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JsonManagedReference
-  private Set<Publicacao> publicacoes = new HashSet<>();
+  private Set<Publicacao> publicacao = new HashSet<>();
 
   @JsonBackReference
   @Hidden
@@ -118,12 +90,12 @@ public class Peptideo {
     this.id = id;
   }
 
-  public String getPeptideo() {
-    return peptideo;
+  public String getNome() {
+    return nome;
   }
 
-  public void setPeptideo(String peptideo) {
-    this.peptideo = peptideo;
+  public void setNome(String peptideo) {
+    this.nome = peptideo;
   }
 
   public TipoPeptideo getTipoPeptideo() {
@@ -238,137 +210,71 @@ public class Peptideo {
     this.cargaLiquidaTotal = cargaLiquidaTotal;
   }
 
-  public Set<Publicacao> getPublicacoes() {
-    return publicacoes;
+  public Set<Publicacao> getPublicacao() {
+    return publicacao;
   }
 
-  public void setPublicacoes(Set<Publicacao> publicacoes) {
-    this.publicacoes = publicacoes;
-  }
-
-  public Set<CaracterisAdicionais> getCaracterisAdicionais() {
-    return caracterisAdicionais;
-  }
-
-  public void setCaracterisAdicionais(
-    Set<CaracterisAdicionais> caracterisAdicionais
-  ) {
-    this.caracterisAdicionais = caracterisAdicionais;
-  }
-
-  public Set<CasoSucesso> getCasosSucesso() {
-    return casosSucesso;
-  }
-
-  public void setCasosSucesso(Set<CasoSucesso> casosSucesso) {
-    this.casosSucesso = casosSucesso;
-  }
-
-  public Set<AtivCitotoxica> getAtivCitotoxicas() {
-    return ativCitotoxicas;
-  }
-
-  public void setAtivCitotoxicas(Set<AtivCitotoxica> ativCitotoxicas) {
-    this.ativCitotoxicas = ativCitotoxicas;
-  }
-
-  public Set<AtivAntifungica> getAtivAntifungicas() {
-    return ativAntifungicas;
-  }
-
-  public void setAtivAntifungicas(Set<AtivAntifungica> ativAntifungicas) {
-    this.ativAntifungicas = ativAntifungicas;
-  }
-
-  public Set<AtivAntibacteriana> getAtivAntibacterianas() {
-    return ativAntibacterianas;
-  }
-
-  public void setAtivAntibacterianas(
-    Set<AtivAntibacteriana> ativAntibacterianas
-  ) {
-    this.ativAntibacterianas = ativAntibacterianas;
-  }
-
-  public Set<FuncBiologica> getFuncBiologicas() {
-    return funcBiologicas;
-  }
-
-  public void setFuncBiologicas(Set<FuncBiologica> funcBiologicas) {
-    this.funcBiologicas = funcBiologicas;
-  }
-
-  public void addFuncBiologica(FuncBiologica funcBiologica) {
-    funcBiologicas.add(funcBiologica);
-    funcBiologica.setPeptideo(this);
-  }
-
-  public void removeFuncBiologica(FuncBiologica funcBiologica) {
-    funcBiologicas.remove(funcBiologica);
-    funcBiologica.setPeptideo(null);
-  }
-
-  public void addAtivAntibacteriana(AtivAntibacteriana ativAntibacteriana) {
-    ativAntibacterianas.add(ativAntibacteriana);
-    ativAntibacteriana.setPeptideo(this);
-  }
-
-  public void removeAtivAntibacteriana(AtivAntibacteriana ativAntibacteriana) {
-    ativAntibacterianas.remove(ativAntibacteriana);
-    ativAntibacteriana.setPeptideo(null);
-  }
-
-  public void addAtivAntifungica(AtivAntifungica ativAntifungica) {
-    ativAntifungicas.add(ativAntifungica);
-    ativAntifungica.setPeptideo(this);
-  }
-
-  public void removeAtivAntifungica(AtivAntifungica ativAntifungica) {
-    ativAntifungicas.remove(ativAntifungica);
-    ativAntifungica.setPeptideo(null);
-  }
-
-  public void addAtivCitotoxica(AtivCitotoxica ativCitotoxica) {
-    ativCitotoxicas.add(ativCitotoxica);
-    ativCitotoxica.setPeptideo(this);
-  }
-
-  public void removeAtivCitotoxica(AtivCitotoxica ativCitotoxica) {
-    ativCitotoxicas.remove(ativCitotoxica);
-    ativCitotoxica.setPeptideo(null);
-  }
-
-  public void addCasoSucesso(CasoSucesso casoSucesso) {
-    casosSucesso.add(casoSucesso);
-    casoSucesso.setPeptideo(this);
-  }
-
-  public void removeCasoSucesso(CasoSucesso casoSucesso) {
-    casosSucesso.remove(casoSucesso);
-    casoSucesso.setPeptideo(null);
-  }
-
-  public void addCaracterisAdicionais(
-    CaracterisAdicionais caracteristicasAdicionais
-  ) {
-    caracterisAdicionais.add(caracteristicasAdicionais);
-    caracteristicasAdicionais.setPeptideo(this);
-  }
-
-  public void removeCaracterisAdicionais(
-    CaracterisAdicionais caracteristicasAdicionais
-  ) {
-    caracterisAdicionais.remove(caracteristicasAdicionais);
-    caracteristicasAdicionais.setPeptideo(null);
+  public void setPublicacao(Set<Publicacao> publicacao) {
+    this.publicacao = publicacao;
   }
 
   public void addPublicacao(Publicacao publicacao) {
-    publicacoes.add(publicacao);
+    this.publicacao.add(publicacao);
     publicacao.setPeptideo(this);
   }
 
   public void removePublicacao(Publicacao publicacao) {
-    publicacoes.remove(publicacao);
+    this.publicacao.remove(publicacao);
     publicacao.setPeptideo(null);
+  }
+
+  public Set<String> getFuncaoBiologica() {
+    return funcaoBiologica;
+  }
+
+  public void setFuncaoBiologica(Set<String> funcaoBiologica) {
+    this.funcaoBiologica = funcaoBiologica;
+  }
+
+  public Set<String> getAtividadeAntibacteriana() {
+    return atividadeAntibacteriana;
+  }
+
+  public void setAtividadeAntibacteriana(Set<String> atividadeAntibacteriana) {
+    this.atividadeAntibacteriana = atividadeAntibacteriana;
+  }
+
+  public Set<String> getAtividadeAntifungica() {
+    return atividadeAntifungica;
+  }
+
+  public void setAtividadeAntifungica(Set<String> atividadeAntifungica) {
+    this.atividadeAntifungica = atividadeAntifungica;
+  }
+
+  public Set<String> getAtividadeCitotoxica() {
+    return atividadeCitotoxica;
+  }
+
+  public void setAtividadeCitotoxica(Set<String> atividadeCitotoxica) {
+    this.atividadeCitotoxica = atividadeCitotoxica;
+  }
+
+  public Set<String> getCasoSucesso() {
+    return casoSucesso;
+  }
+
+  public void setCasoSucesso(Set<String> casoSucesso) {
+    this.casoSucesso = casoSucesso;
+  }
+
+  public Set<String> getCaracteristicasAdicionais() {
+    return caracteristicasAdicionais;
+  }
+
+  public void setCaracteristicasAdicionais(
+    Set<String> caracteristicasAdicionais
+  ) {
+    this.caracteristicasAdicionais = caracteristicasAdicionais;
   }
 }

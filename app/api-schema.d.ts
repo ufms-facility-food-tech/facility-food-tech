@@ -104,48 +104,13 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AtivAntibacteriana: {
-            /** Format: int64 */
-            id?: number;
-            descricao: string;
-        };
-        AtivAntifungica: {
-            /** Format: int64 */
-            id?: number;
-            descricao: string;
-        };
-        AtivCitotoxica: {
-            /** Format: int64 */
-            id?: number;
-            descricao: string;
-        };
-        CaracterisAdicionais: {
-            /** Format: int64 */
-            id?: number;
-            descricao: string;
-        };
-        CasoSucesso: {
-            /** Format: int64 */
-            id?: number;
-            caso: string;
-        };
-        FuncBiologica: {
-            /** Format: int64 */
-            id?: number;
-            descricao: string;
-        };
-        NomePopular: {
-            /** Format: int64 */
-            id?: number;
-            nome: string;
-        };
         OrganismoDTO: {
             /** Format: int64 */
             id?: number;
             especie?: string;
             origem?: string;
             familia?: string;
-            nomesPopulares?: components["schemas"]["NomePopular"][];
+            nomePopular?: string[];
         };
         PeptideoDTO: {
             /** Format: int64 */
@@ -178,19 +143,20 @@ export interface components {
             /** Format: double */
             indiceBoman?: number;
             descricao?: string;
-            funcBiologicas?: components["schemas"]["FuncBiologica"][];
-            ativAntibacterianas?: components["schemas"]["AtivAntibacteriana"][];
-            ativAntifungicas?: components["schemas"]["AtivAntifungica"][];
-            ativCitotoxicas?: components["schemas"]["AtivCitotoxica"][];
-            casosSucesso?: components["schemas"]["CasoSucesso"][];
-            caracterisAdicionais?: components["schemas"]["CaracterisAdicionais"][];
-            publicacoes?: components["schemas"]["Publicacao"][];
+            funcaoBiologica?: string[];
+            atividadeAntibacteriana?: string[];
+            atividadeAntifungica?: string[];
+            atividadeCitotoxica?: string[];
+            casoSucesso?: string[];
+            caracteristicasAdicionais?: string[];
+            publicacao?: components["schemas"]["Publicacao"][];
             organismo?: components["schemas"]["OrganismoDTO"];
         };
         Publicacao: {
             /** Format: int64 */
             id?: number;
-            url: string;
+            doi: string;
+            titulo?: string;
         };
         Organismo: {
             /** Format: int64 */
@@ -198,13 +164,13 @@ export interface components {
             especie?: string;
             origem?: string;
             familia?: string;
-            nomesPopulares?: components["schemas"]["NomePopular"][];
-            peptideos?: components["schemas"]["Peptideo"][];
+            nomePopular?: string[];
+            peptideo?: components["schemas"]["Peptideo"][];
         };
         Peptideo: {
             /** Format: int64 */
             id?: number;
-            peptideo?: string;
+            nome?: string;
             /** Format: int32 */
             quantidadeAminoacidos?: number;
             /** @enum {string} */
@@ -230,13 +196,13 @@ export interface components {
             /** Format: double */
             indiceBoman?: number;
             descricao?: string;
-            funcBiologicas?: components["schemas"]["FuncBiologica"][];
-            ativAntibacterianas?: components["schemas"]["AtivAntibacteriana"][];
-            ativAntifungicas?: components["schemas"]["AtivAntifungica"][];
-            ativCitotoxicas?: components["schemas"]["AtivCitotoxica"][];
-            casosSucesso?: components["schemas"]["CasoSucesso"][];
-            caracterisAdicionais?: components["schemas"]["CaracterisAdicionais"][];
-            publicacoes?: components["schemas"]["Publicacao"][];
+            funcaoBiologica?: string[];
+            atividadeAntibacteriana?: string[];
+            atividadeAntifungica?: string[];
+            atividadeCitotoxica?: string[];
+            casoSucesso?: string[];
+            caracteristicasAdicionais?: string[];
+            publicacao?: components["schemas"]["Publicacao"][];
         };
     };
     responses: never;

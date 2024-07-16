@@ -48,7 +48,7 @@ public class PeptideoController {
         Example.of(
           organismoEntity,
           ExampleMatcher.matching()
-            .withIgnorePaths("id", "peptideos", "origem", "nomespopulares")
+            .withIgnorePaths("id", "peptideo", "origem", "nomepopular")
             .withIgnoreCase()
             .withStringMatcher(ExampleMatcher.StringMatcher.EXACT)
         ),
@@ -98,7 +98,7 @@ public class PeptideoController {
         if (peptideoDTO.getOrganismo() instanceof OrganismoDTO o) {
           Organismo organismoToSave = o.toEntity();
           organismoToSave.setId(peptideo.getOrganismo().getId());
-          organismoToSave.setPeptideos(peptideo.getOrganismo().getPeptideos());
+          organismoToSave.setPeptideo(peptideo.getOrganismo().getPeptideo());
           toSave.setOrganismo(organismoToSave);
         } else {
           toSave.setOrganismo(peptideo.getOrganismo());
