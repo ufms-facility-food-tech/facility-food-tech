@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class PeptideoDTO {
 
   private Long id;
-  private String peptideo;
+  private String nome;
   private Integer quantidadeAminoacidos;
   private TipoPeptideo tipoPeptideo;
   private String sequencia;
@@ -18,7 +18,6 @@ public class PeptideoDTO {
   private Double massaMolecular;
   private Double impedimentoEsterico;
   private Double hidrofobicidade;
-  private Double hidrofibocidade;
   private Double pontoIsoeletrico;
   private Double hidropatia;
   private Double anfipaticidade;
@@ -37,7 +36,7 @@ public class PeptideoDTO {
 
   public PeptideoDTO(Peptideo peptideo) {
     this.id = peptideo.getId();
-    this.peptideo = peptideo.getNome();
+    this.nome = peptideo.getNome();
     this.quantidadeAminoacidos = peptideo.getQuantidadeAminoacidos();
     this.tipoPeptideo = peptideo.getTipoPeptideo();
     this.sequencia = peptideo.getSequencia();
@@ -45,7 +44,6 @@ public class PeptideoDTO {
     this.massaMolecular = peptideo.getMassaMolecular();
     this.impedimentoEsterico = peptideo.getImpedimentoEsterico();
     this.hidrofobicidade = peptideo.getHidrofobicidade();
-    this.hidrofibocidade = peptideo.getHidrofobicidade();
     this.pontoIsoeletrico = peptideo.getPontoIsoeletrico();
     this.hidropatia = peptideo.getHidropatia();
     this.anfipaticidade = peptideo.getAnfipaticidade();
@@ -109,7 +107,7 @@ public class PeptideoDTO {
   public Peptideo toEntity() {
     Peptideo peptideoEntity = new Peptideo();
     peptideoEntity.setId(this.getId());
-    peptideoEntity.setNome(this.getPeptideo());
+    peptideoEntity.setNome(this.getNome());
     peptideoEntity.setQuantidadeAminoacidos(this.getQuantidadeAminoacidos());
     peptideoEntity.setTipoPeptideo(this.getTipoPeptideo());
     peptideoEntity.setSequencia(this.getSequencia());
@@ -158,12 +156,12 @@ public class PeptideoDTO {
     this.id = id;
   }
 
-  public String getPeptideo() {
-    return peptideo;
+  public String getNome() {
+    return nome;
   }
 
-  public void setPeptideo(String peptideo) {
-    this.peptideo = peptideo;
+  public void setNome(String nome) {
+    this.nome = nome;
   }
 
   public Integer getQuantidadeAminoacidos() {
@@ -212,14 +210,6 @@ public class PeptideoDTO {
 
   public void setImpedimentoEsterico(Double impedimentoEsterico) {
     this.impedimentoEsterico = impedimentoEsterico;
-  }
-
-  public Double getHidrofibocidade() {
-    return hidrofibocidade;
-  }
-
-  public void setHidrofibocidade(Double hidrofibocidade) {
-    this.hidrofibocidade = hidrofibocidade;
   }
 
   public Double getPontoIsoeletrico() {

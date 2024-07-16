@@ -94,8 +94,8 @@ public class Peptideo {
     return nome;
   }
 
-  public void setNome(String peptideo) {
-    this.nome = peptideo;
+  public void setNome(String nome) {
+    this.nome = nome;
   }
 
   public TipoPeptideo getTipoPeptideo() {

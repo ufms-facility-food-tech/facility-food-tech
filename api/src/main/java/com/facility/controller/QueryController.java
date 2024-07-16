@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +28,6 @@ public class QueryController {
     @RequestParam Optional<String> especie,
     @RequestParam Optional<String> origem,
     @RequestParam Optional<String> familia,
-    @RequestParam Optional<String> nomePopular,
     @RequestParam Optional<String> descricao,
     @RequestParam Optional<String> hidrofobicidade,
     @RequestParam Optional<String> estruturaTridimensional,
@@ -46,9 +44,6 @@ public class QueryController {
     if (familia.isPresent() && !familia.get().isEmpty()) {
       peptideo.getOrganismo().setFamilia(familia.get());
     }
-    if (nomePopular.isPresent() && !nomePopular.get().isEmpty()) {
-      peptideo.getOrganismo().addNomePopular(nomePopular.get());
-    }
     if (descricao.isPresent() && !descricao.get().isEmpty()) {
       peptideo.setDescricao(descricao.get());
     }
@@ -62,17 +57,20 @@ public class QueryController {
       peptideo.setEstruturaTridimensional(estruturaTridimensional.get());
     }
     if (massaMolecular.isPresent() && !massaMolecular.get().isEmpty()) {
-      peptideo.setMassaMolecular(Double.valueOf(massaMolecular.get()));
+      try {
+        peptideo.setMassaMolecular(Double.valueOf(massaMolecular.get()));
+      } catch (NumberFormatException e) {
+        peptideo.setMassaMolecular(null);
+      }
     }
-    var result = peptideoRepository.findBy(
+    var result = peptideoRepository.findAll(
       Example.of(
         peptideo,
         ExampleMatcher.matching()
           .withIgnoreCase()
           .withIgnoreNullValues()
           .withStringMatcher(StringMatcher.CONTAINING)
-      ),
-      q -> q.sortBy(Sort.by("peptideo").ascending()).all()
+      )
     );
 
     if (result.isEmpty()) {
