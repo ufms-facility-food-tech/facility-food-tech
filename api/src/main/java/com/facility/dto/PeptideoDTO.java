@@ -1,6 +1,7 @@
 package com.facility.dto;
 
 import com.facility.enums.TipoPeptideo;
+import com.facility.enums.UnidadeMassaMolecular;
 import com.facility.model.Peptideo;
 import com.facility.model.Publicacao;
 import java.util.HashSet;
@@ -10,58 +11,45 @@ import java.util.stream.Collectors;
 public class PeptideoDTO {
 
   private Long id;
-  private String nome;
+  private String nomeIdentificador;
+  private String sequencia;
+  private Boolean patenteado;
+  private Boolean resultadoInterno;
   private Integer quantidadeAminoacidos;
   private TipoPeptideo tipoPeptideo;
-  private String sequencia;
-  private String estruturaTridimensional;
   private Double massaMolecular;
-  private Double impedimentoEsterico;
-  private Double hidrofobicidade;
-  private Double pontoIsoeletrico;
-  private Double hidropatia;
-  private Double anfipaticidade;
-  private Double hidrofilicidade;
-  private Integer cargaLiquidaTotal;
-  private Double indiceBoman;
-  private String descricao;
-  List<String> funcaoBiologica;
-  List<String> atividadeAntibacteriana;
-  List<String> atividadeAntifungica;
-  List<String> atividadeCitotoxica;
-  List<String> casoSucesso;
-  List<String> caracteristicasAdicionais;
+  private UnidadeMassaMolecular unidadeMassaMolecular;
+  private List<String> funcaoBiologica;
+  private List<String> microbiologia;
+  private List<String> atividadeAntifungica;
+  private List<String> atividadeCelular;
+  private List<String> propriedadesFisicoQuimicas;
+  private List<String> casoSucesso;
+  private List<String> caracteristicasAdicionais;
   List<Publicacao> publicacao;
   OrganismoDTO organismo;
 
   public PeptideoDTO(Peptideo peptideo) {
     this.id = peptideo.getId();
-    this.nome = peptideo.getNome();
+    this.nomeIdentificador = peptideo.getNomeIdentificador();
+    this.sequencia = peptideo.getSequencia();
+    this.patenteado = peptideo.getPatenteado();
+    this.resultadoInterno = peptideo.getResultadoInterno();
     this.quantidadeAminoacidos = peptideo.getQuantidadeAminoacidos();
     this.tipoPeptideo = peptideo.getTipoPeptideo();
-    this.sequencia = peptideo.getSequencia();
-    this.estruturaTridimensional = peptideo.getEstruturaTridimensional();
     this.massaMolecular = peptideo.getMassaMolecular();
-    this.impedimentoEsterico = peptideo.getImpedimentoEsterico();
-    this.hidrofobicidade = peptideo.getHidrofobicidade();
-    this.pontoIsoeletrico = peptideo.getPontoIsoeletrico();
-    this.hidropatia = peptideo.getHidropatia();
-    this.anfipaticidade = peptideo.getAnfipaticidade();
-    this.hidrofilicidade = peptideo.getHidrofilicidade();
-    this.cargaLiquidaTotal = peptideo.getCargaLiquidaTotal();
-    this.indiceBoman = peptideo.getIndiceBoman();
-    this.descricao = peptideo.getDescricao();
-    this.organismo = new OrganismoDTO(peptideo.getOrganismo());
-    if (peptideo.getAtividadeAntibacteriana() != null) {
+    this.unidadeMassaMolecular = peptideo.getUnidadeMassaMolecular();
+
+    if (peptideo.getFuncaoBiologica() != null) {
       this.funcaoBiologica = peptideo
         .getFuncaoBiologica()
         .stream()
         .collect(Collectors.toList());
     }
 
-    if (peptideo.getAtividadeAntifungica() != null) {
-      this.atividadeAntibacteriana = peptideo
-        .getAtividadeAntibacteriana()
+    if (peptideo.getMicrobiologia() != null) {
+      this.microbiologia = peptideo
+        .getMicrobiologia()
         .stream()
         .collect(Collectors.toList());
     }
@@ -73,9 +61,16 @@ public class PeptideoDTO {
         .collect(Collectors.toList());
     }
 
-    if (peptideo.getAtividadeCitotoxica() != null) {
-      this.atividadeCitotoxica = peptideo
-        .getAtividadeCitotoxica()
+    if (peptideo.getAtividadeCelular() != null) {
+      this.atividadeCelular = peptideo
+        .getAtividadeCelular()
+        .stream()
+        .collect(Collectors.toList());
+    }
+
+    if (peptideo.getPropriedadesFisicoQuimicas() != null) {
+      this.propriedadesFisicoQuimicas = peptideo
+        .getPropriedadesFisicoQuimicas()
         .stream()
         .collect(Collectors.toList());
     }
@@ -100,6 +95,10 @@ public class PeptideoDTO {
         .stream()
         .collect(Collectors.toList());
     }
+
+    if (peptideo.getOrganismo() != null) {
+      this.organismo = new OrganismoDTO(peptideo.getOrganismo());
+    }
   }
 
   public PeptideoDTO() {}
@@ -107,32 +106,24 @@ public class PeptideoDTO {
   public Peptideo toEntity() {
     Peptideo peptideoEntity = new Peptideo();
     peptideoEntity.setId(this.getId());
-    peptideoEntity.setNome(this.getNome());
+    peptideoEntity.setNomeIdentificador(this.getNomeIdentificador());
+    peptideoEntity.setSequencia(this.getSequencia());
+    peptideoEntity.setPatenteado(this.getPatenteado());
+    peptideoEntity.setResultadoInterno(this.getResultadoInterno());
     peptideoEntity.setQuantidadeAminoacidos(this.getQuantidadeAminoacidos());
     peptideoEntity.setTipoPeptideo(this.getTipoPeptideo());
-    peptideoEntity.setSequencia(this.getSequencia());
-    peptideoEntity.setEstruturaTridimensional(
-      this.getEstruturaTridimensional()
-    );
     peptideoEntity.setMassaMolecular(this.getMassaMolecular());
-    peptideoEntity.setImpedimentoEsterico(this.getImpedimentoEsterico());
-    peptideoEntity.setHidrofobicidade(this.getHidrofobicidade());
-    peptideoEntity.setPontoIsoeletrico(this.getPontoIsoeletrico());
-    peptideoEntity.setHidropatia(this.getHidropatia());
-    peptideoEntity.setAnfipaticidade(this.getAnfipaticidade());
-    peptideoEntity.setHidrofilicidade(this.getHidrofilicidade());
-    peptideoEntity.setCargaLiquidaTotal(this.getCargaLiquidaTotal());
-    peptideoEntity.setIndiceBoman(this.getIndiceBoman());
-    peptideoEntity.setDescricao(this.getDescricao());
+    peptideoEntity.setUnidadeMassaMolecular(this.getUnidadeMassaMolecular());
     peptideoEntity.setFuncaoBiologica(new HashSet<>(this.getFuncaoBiologica()));
-    peptideoEntity.setAtividadeAntibacteriana(
-      new HashSet<>(this.getAtividadeAntibacteriana())
-    );
+    peptideoEntity.setMicrobiologia(new HashSet<>(this.getMicrobiologia()));
     peptideoEntity.setAtividadeAntifungica(
       new HashSet<>(this.getAtividadeAntifungica())
     );
-    peptideoEntity.setAtividadeCitotoxica(
-      new HashSet<>(this.getAtividadeCitotoxica())
+    peptideoEntity.setAtividadeCelular(
+      new HashSet<>(this.getAtividadeCelular())
+    );
+    peptideoEntity.setPropriedadesFisicoQuimicas(
+      new HashSet<>(this.getPropriedadesFisicoQuimicas())
     );
     peptideoEntity.setCasoSucesso(new HashSet<>(this.getCasoSucesso()));
     peptideoEntity.setCaracteristicasAdicionais(
@@ -156,12 +147,36 @@ public class PeptideoDTO {
     this.id = id;
   }
 
-  public String getNome() {
-    return nome;
+  public String getNomeIdentificador() {
+    return nomeIdentificador;
   }
 
-  public void setNome(String nome) {
-    this.nome = nome;
+  public void setNomeIdentificador(String nomeIdentificador) {
+    this.nomeIdentificador = nomeIdentificador;
+  }
+
+  public String getSequencia() {
+    return sequencia;
+  }
+
+  public void setSequencia(String sequencia) {
+    this.sequencia = sequencia;
+  }
+
+  public Boolean getPatenteado() {
+    return patenteado;
+  }
+
+  public void setPatenteado(Boolean patenteado) {
+    this.patenteado = patenteado;
+  }
+
+  public Boolean getResultadoInterno() {
+    return resultadoInterno;
+  }
+
+  public void setResultadoInterno(Boolean resultadoInterno) {
+    this.resultadoInterno = resultadoInterno;
   }
 
   public Integer getQuantidadeAminoacidos() {
@@ -180,22 +195,6 @@ public class PeptideoDTO {
     this.tipoPeptideo = tipoPeptideo;
   }
 
-  public String getSequencia() {
-    return sequencia;
-  }
-
-  public void setSequencia(String sequencia) {
-    this.sequencia = sequencia;
-  }
-
-  public String getEstruturaTridimensional() {
-    return estruturaTridimensional;
-  }
-
-  public void setEstruturaTridimensional(String estruturaTridimensional) {
-    this.estruturaTridimensional = estruturaTridimensional;
-  }
-
   public Double getMassaMolecular() {
     return massaMolecular;
   }
@@ -204,68 +203,14 @@ public class PeptideoDTO {
     this.massaMolecular = massaMolecular;
   }
 
-  public Double getImpedimentoEsterico() {
-    return impedimentoEsterico;
+  public UnidadeMassaMolecular getUnidadeMassaMolecular() {
+    return unidadeMassaMolecular;
   }
 
-  public void setImpedimentoEsterico(Double impedimentoEsterico) {
-    this.impedimentoEsterico = impedimentoEsterico;
-  }
-
-  public Double getPontoIsoeletrico() {
-    return pontoIsoeletrico;
-  }
-
-  public void setPontoIsoeletrico(Double pontoIsoeletrico) {
-    this.pontoIsoeletrico = pontoIsoeletrico;
-  }
-
-  public Double getHidropatia() {
-    return hidropatia;
-  }
-
-  public void setHidropatia(Double hidropatia) {
-    this.hidropatia = hidropatia;
-  }
-
-  public Double getAnfipaticidade() {
-    return anfipaticidade;
-  }
-
-  public void setAnfipaticidade(Double anfipaticidade) {
-    this.anfipaticidade = anfipaticidade;
-  }
-
-  public Double getHidrofilicidade() {
-    return hidrofilicidade;
-  }
-
-  public void setHidrofilicidade(Double hidrofilicidade) {
-    this.hidrofilicidade = hidrofilicidade;
-  }
-
-  public Integer getCargaLiquidaTotal() {
-    return cargaLiquidaTotal;
-  }
-
-  public void setCargaLiquidaTotal(Integer cargaLiquidaTotal) {
-    this.cargaLiquidaTotal = cargaLiquidaTotal;
-  }
-
-  public Double getIndiceBoman() {
-    return indiceBoman;
-  }
-
-  public void setIndiceBoman(Double indiceBoman) {
-    this.indiceBoman = indiceBoman;
-  }
-
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
+  public void setUnidadeMassaMolecular(
+    UnidadeMassaMolecular unidadeMassaMolecular
+  ) {
+    this.unidadeMassaMolecular = unidadeMassaMolecular;
   }
 
   public List<String> getFuncaoBiologica() {
@@ -276,12 +221,12 @@ public class PeptideoDTO {
     this.funcaoBiologica = funcaoBiologica;
   }
 
-  public List<String> getAtividadeAntibacteriana() {
-    return atividadeAntibacteriana;
+  public List<String> getMicrobiologia() {
+    return microbiologia;
   }
 
-  public void setAtividadeAntibacteriana(List<String> atividadeAntibacteriana) {
-    this.atividadeAntibacteriana = atividadeAntibacteriana;
+  public void setMicrobiologia(List<String> microbiologia) {
+    this.microbiologia = microbiologia;
   }
 
   public List<String> getAtividadeAntifungica() {
@@ -292,12 +237,22 @@ public class PeptideoDTO {
     this.atividadeAntifungica = atividadeAntifungica;
   }
 
-  public List<String> getAtividadeCitotoxica() {
-    return atividadeCitotoxica;
+  public List<String> getAtividadeCelular() {
+    return atividadeCelular;
   }
 
-  public void setAtividadeCitotoxica(List<String> atividadeCitotoxica) {
-    this.atividadeCitotoxica = atividadeCitotoxica;
+  public void setAtividadeCelular(List<String> atividadeCelular) {
+    this.atividadeCelular = atividadeCelular;
+  }
+
+  public List<String> getPropriedadesFisicoQuimicas() {
+    return propriedadesFisicoQuimicas;
+  }
+
+  public void setPropriedadesFisicoQuimicas(
+    List<String> propriedadesFisicoQuimicas
+  ) {
+    this.propriedadesFisicoQuimicas = propriedadesFisicoQuimicas;
   }
 
   public List<String> getCasoSucesso() {
@@ -324,14 +279,6 @@ public class PeptideoDTO {
 
   public void setPublicacao(List<Publicacao> publicacao) {
     this.publicacao = publicacao;
-  }
-
-  public Double getHidrofobicidade() {
-    return hidrofobicidade;
-  }
-
-  public void setHidrofobicidade(Double hidrofobicidade) {
-    this.hidrofobicidade = hidrofobicidade;
   }
 
   public OrganismoDTO getOrganismo() {

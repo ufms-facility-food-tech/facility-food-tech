@@ -16,7 +16,7 @@ import java.util.Set;
 public class Organismo {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   private String especie;
