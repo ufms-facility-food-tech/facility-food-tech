@@ -20,11 +20,10 @@ public class UserService implements UserDetailsService {
     throws UsernameNotFoundException {
     return userRepository
       .findByUsername(username)
-      .orElseThrow(
-        () ->
-          new UsernameNotFoundException(
-            "username \"" + username + "\" not found."
-          )
+      .orElseThrow(() ->
+        new UsernameNotFoundException(
+          "username \"" + username + "\" not found."
+        )
       );
   }
 }

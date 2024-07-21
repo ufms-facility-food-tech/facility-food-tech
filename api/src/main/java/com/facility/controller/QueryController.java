@@ -30,7 +30,6 @@ public class QueryController {
     @RequestParam Optional<String> familia,
     @RequestParam Optional<String> casoSucesso,
     @RequestParam Optional<String> nomePopular
-    
   ) {
     var peptideo = new Peptideo();
     peptideo.setOrganismo(new Organismo());
