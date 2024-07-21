@@ -3,8 +3,8 @@ package com.facility.controller;
 import com.facility.model.Organismo;
 import com.facility.repository.OrganismoRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.function.ServerRequest.Headers;
 
 @RestController
 @RequestMapping("organismos")
@@ -24,16 +25,17 @@ public class OrganismoController {
 
   @GetMapping
   public ResponseEntity<List<Organismo>> findAll() {
-    List<Organismo> organismos = organismoRepository.findAll();
-    return new ResponseEntity<>(organismos, HttpStatus.OK);
+    return ResponseEntity.ok().body(organismoRepository.findAll());
   }
 
   @PostMapping
-  public ResponseEntity<Organismo> create(@RequestBody Organismo organismo) {
-    return new ResponseEntity<>(
-      organismoRepository.save(organismo),
-      HttpStatus.CREATED
-    );
+  public ResponseEntity<Organismo> create(
+    @RequestBody Organismo organismo,
+    Headers headers
+  ) {
+    // TODO: validate organismo
+    // TODO: add CREATED response?
+    return ResponseEntity.ok().body(organismoRepository.save(organismo));
   }
 
   @GetMapping(path = { "/{id}" })
@@ -46,12 +48,20 @@ public class OrganismoController {
 
   @PutMapping(value = "/{id}")
   public ResponseEntity<Organismo> update(
-    @PathVariable("id") Long id,
+    @PathVariable("id") Optional<Long> id,
     @RequestBody Organismo organismo
   ) {
-    organismo.setId(id);
+    if (id.isEmpty()) {
+      if (organismo.getId() == null) {
+        return ResponseEntity.badRequest().build();
+      }
+      id = Optional.of(organismo.getId());
+    }
+
+    organismo.setId(id.get());
+
     return organismoRepository
-      .findById(id)
+      .findById(id.get())
       .map(
         record -> ResponseEntity.ok().body(organismoRepository.save(organismo))
       )
@@ -64,7 +74,7 @@ public class OrganismoController {
       .findById(id)
       .map(record -> {
         organismoRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("organismo apagado com sucesso.");
       })
       .orElse(ResponseEntity.notFound().build());
   }

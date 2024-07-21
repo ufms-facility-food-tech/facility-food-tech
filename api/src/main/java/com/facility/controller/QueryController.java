@@ -25,13 +25,12 @@ public class QueryController {
 
   @GetMapping
   public List<PeptideoDTO> query(
-    @RequestParam Optional<String> especie,
     @RequestParam Optional<String> origem,
+    @RequestParam Optional<String> especie,
     @RequestParam Optional<String> familia,
-    @RequestParam Optional<String> descricao,
-    @RequestParam Optional<String> hidrofobicidade,
-    @RequestParam Optional<String> estruturaTridimensional,
-    @RequestParam Optional<String> massaMolecular
+    @RequestParam Optional<String> casoSucesso,
+    @RequestParam Optional<String> nomePopular
+    
   ) {
     var peptideo = new Peptideo();
     peptideo.setOrganismo(new Organismo());
@@ -44,25 +43,7 @@ public class QueryController {
     if (familia.isPresent() && !familia.get().isEmpty()) {
       peptideo.getOrganismo().setFamilia(familia.get());
     }
-    if (descricao.isPresent() && !descricao.get().isEmpty()) {
-      peptideo.setDescricao(descricao.get());
-    }
-    if (hidrofobicidade.isPresent() && !hidrofobicidade.get().isEmpty()) {
-      peptideo.setHidrofobicidade(Double.valueOf(hidrofobicidade.get()));
-    }
-    if (
-      estruturaTridimensional.isPresent() &&
-      !estruturaTridimensional.get().isEmpty()
-    ) {
-      peptideo.setEstruturaTridimensional(estruturaTridimensional.get());
-    }
-    if (massaMolecular.isPresent() && !massaMolecular.get().isEmpty()) {
-      try {
-        peptideo.setMassaMolecular(Double.valueOf(massaMolecular.get()));
-      } catch (NumberFormatException e) {
-        peptideo.setMassaMolecular(null);
-      }
-    }
+
     var result = peptideoRepository.findAll(
       Example.of(
         peptideo,
