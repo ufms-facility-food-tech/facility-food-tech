@@ -43,6 +43,7 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
+          JWT_SECRET_KEY: 8RSmvTdZ90BVGF94aq/2+Wx+M1zW3UOYdN6yex20008PpD2jRJqgzln/d9QVRknzPEfx/xwHevC61dRyqXn8nWgHv+AJ/toTltRV6dV5d6HoTb8eHEjHG0G4ic5SoIKgjAf8dFIZq3RrhwnVNecXJ+Dw/HxNGTF1R5HWn7qJ0oLTCzmjZ4daIJiB/WkYWSUSpxEq0QuRPaDkLWfqJabBVHnEh/ZRM1520Wr5pIChaJPBCbvRPEqdkG+3M+XPLJSWddTPcw/WBZIbUOh1n4fYuOMa4kjbksPrabASnzsYjrs2gWXZWARp4l7oPKMzrX+oPpU1XTsmgs9vs06kN8UoBQ==
 
   build-java-dev:
     runs-on: ubuntu-latest
