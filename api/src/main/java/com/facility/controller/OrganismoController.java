@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.ServerRequest.Headers;
 
 @RestController
 @RequestMapping("organismos")
@@ -29,10 +28,7 @@ public class OrganismoController {
   }
 
   @PostMapping
-  public ResponseEntity<Organismo> create(
-    @RequestBody Organismo organismo,
-    Headers headers
-  ) {
+  public ResponseEntity<Organismo> create(@RequestBody Organismo organismo) {
     // TODO: validate organismo
     // TODO: add CREATED response?
     return ResponseEntity.ok().body(organismoRepository.save(organismo));
@@ -62,8 +58,8 @@ public class OrganismoController {
 
     return organismoRepository
       .findById(id.get())
-      .map(record ->
-        ResponseEntity.ok().body(organismoRepository.save(organismo))
+      .map(
+        record -> ResponseEntity.ok().body(organismoRepository.save(organismo))
       )
       .orElse(ResponseEntity.notFound().build());
   }
