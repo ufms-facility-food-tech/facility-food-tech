@@ -1,6 +1,7 @@
 package com.facility.model;
 
 import com.facility.enums.TipoPeptideo;
+import com.facility.enums.UnidadeMassaMolecular;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -21,40 +22,36 @@ import java.util.Set;
 public class Peptideo {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
-  private String nome;
+  private String nomeIdentificador;
+  private String sequencia;
+  private Boolean patenteado;
+  private Boolean resultadoInterno;
   private Integer quantidadeAminoacidos;
   private TipoPeptideo tipoPeptideo;
-  private String sequencia;
-  private String estruturaTridimensional;
   private Double massaMolecular;
-  private Double impedimentoEsterico;
-  private Double hidrofobicidade;
-  private Double pontoIsoeletrico;
-  private Double hidropatia;
-  private Double anfipaticidade;
-  private Double hidrofilicidade;
-  private Integer cargaLiquidaTotal;
-  private Double indiceBoman;
-  private String descricao;
+  private UnidadeMassaMolecular unidadeMassaMolecular;
 
   @ManyToOne
-  @JoinColumn(name = "organismo_id", nullable = false)
+  @JoinColumn(name = "organismo_id", nullable = true)
   private Organismo organismo;
 
   @ElementCollection(fetch = FetchType.EAGER)
   private Set<String> funcaoBiologica = new HashSet<>();
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private Set<String> atividadeAntibacteriana = new HashSet<>();
+  private Set<String> microbiologia = new HashSet<>();
 
   @ElementCollection(fetch = FetchType.EAGER)
   private Set<String> atividadeAntifungica = new HashSet<>();
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private Set<String> atividadeCitotoxica = new HashSet<>();
+  private Set<String> atividadeCelular = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> propriedadesFisicoQuimicas = new HashSet<>();
 
   @ElementCollection(fetch = FetchType.EAGER)
   private Set<String> casoSucesso = new HashSet<>();
@@ -80,8 +77,6 @@ public class Peptideo {
     this.organismo = organismo;
   }
 
-  public Peptideo() {}
-
   public Long getId() {
     return id;
   }
@@ -90,20 +85,12 @@ public class Peptideo {
     this.id = id;
   }
 
-  public String getNome() {
-    return nome;
+  public String getNomeIdentificador() {
+    return nomeIdentificador;
   }
 
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  public TipoPeptideo getTipoPeptideo() {
-    return tipoPeptideo;
-  }
-
-  public void setTipoPeptideo(TipoPeptideo tipoPeptideo) {
-    this.tipoPeptideo = tipoPeptideo;
+  public void setNomeIdentificador(String nomeIdentificador) {
+    this.nomeIdentificador = nomeIdentificador;
   }
 
   public String getSequencia() {
@@ -114,68 +101,20 @@ public class Peptideo {
     this.sequencia = sequencia;
   }
 
-  public String getEstruturaTridimensional() {
-    return estruturaTridimensional;
+  public Boolean getPatenteado() {
+    return patenteado;
   }
 
-  public void setEstruturaTridimensional(String estruturaTridimensional) {
-    this.estruturaTridimensional = estruturaTridimensional;
+  public void setPatenteado(Boolean patenteado) {
+    this.patenteado = patenteado;
   }
 
-  public Double getMassaMolecular() {
-    return massaMolecular;
+  public Boolean getResultadoInterno() {
+    return resultadoInterno;
   }
 
-  public void setMassaMolecular(Double massaMolecular) {
-    this.massaMolecular = massaMolecular;
-  }
-
-  public Double getPontoIsoeletrico() {
-    return pontoIsoeletrico;
-  }
-
-  public void setPontoIsoeletrico(Double pontoIsoeletrico) {
-    this.pontoIsoeletrico = pontoIsoeletrico;
-  }
-
-  public Double getHidropatia() {
-    return hidropatia;
-  }
-
-  public void setHidropatia(Double hidropatia) {
-    this.hidropatia = hidropatia;
-  }
-
-  public Double getAnfipaticidade() {
-    return anfipaticidade;
-  }
-
-  public void setAnfipaticidade(Double anfipaticidade) {
-    this.anfipaticidade = anfipaticidade;
-  }
-
-  public Double getHidrofilicidade() {
-    return hidrofilicidade;
-  }
-
-  public void setHidrofilicidade(Double hidrofilicidade) {
-    this.hidrofilicidade = hidrofilicidade;
-  }
-
-  public Double getIndiceBoman() {
-    return indiceBoman;
-  }
-
-  public void setIndiceBoman(Double indiceBoman) {
-    this.indiceBoman = indiceBoman;
-  }
-
-  public String getDescricao() {
-    return descricao;
-  }
-
-  public void setDescricao(String descricao) {
-    this.descricao = descricao;
+  public void setResultadoInterno(Boolean resultadoInterno) {
+    this.resultadoInterno = resultadoInterno;
   }
 
   public Integer getQuantidadeAminoacidos() {
@@ -186,46 +125,30 @@ public class Peptideo {
     this.quantidadeAminoacidos = quantidadeAminoacidos;
   }
 
-  public Double getImpedimentoEsterico() {
-    return impedimentoEsterico;
+  public TipoPeptideo getTipoPeptideo() {
+    return tipoPeptideo;
   }
 
-  public void setImpedimentoEsterico(Double impedimentoEsterico) {
-    this.impedimentoEsterico = impedimentoEsterico;
+  public void setTipoPeptideo(TipoPeptideo tipoPeptideo) {
+    this.tipoPeptideo = tipoPeptideo;
   }
 
-  public Double getHidrofobicidade() {
-    return hidrofobicidade;
+  public Double getMassaMolecular() {
+    return massaMolecular;
   }
 
-  public void setHidrofobicidade(Double hidrofobicidade) {
-    this.hidrofobicidade = hidrofobicidade;
+  public void setMassaMolecular(Double massaMolecular) {
+    this.massaMolecular = massaMolecular;
   }
 
-  public Integer getCargaLiquidaTotal() {
-    return cargaLiquidaTotal;
+  public UnidadeMassaMolecular getUnidadeMassaMolecular() {
+    return unidadeMassaMolecular;
   }
 
-  public void setCargaLiquidaTotal(Integer cargaLiquidaTotal) {
-    this.cargaLiquidaTotal = cargaLiquidaTotal;
-  }
-
-  public Set<Publicacao> getPublicacao() {
-    return publicacao;
-  }
-
-  public void setPublicacao(Set<Publicacao> publicacao) {
-    this.publicacao = publicacao;
-  }
-
-  public void addPublicacao(Publicacao publicacao) {
-    this.publicacao.add(publicacao);
-    publicacao.setPeptideo(this);
-  }
-
-  public void removePublicacao(Publicacao publicacao) {
-    this.publicacao.remove(publicacao);
-    publicacao.setPeptideo(null);
+  public void setUnidadeMassaMolecular(
+    UnidadeMassaMolecular unidadeMassaMolecular
+  ) {
+    this.unidadeMassaMolecular = unidadeMassaMolecular;
   }
 
   public Set<String> getFuncaoBiologica() {
@@ -236,12 +159,12 @@ public class Peptideo {
     this.funcaoBiologica = funcaoBiologica;
   }
 
-  public Set<String> getAtividadeAntibacteriana() {
-    return atividadeAntibacteriana;
+  public Set<String> getMicrobiologia() {
+    return microbiologia;
   }
 
-  public void setAtividadeAntibacteriana(Set<String> atividadeAntibacteriana) {
-    this.atividadeAntibacteriana = atividadeAntibacteriana;
+  public void setMicrobiologia(Set<String> microbiologia) {
+    this.microbiologia = microbiologia;
   }
 
   public Set<String> getAtividadeAntifungica() {
@@ -252,12 +175,22 @@ public class Peptideo {
     this.atividadeAntifungica = atividadeAntifungica;
   }
 
-  public Set<String> getAtividadeCitotoxica() {
-    return atividadeCitotoxica;
+  public Set<String> getAtividadeCelular() {
+    return atividadeCelular;
   }
 
-  public void setAtividadeCitotoxica(Set<String> atividadeCitotoxica) {
-    this.atividadeCitotoxica = atividadeCitotoxica;
+  public void setAtividadeCelular(Set<String> atividadeCelular) {
+    this.atividadeCelular = atividadeCelular;
+  }
+
+  public Set<String> getPropriedadesFisicoQuimicas() {
+    return propriedadesFisicoQuimicas;
+  }
+
+  public void setPropriedadesFisicoQuimicas(
+    Set<String> propriedadesFisicoQuimicas
+  ) {
+    this.propriedadesFisicoQuimicas = propriedadesFisicoQuimicas;
   }
 
   public Set<String> getCasoSucesso() {
@@ -276,5 +209,23 @@ public class Peptideo {
     Set<String> caracteristicasAdicionais
   ) {
     this.caracteristicasAdicionais = caracteristicasAdicionais;
+  }
+
+  public Set<Publicacao> getPublicacao() {
+    return publicacao;
+  }
+
+  public void setPublicacao(Set<Publicacao> publicacao) {
+    this.publicacao = publicacao;
+  }
+
+  public void addPublicacao(Publicacao publicacao) {
+    this.publicacao.add(publicacao);
+    publicacao.setPeptideo(this);
+  }
+
+  public void removePublicacao(Publicacao publicacao) {
+    this.publicacao.remove(publicacao);
+    publicacao.setPeptideo(null);
   }
 }
