@@ -39,7 +39,7 @@ jobs:
           git commit -am "chore: fix linting errors"
           git push
       - name: run prettier
-        run: npx prettier -w . --ignore-path .gitignore --ignore-path api/.gitignore
+        run: npx prettier -w . --ignore-path .prettierignore --ignore-path .gitignore --ignore-path api/.gitignore
       - name: diff
         id: diff_prettier
         run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
