@@ -1,14 +1,10 @@
 package com.facility.dto.auth;
 
-import com.facility.enums.Role;
-import java.util.Set;
-
 public class SignupRequest {
 
   private String username;
   private String email;
   private String password;
-  private Set<Role> roles;
 
   public String getUsername() {
     return username;
@@ -32,13 +28,5 @@ public class SignupRequest {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public Set<Role> getRoles() {
-    return roles;
-  }
-
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
   }
 }
