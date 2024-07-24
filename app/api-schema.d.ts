@@ -192,12 +192,10 @@ export interface components {
             caracteristicasAdicionais?: string[];
             publicacao?: components["schemas"]["Publicacao"][];
         };
-        Headers: Record<string, never>;
         SignupRequest: {
             username?: string;
             email?: string;
             password?: string;
-            roles?: ("ROLE_USER" | "ROLE_ADMIN")[];
         };
         LoginRequest: {
             username?: string;
@@ -418,9 +416,7 @@ export interface operations {
     };
     create_1: {
         parameters: {
-            query: {
-                headers: components["schemas"]["Headers"];
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;

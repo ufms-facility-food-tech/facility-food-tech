@@ -3,8 +3,10 @@ package com.facility.enums;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-  ROLE_USER("USER"),
-  ROLE_ADMIN("ADMIN");
+  ADMIN("ADMIN"),
+  INSERT("INSERT"),
+  UPDATE("UPDATE"),
+  DELETE("DELETE");
 
   private final String value;
 
