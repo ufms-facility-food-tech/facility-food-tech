@@ -7,11 +7,14 @@ import com.facility.enums.Role;
 import com.facility.model.User;
 import com.facility.repository.UserRepository;
 import com.facility.service.JwtService;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,32 +46,46 @@ public class AuthenticationController {
   public ResponseEntity<?> authenticateUser(
     @RequestBody LoginRequest loginRequest
   ) {
-    Authentication authentication = authenticationManager.authenticate(
-      new UsernamePasswordAuthenticationToken(
-        loginRequest.getUsername(),
-        loginRequest.getPassword()
-      )
-    );
+    if (!userRepository.existsByUsername(loginRequest.getUsername())) {
+      return ResponseEntity.badRequest().body("usuário não encontrado.");
+    }
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtService.generateToken((User) authentication.getPrincipal());
+    Authentication auth;
+    try {
+      auth = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+          loginRequest.getUsername(),
+          loginRequest.getPassword()
+        )
+      );
+    } catch (BadCredentialsException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+        "senha incorreta."
+      );
+    } catch (LockedException | DisabledException e) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
 
-    User userDetails = (User) authentication.getPrincipal();
+    SecurityContextHolder.getContext().setAuthentication(auth);
+    String jwt = jwtService.generateToken((User) auth.getPrincipal());
+
+    User userDetails = (User) auth.getPrincipal();
     Set<String> roles = userDetails
       .getAuthorities()
       .stream()
       .map(item -> item.getAuthority())
       .collect(Collectors.toSet());
 
-    return ResponseEntity.ok(
-      new JwtResponse(
-        jwt,
-        userDetails.getId(),
-        userDetails.getUsername(),
-        userDetails.getEmail(),
-        roles
-      )
-    );
+    return ResponseEntity.ok()
+      .body(
+        new JwtResponse(
+          jwt,
+          userDetails.getId(),
+          userDetails.getUsername(),
+          userDetails.getEmail(),
+          roles
+        )
+      );
   }
 
   @PostMapping("/register")
@@ -89,12 +106,7 @@ public class AuthenticationController {
       passwordEncoder.encode(signUpRequest.getPassword())
     );
 
-    Set<Role> roles = new HashSet<>();
-    roles.add(Role.ROLE_USER);
-    if (signUpRequest.getRoles() != null) {
-      roles.addAll(signUpRequest.getRoles());
-    }
-    user.setAuthorities(roles);
+    user.setAuthorities(Set.of(Role.INSERT, Role.UPDATE, Role.DELETE));
 
     userRepository.save(user);
 
