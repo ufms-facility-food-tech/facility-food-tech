@@ -4,17 +4,22 @@ import com.facility.dto.PeptideoDTO;
 import com.facility.model.Organismo;
 import com.facility.model.Peptideo;
 import com.facility.repository.PeptideoRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.facility.model.PeptideoSpecifications;
 
 @RestController
 @RequestMapping("query")
@@ -53,10 +58,14 @@ public class QueryController {
       )
     );
 
-    if (result.isEmpty()) {
+    var r = peptideoRepository.findAll(
+      Specification.where(PeptideoSpecifications.hasNomePopular(nomePopular.get()))
+    );
+
+    if (r.isEmpty()) {
       return new ArrayList<>();
     }
 
-    return result.stream().map(PeptideoDTO::new).toList();
+    return r.stream().map(PeptideoDTO::new).toList();
   }
 }
