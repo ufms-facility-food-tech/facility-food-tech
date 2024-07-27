@@ -11,7 +11,9 @@ export function Container({
     <div className="flex flex-col items-center justify-center">
       <div className="my-8 w-full rounded-2xl bg-neutral-100 px-9 py-2 md:w-5/6">
         {title && (
-          <h1 className="m-3 text-center text-3xl text-cyan-700">{title}</h1>
+          <h1 className="m-3 text-center text-3xl font-bold text-cyan-700">
+            {title}
+          </h1>
         )}
         {children}
       </div>

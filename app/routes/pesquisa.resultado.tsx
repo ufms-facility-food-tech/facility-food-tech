@@ -57,13 +57,19 @@ export default function Resultado() {
           </thead>
           <tbody>
             {data.map(
-              ({ peptideo, sequencia, funcaoBiologica, organismo, id }) => (
+              ({
+                nomeIdentificador,
+                sequencia,
+                funcaoBiologica,
+                organismo,
+                id,
+              }) => (
                 <tr
                   key={id}
                   className="border-b odd:bg-neutral-100 even:bg-neutral-300"
                 >
-                  <td className="px-4 py-4">{peptideo}</td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-4">{nomeIdentificador}</td>
+                  <td className="text-wrap px-4 py-4">
                     {sequencia && sequencia?.length > 15
                       ? sequencia?.slice(0, 15).concat("...")
                       : sequencia}
