@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,21 +13,77 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const searchIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0,0,300,250"
+      className="m-auto block size-12"
+    >
+      <title>Pesquisar</title>
+      <g
+        fill="#ffffff"
+        fill-rule="nonzero"
+        stroke="none"
+        stroke-width="1"
+        stroke-linecap="butt"
+        stroke-linejoin="miter"
+        stroke-miterlimit="10"
+        stroke-dasharray=""
+        stroke-dashoffset="0"
+        font-family="none"
+        font-weight="none"
+        font-size="none"
+        text-anchor="none"
+      >
+        <g transform="scale(5.12,5.12)">
+          <path d="M21,3c-9.37891,0 -17,7.62109 -17,17c0,9.37891 7.62109,17 17,17c3.71094,0 7.14063,-1.19531 9.9375,-3.21875l13.15625,13.125l2.8125,-2.8125l-13,-13.03125c2.55469,-2.97656 4.09375,-6.83984 4.09375,-11.0625c0,-9.37891 -7.62109,-17 -17,-17zM21,5c8.29688,0 15,6.70313 15,15c0,8.29688 -6.70312,15 -15,15c-8.29687,0 -15,-6.70312 -15,-15c0,-8.29687 6.70313,-15 15,-15z" />
+        </g>
+      </g>
+    </svg>
+  );
+
   return (
     <>
-      <div className="h-80">
+      <div className="h-96">
         <div className="flex items-center justify-around">
-          <div className="my-9 flex flex-col">
+          <div className="mt-9 flex w-full flex-col gap-8 md:w-1/3">
             <h1 className="text-balance text-center text-4xl font-bold text-white md:w-96">
               Facility FoodTech do Cerrado-Pantanal
             </h1>
+            <Form
+              method="get"
+              action="/pesquisa/resultado"
+              className="flex h-16"
+            >
+              <input
+                type="text"
+                name="especie"
+                className="w-full rounded-l-xl border-2 border-white bg-white px-4 py-2 text-black"
+                placeholder="Pesquisar"
+              />
+              <button
+                type="submit"
+                className="rounded-r-xl bg-cyan-600 px-4 py-2 text-white"
+              >
+                {searchIcon}
+                <span className="sr-only">Pesquisar</span>
+              </button>
+            </Form>
           </div>
-          {/* biome-ignore lint/style/useSelfClosingElements: temporary */}
-          <div className="flex flex-col"></div>
+          <div className="mt-16 flex items-center gap-16">
+            <img
+              src="/images/img-01.jpg"
+              alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
+              className="h-56 max-w-md translate-y-10 rotate-12 text-balance border-4 border-neutral-300"
+            />
+            <img
+              src="/images/img-02.jpg"
+              alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
+              className="h-56 max-w-md -rotate-6 text-balance border-4 border-neutral-300"
+            />
+          </div>
         </div>
       </div>
-      {/* biome-ignore lint/style/useSelfClosingElements: temporary */}
-      <div className="h-40 bg-gradient-to-b from-orange-50 via-white to-orange-100"></div>
       <div className="flex flex-col gap-4 bg-white p-12 font-sans">
         <h2 className="text-xl font-bold">Introdução</h2>
         <p>
