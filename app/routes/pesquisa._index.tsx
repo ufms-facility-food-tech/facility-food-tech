@@ -8,6 +8,8 @@ export default function Pesquisa() {
     { value: "especie", label: "Espécie" },
     { value: "origem", label: "Origem" },
     { value: "familia", label: "Família" },
+    { value: "nomePopular", label: "Nome Popular" },
+    { value: "casoSucesso", label: "Caso de Sucesso" },
   ];
 
   const [queryItemName, setQueryItemName] = useState(queryItems[0].value);

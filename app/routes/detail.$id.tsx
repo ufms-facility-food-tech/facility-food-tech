@@ -23,7 +23,6 @@ export async function clientLoader({
 }
 
 export default function Peptideo() {
-  // @ts-ignore
   const peptideo = useLoaderData<
     typeof clientLoader
   >() as components["schemas"]["PeptideoDTO"];
@@ -51,7 +50,7 @@ export default function Peptideo() {
           <tbody>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Peptídeo</td>
-              <td className="px-6 py-4">{peptideo.peptideo}</td>
+              <td className="px-6 py-4">{peptideo.nomeIdentificador}</td>
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Sequência</td>
@@ -68,9 +67,7 @@ export default function Peptideo() {
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Nomes populares</td>
               <td className="px-6 py-4">
-                {peptideo.organismo?.nomesPopulares
-                  ?.map(({ nome }) => nome)
-                  .join(", ")}
+                {peptideo.organismo?.nomePopular?.join(", ")}
               </td>
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
@@ -80,9 +77,7 @@ export default function Peptideo() {
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Funções biológicas</td>
               <td className="px-6 py-4">
-                {peptideo.funcBiologicas
-                  ?.map((item) => item.descricao)
-                  .join(", ")}
+                {peptideo.funcaoBiologica?.join(", ")}
               </td>
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">

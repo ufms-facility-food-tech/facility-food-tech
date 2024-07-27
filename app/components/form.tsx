@@ -14,7 +14,7 @@ export function SubmitButton({
   return (
     <button
       type={type || "submit"}
-      className="rounded-xl bg-gradient-to-b from-white to-[#d7d7d7] px-4 py-2 outline outline-1 outline-[#cccccc]"
+      className="rounded-full bg-cyan-600 px-5 py-1 text-lg font-bold text-white"
     >
       {children}
     </button>
