@@ -1,7 +1,10 @@
 import type {
   ButtonHTMLAttributes,
+  ChangeEvent,
+  Dispatch,
   HTMLInputTypeAttribute,
   ReactNode,
+  SetStateAction,
 } from "react";
 
 export function SubmitButton({
@@ -21,36 +24,94 @@ export function SubmitButton({
   );
 }
 
-export function TextInput(props: {
+export function TextInput({
+  name,
+  label,
+  type,
+}: {
   name: string;
   label: string;
   type?: HTMLInputTypeAttribute;
 }) {
   return (
     <label className="flex flex-col text-xl text-cyan-700">
-      {props.label}
+      {label}
       <input
         className="mt-1 rounded-xl border bg-white p-2 text-base text-black"
-        name={props.name}
-        type={props.type || "text"}
+        name={name}
+        type={type || "text"}
       />
     </label>
   );
 }
 
-export function TextAreaInput(props: {
+export function TextAreaInput({
+  name,
+  label,
+  rows,
+}: {
   name: string;
   label: string;
   rows?: number;
 }) {
   return (
     <label className="flex flex-col text-xl text-cyan-700">
-      {props.label}
+      {label}
       <textarea
         className="mt-1 overflow-auto rounded-xl border bg-white p-2 text-base text-black"
-        name={props.name}
-        rows={props.rows || 4}
+        name={name}
+        rows={rows || 4}
       />
+    </label>
+  );
+}
+
+export function CheckboxInput({
+  name,
+  label,
+  checked,
+  onChange,
+}: {
+  name: string;
+  label: string;
+  checked?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}) {
+  return (
+    <div className="flex items-center gap-4">
+      <input
+        type="checkbox"
+        name={name}
+        checked={checked || false}
+        onChange={onChange}
+      />
+      <label className="text-xl text-cyan-700">{label}</label>
+    </div>
+  );
+}
+
+export function SelectInput({
+  label,
+  options,
+  setSelection,
+}: {
+  label: string;
+  options: Array<{ value: string; label: string }>;
+  setSelection: Dispatch<SetStateAction<string>>;
+}) {
+  return (
+    <label className="flex flex-col text-xl text-cyan-700">
+      {label}
+      <select
+        className="mt-1 rounded-xl border bg-white p-2 text-base text-black"
+        onChange={(e) => setSelection(e.target.value)}
+      >
+        {options.map(({ value, label }) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }
