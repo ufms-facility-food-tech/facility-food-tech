@@ -3,8 +3,10 @@ import type {
   ChangeEvent,
   Dispatch,
   HTMLInputTypeAttribute,
+  InputHTMLAttributes,
   ReactNode,
   SetStateAction,
+  TextareaHTMLAttributes,
 } from "react";
 
 export function SubmitButton({
@@ -29,7 +31,7 @@ export function TextInput({
   label,
   type,
 }: {
-  name: string;
+  name: InputHTMLAttributes<HTMLInputElement>["name"];
   label: string;
   type?: HTMLInputTypeAttribute;
 }) {
@@ -50,9 +52,9 @@ export function TextAreaInput({
   label,
   rows,
 }: {
-  name: string;
+  name: TextareaHTMLAttributes<HTMLTextAreaElement>["name"];
   label: string;
-  rows?: number;
+  rows?: TextareaHTMLAttributes<HTMLTextAreaElement>["rows"];
 }) {
   return (
     <label className="flex flex-col text-xl text-cyan-700">
@@ -72,21 +74,21 @@ export function CheckboxInput({
   checked,
   onChange,
 }: {
-  name: string;
+  name: InputHTMLAttributes<HTMLInputElement>["name"];
   label: string;
-  checked?: boolean;
+  checked: InputHTMLAttributes<HTMLInputElement>["checked"];
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
-    <div className="flex items-center gap-4">
+    <label className="flex flex-col text-xl text-cyan-700">
+      {label}
       <input
         type="checkbox"
         name={name}
         checked={checked || false}
         onChange={onChange}
       />
-      <label className="text-xl text-cyan-700">{label}</label>
-    </div>
+    </label>
   );
 }
 
