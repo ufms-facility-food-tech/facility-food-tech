@@ -11,7 +11,6 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const nome = formData.get("nome");
   const email = formData.get("email");
   const senha = formData.get("senha");
-  // const confirmarSenha = formData.get("confirmarSenha");
 
   const newUser = {
     nome,
@@ -27,14 +26,20 @@ export default function Cadastrar() {
   return (
     <Container title="Cadastrar">
       <Form method="post" className="flex flex-col gap-4">
-        <TextInput name="nome" label="Nome" />
-        <TextInput name="email" label="Email" type="email" />
-        <TextInput name="senha" label="Senha" type="password" />
+        <TextInput name="nome" label="Nome" autoComplete="name" />
         <TextInput
-          name="confirmarSenha"
-          label="Confirmar Senha"
+          name="email"
+          label="Email"
+          type="email"
+          autoComplete="email"
+        />
+        <TextInput
+          name="senha"
+          label="Senha"
+          autoComplete="new-password"
           type="password"
         />
+        <TextInput label="Confirmar Senha" type="password" />
         <div className="m-4 flex justify-center">
           <SubmitButton>Cadastrar</SubmitButton>
         </div>

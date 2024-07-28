@@ -25,9 +25,19 @@ export default function Entrar() {
   return (
     <Container title="Entrar">
       <Form method="post" action="/entrar" className="flex flex-col gap-4">
-        <TextInput name="email" label="Email" type="email" />
+        <TextInput
+          name="email"
+          label="Email"
+          type="email"
+          autoComplete="email"
+        />
         <div>
-          <TextInput name="senha" label="Senha" type="password" />
+          <TextInput
+            name="senha"
+            label="Senha"
+            type="password"
+            autoComplete="current-password"
+          />
           <div className="mx-2 mt-1 text-end text-cyan-600 underline">
             Esqueceu a senha?
           </div>
