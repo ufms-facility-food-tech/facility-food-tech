@@ -8,10 +8,12 @@ export function Container({
   title?: string;
 }) {
   return (
-    <div className="flex my-auto h-full flex-col items-center">
-      <div className="h-full w-full bg-white px-9 py-2 md:my-8 md:w-11/12 lg:w-5/6 rounded-b-2xl md:rounded-t-2xl">
+    <div className="my-auto flex h-full flex-col items-center">
+      <div className="h-full w-full rounded-b-2xl bg-white px-9 py-2 md:my-8 md:w-11/12 md:rounded-t-2xl lg:w-5/6">
         {title && (
-          <h1 className="border-b-2 border-neutral-100 pb-4 mb-4 mt-4 text-3xl font-bold text-cyan-600">{title}</h1>
+          <h1 className="mb-4 mt-4 border-b-2 border-neutral-100 pb-4 text-3xl font-bold text-cyan-600">
+            {title}
+          </h1>
         )}
         {children}
       </div>
