@@ -18,13 +18,13 @@ export default function Pesquisa() {
     <Container title="Pesquisa">
       <Form className="flex flex-col gap-4" method="get" action="resultado">
         <SelectInput
-          label="Item de Pesquisa"
+          label="Item de Pesquisa:"
           options={queryItems}
-          setSelection={setQueryItemName}
+          onChange={(e) => setQueryItemName(e.target.value)}
         />
-        <TextInput label="Pesquisar por" name={queryItemName} />
+        <TextInput label="Pesquisar por:" name={queryItemName} />
         <div className="mx-5 my-9 flex items-center justify-end gap-4">
-          <NavLink to="avancada" className="text-cyan-700 underline">
+          <NavLink to="avancada" className="text-cyan-600 underline">
             Fazer uma Pesquisa Avançada
           </NavLink>
           <SubmitButton>Pesquisar</SubmitButton>

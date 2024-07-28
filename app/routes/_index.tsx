@@ -44,16 +44,16 @@ export default function Index() {
 
   return (
     <>
-      <div className="h-96">
-        <div className="flex items-center justify-around">
-          <div className="mt-9 flex w-full flex-col gap-8 md:w-1/3">
-            <h1 className="text-balance text-center text-4xl font-bold text-white md:w-96">
+      <div className="mt-6 min-h-96 overflow-x-hidden lg:mt-0">
+        <div className="flex flex-col items-center justify-around lg:flex-row">
+          <div className="lg:min-w-2/5 flex w-full flex-col items-center gap-8">
+            <h1 className="text-balance px-6 text-center text-4xl font-bold text-white lg:w-96 lg:px-0">
               Facility FoodTech do Cerrado-Pantanal
             </h1>
             <Form
               method="get"
               action="/pesquisa/resultado"
-              className="flex h-16"
+              className="flex h-16 w-11/12"
             >
               <input
                 type="text"
@@ -62,19 +62,19 @@ export default function Index() {
                 placeholder="Pesquisar"
               />
               <button
+                aria-label="Pesquisar"
                 type="submit"
-                className="rounded-r-xl bg-cyan-600 px-4 py-2 text-white"
+                className="rounded-r-xl bg-cyan-500 px-4 py-2 text-white"
               >
                 {searchIcon}
-                <span className="sr-only">Pesquisar</span>
               </button>
             </Form>
           </div>
-          <div className="mt-16 flex items-center gap-16">
+          <div className="mx-4 mb-20 mt-12 flex items-center gap-16">
             <img
               src="/images/img-01.jpg"
               alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
-              className="h-56 max-w-md translate-y-10 rotate-12 text-balance border-4 border-neutral-300"
+              className="h-56 max-w-md translate-x-4 translate-y-10 rotate-12 text-balance border-4 border-neutral-300"
             />
             <img
               src="/images/img-02.jpg"
@@ -84,7 +84,7 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 bg-white p-12 font-sans">
+      <div className="flex flex-col gap-4 bg-white px-4 py-3 font-sans sm:p-10">
         <h2 className="text-xl font-bold">Introdução</h2>
         <p>
           Bem-vindo ao nosso site dedicado à pesquisa biológica com enfoque
