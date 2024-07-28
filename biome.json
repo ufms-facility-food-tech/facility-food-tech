@@ -22,8 +22,15 @@
       },
       "suspicious": {
         "noEmptyBlockStatements": "error"
+      },
+      "style": {
+        "useConsistentArrayType": {
+          "level": "error",
+          "options": { "syntax": "generic" }
+        }
       }
-    }
+    },
+    "ignore": ["api-schema.d.ts"]
   },
   "javascript": {
     "globals": ["React"],
