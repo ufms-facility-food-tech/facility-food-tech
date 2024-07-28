@@ -3,35 +3,33 @@ import { Link, NavLink } from "@remix-run/react";
 export function Header() {
   return (
     <header>
-      <div className="flex h-20 items-center justify-between bg-white px-6">
+      <div className="min-h-26 flex items-center justify-between bg-white px-4">
         <Link to="/">
           <img
-            className="h-16 max-w-md text-balance"
+            className="my-2 h-24 max-w-md text-balance text-center"
             src="/images/lppfb-logo.jpg"
             alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
           />
         </Link>
-        <div className="flex gap-4">
-          <NavLink prefetch="intent" to="/entrar">
-            <button
-              type="button"
-              className="rounded-full bg-cyan-600 px-5 py-1 text-lg font-bold text-white"
-            >
-              Entrar
-            </button>
+        <div className="my-6 flex flex-wrap justify-end gap-3">
+          <NavLink
+            prefetch="intent"
+            to="/entrar"
+            className="rounded-full bg-cyan-500 px-6 py-2 text-lg font-bold text-white"
+          >
+            Entrar
           </NavLink>
-          <NavLink prefetch="intent" to="/cadastrar">
-            <button
-              type="button"
-              className="rounded-full bg-neutral-600 px-5 py-1 text-lg font-bold text-white"
-            >
-              Cadastrar
-            </button>
+          <NavLink
+            prefetch="intent"
+            to="/cadastrar"
+            className="rounded-full bg-neutral-100 px-6 py-2 text-lg font-bold outline outline-2 -outline-offset-2 outline-neutral-200 focus-visible:outline-inherit"
+          >
+            Cadastrar
           </NavLink>
         </div>
       </div>
-      <nav className="bg-neutral-200 py-1">
-        <ul className="mx-20 flex flex-wrap items-center gap-10 text-lg font-bold">
+      <nav className="bg-neutral-100 py-3">
+        <ul className="flex flex-wrap items-center justify-evenly gap-2 text-lg font-bold sm:mx-20 sm:justify-normal sm:gap-12">
           <li>
             <NavLink
               prefetch="intent"

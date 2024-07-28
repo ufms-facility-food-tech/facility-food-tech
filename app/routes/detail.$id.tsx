@@ -33,7 +33,7 @@ export default function Peptideo() {
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className="mb-4 text-cyan-700 underline"
+        className="mb-4 text-cyan-600 underline"
       >
         &lt; Voltar
       </button>
