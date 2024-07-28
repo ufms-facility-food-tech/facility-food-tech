@@ -60,7 +60,7 @@ export function TextAreaInput({
     <label className="flex flex-col text-lg text-cyan-600">
       {label}
       <textarea
-        className="mt-1 overflow-auto rounded-xl border bg-neutral-50 p-2 text-base text-black"
+        className="mt-1 resize-none overflow-auto rounded-xl border bg-neutral-50 p-2 text-base text-black"
         name={name}
         rows={rows || 4}
         onChange={onChange}
