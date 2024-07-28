@@ -23,12 +23,12 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
 export default function Entrar() {
   return (
-    <Container title="Login">
+    <Container title="Entrar">
       <Form method="post" action="/entrar" className="flex flex-col gap-4">
         <TextInput name="email" label="Email" type="email" />
         <div>
           <TextInput name="senha" label="Senha" type="password" />
-          <div className="mx-2 flex justify-end text-cyan-700 underline">
+          <div className="mx-2 mt-1 text-end text-cyan-600 underline">
             Esqueceu a senha?
           </div>
         </div>

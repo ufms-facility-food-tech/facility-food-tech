@@ -44,7 +44,7 @@ function AdminNavItem({ label, route }: { label: string; route: string }) {
       className={({ isActive }) =>
         `${
           isActive ? "underline" : ""
-        } text-cyan-700 underline-offset-4 hover:underline`
+        } text-cyan-600 underline-offset-4 hover:underline`
       }
       to={route}
     >

@@ -7,7 +7,7 @@ export default function PesquisaAvancada() {
     <Container title="Pesquisa Avançada">
       <Form method="get" action="../resultado" className="flex flex-col gap-4">
         <fieldset>
-          <legend className="mb-3 text-2xl text-cyan-700">Nomes</legend>
+          <legend className="mb-3 text-2xl text-cyan-600">Nomes</legend>
           <div className="mx-2 flex flex-col gap-4">
             <TextInput name="especie" label="Espécie" />
             <TextInput name="familia" label="Família" />
@@ -16,7 +16,7 @@ export default function PesquisaAvancada() {
           </div>
         </fieldset>
         {/* <fieldset>
-          <legend className="mb-3 text-2xl text-cyan-700">
+          <legend className="mb-3 text-2xl text-cyan-600">
             Funções Biológicas
           </legend>
           <div className="mx-2 flex flex-col gap-4">
@@ -27,7 +27,7 @@ export default function PesquisaAvancada() {
           </div>
         </fieldset> */}
         <fieldset>
-          <legend className="mb-3 text-2xl text-cyan-700">
+          <legend className="mb-3 text-2xl text-cyan-600">
             Características Físicas
           </legend>
           <div className="mx-2 flex flex-col gap-4">
@@ -37,7 +37,7 @@ export default function PesquisaAvancada() {
               label="Estrutura Tridimensional"
             />
             <fieldset className="flex gap-8">
-              <span className="text-xl text-cyan-700">
+              <span className="text-xl text-cyan-600">
                 Propriedades Físico-Químicas
               </span>
               <div className="flex-grow">
