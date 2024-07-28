@@ -23,11 +23,13 @@ export function TextInput({
   label,
   type,
   onChange,
+  autoComplete,
 }: {
   name?: InputHTMLAttributes<HTMLInputElement>["name"];
   label: string;
   type?: HTMLInputTypeAttribute;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  autoComplete?: InputHTMLAttributes<HTMLInputElement>["autoComplete"];
 }) {
   return (
     <label className="flex flex-col text-lg text-cyan-600">
@@ -37,6 +39,7 @@ export function TextInput({
         name={name}
         type={type}
         onChange={onChange}
+        autoComplete={autoComplete}
       />
     </label>
   );
