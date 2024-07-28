@@ -1,25 +1,17 @@
 import type {
-  ButtonHTMLAttributes,
-  ChangeEvent,
-  Dispatch,
+  ChangeEventHandler,
   HTMLInputTypeAttribute,
   InputHTMLAttributes,
   ReactNode,
-  SetStateAction,
+  SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
 
-export function SubmitButton({
-  children,
-  type,
-}: {
-  children: ReactNode;
-  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
-}) {
+export function SubmitButton({ children }: { children: ReactNode }) {
   return (
     <button
-      type={type || "submit"}
-      className="rounded-full bg-cyan-600 px-5 py-1 text-lg font-bold text-white"
+      type="submit"
+      className="rounded-full bg-cyan-500 px-6 py-2 text-lg font-bold text-white"
     >
       {children}
     </button>
@@ -30,18 +22,21 @@ export function TextInput({
   name,
   label,
   type,
+  onChange,
 }: {
-  name: InputHTMLAttributes<HTMLInputElement>["name"];
+  name?: InputHTMLAttributes<HTMLInputElement>["name"];
   label: string;
   type?: HTMLInputTypeAttribute;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }) {
   return (
-    <label className="flex flex-col text-xl text-cyan-700">
+    <label className="flex flex-col text-lg text-cyan-600">
       {label}
       <input
-        className="mt-1 rounded-xl border bg-white p-2 text-base text-black"
+        className="mt-1 rounded-xl border bg-neutral-50 p-2 text-base text-black"
         name={name}
-        type={type || "text"}
+        type={type}
+        onChange={onChange}
       />
     </label>
   );
@@ -51,18 +46,21 @@ export function TextAreaInput({
   name,
   label,
   rows,
+  onChange,
 }: {
-  name: TextareaHTMLAttributes<HTMLTextAreaElement>["name"];
+  name?: TextareaHTMLAttributes<HTMLTextAreaElement>["name"];
   label: string;
   rows?: TextareaHTMLAttributes<HTMLTextAreaElement>["rows"];
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
 }) {
   return (
-    <label className="flex flex-col text-xl text-cyan-700">
+    <label className="flex flex-col text-lg text-cyan-600">
       {label}
       <textarea
-        className="mt-1 overflow-auto rounded-xl border bg-white p-2 text-base text-black"
+        className="mt-1 overflow-auto rounded-xl border bg-neutral-50 p-2 text-base text-black"
         name={name}
         rows={rows || 4}
+        onChange={onChange}
       />
     </label>
   );
@@ -74,39 +72,42 @@ export function CheckboxInput({
   checked,
   onChange,
 }: {
-  name: InputHTMLAttributes<HTMLInputElement>["name"];
+  name?: InputHTMLAttributes<HTMLInputElement>["name"];
   label: string;
-  checked: InputHTMLAttributes<HTMLInputElement>["checked"];
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  checked?: InputHTMLAttributes<HTMLInputElement>["defaultChecked"];
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }) {
   return (
-    <label className="flex flex-col text-xl text-cyan-700">
-      {label}
+    <label className="flex gap-2 text-lg text-cyan-600">
       <input
         type="checkbox"
         name={name}
-        checked={checked || false}
+        defaultChecked={checked}
         onChange={onChange}
       />
+      {label}
     </label>
   );
 }
 
 export function SelectInput({
+  name,
   label,
   options,
-  setSelection,
+  onChange,
 }: {
+  name?: SelectHTMLAttributes<HTMLSelectElement>["name"];
   label: string;
   options: Array<{ value: string; label: string }>;
-  setSelection: Dispatch<SetStateAction<string>>;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
 }) {
   return (
-    <label className="flex flex-col text-xl text-cyan-700">
+    <label className="flex flex-col text-lg text-cyan-600">
       {label}
       <select
-        className="mt-1 rounded-xl border bg-white p-2 text-base text-black"
-        onChange={(e) => setSelection(e.target.value)}
+        name={name}
+        className="mt-1 rounded-xl border bg-neutral-50 p-2 text-base text-black"
+        onChange={onChange}
       >
         {options.map(({ value, label }) => (
           <option key={value} value={value}>
