@@ -93,6 +93,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /**
+         * Authenticate user
+         * @description Authenticate user
+         */
         post: operations["authenticateUser"];
         delete?: never;
         options?: never;
@@ -108,6 +112,26 @@ export interface paths {
             cookie?: never;
         };
         get: operations["query"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all images
+         * @description Get all images in the upload directory
+         */
+        get: operations["getImages"];
         put?: never;
         post?: never;
         delete?: never;
@@ -200,6 +224,23 @@ export interface components {
         LoginRequest: {
             username?: string;
             password?: string;
+        };
+        JwtResponse: {
+            token?: string;
+            /** Format: int64 */
+            id?: number;
+            username?: string;
+            email?: string;
+            roles?: string[];
+            type?: string;
+        };
+        ImageMetadata: {
+            fileName?: string;
+            alt?: string;
+            /** Format: int32 */
+            width?: number;
+            /** Format: int32 */
+            height?: number;
         };
     };
     responses: never;
@@ -457,7 +498,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": Record<string, never>;
+                    "*/*": string;
                 };
             };
         };
@@ -469,6 +510,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
+        /** @description Login request */
         requestBody: {
             content: {
                 "application/json": components["schemas"]["LoginRequest"];
@@ -481,7 +523,34 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": Record<string, never>;
+                    "application/json": components["schemas"]["JwtResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string;
                 };
             };
         };
@@ -508,6 +577,35 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["PeptideoDTO"][];
+                };
+            };
+        };
+    };
+    getImages: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImageMetadata"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string;
                 };
             };
         };
