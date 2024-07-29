@@ -23,7 +23,6 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - APPLICATION_SECURITY_JWT_SECRET_KEY=${JWT_SECRET_KEY}
     volumes:
-      - ./facility-prod.log:/facility.log
       - ./public:/public
 
   facility-ui:
@@ -35,6 +34,7 @@ services:
     environment:
       - DOMAIN=${DOMAIN}
     volumes:
+      - ./public/images/upload:/srv/images/upload
       - ./prod.Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
