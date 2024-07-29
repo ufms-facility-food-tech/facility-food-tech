@@ -72,12 +72,12 @@ export default function Index() {
           </div>
           <div className="mx-4 mb-20 mt-12 flex items-center gap-16">
             <img
-              src="/images/img-01.jpg"
+              src="/images/static/img-01.jpg"
               alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
               className="h-56 max-w-md translate-x-4 translate-y-10 rotate-12 text-balance border-4 border-neutral-300"
             />
             <img
-              src="/images/img-02.jpg"
+              src="/images/static/img-02.jpg"
               alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
               className="h-56 max-w-md -rotate-6 text-balance border-4 border-neutral-300"
             />

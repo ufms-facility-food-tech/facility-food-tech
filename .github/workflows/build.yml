@@ -37,7 +37,6 @@ jobs:
           cache: maven
       - name: maven
         run: ./mvnw verify
-        working-directory: ./api
         env:
           SPRING_PROFILES_ACTIVE: prod
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
@@ -61,7 +60,6 @@ jobs:
           cache: maven
       - name: maven
         run: ./mvnw verify
-        working-directory: ./api
 
   build-npm:
     runs-on: ubuntu-latest
@@ -76,7 +74,7 @@ jobs:
         with:
           node-version: "lts/*"
           cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
+          cache-dependency-path: "package-lock.json"
       - name: run prettier
         run: |
           npm ci

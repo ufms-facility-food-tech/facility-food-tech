@@ -1,7 +1,6 @@
 package com.facility.controller;
 
 import jakarta.annotation.PostConstruct;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -66,7 +65,7 @@ public class ImageController {
         )
         .forEach(filePath -> {
           try {
-            BufferedImage bufferedImage = ImageIO.read(filePath.toFile());
+            var bufferedImage = ImageIO.read(filePath.toFile());
             if (bufferedImage == null) {
               log.error(
                 "failed to read image \"" + filePath.getFileName() + "\""
@@ -130,7 +129,7 @@ public class ImageController {
       Files.write(filePath, image.getBytes());
 
       // get image dimensions
-      BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+      var bufferedImage = ImageIO.read(image.getInputStream());
 
       // save metadata
       ImageMetadata metadata = new ImageMetadata(
@@ -163,7 +162,9 @@ public class ImageController {
   public ResponseEntity<?> getImages() {
     try {
       var fileNames = Files.list(Path.of(uploadDir)).filter(
-        Files::isRegularFile
+        filePath ->
+          Files.isRegularFile(filePath) &&
+          !filePath.getFileName().toString().endsWith(".txt")
       );
       var filesNotInMetadata = fileNames.filter(fileName -> {
         return !imageMetadataDb
@@ -176,7 +177,13 @@ public class ImageController {
 
       filesNotInMetadata.forEach(fileName -> {
         try {
-          BufferedImage bufferedImage = ImageIO.read(fileName.toFile());
+          var bufferedImage = ImageIO.read(fileName.toFile());
+          if (bufferedImage == null) {
+            log.error(
+              "failed to read image \"" + fileName.toAbsolutePath() + "\""
+            );
+            return;
+          }
           imageMetadataDb.add(
             new ImageMetadata(
               fileName.getFileName().toString(),
@@ -224,7 +231,12 @@ public class ImageController {
     }
     try {
       // get image dimensions
-      BufferedImage bufferedImage = ImageIO.read(filePath.toFile());
+      var bufferedImage = ImageIO.read(filePath.toFile());
+      if (bufferedImage == null) {
+        log.error("failed to read image \"" + filePath.toAbsolutePath() + "\"");
+        return ResponseEntity.internalServerError()
+          .body("failed to read image \"" + fileName + "\"");
+      }
 
       // save metadata
       ImageMetadata metadata = new ImageMetadata(
