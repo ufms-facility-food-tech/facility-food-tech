@@ -41,10 +41,10 @@ export default function Peptideo() {
         <table className="w-full text-left">
           <thead className="bg-white text-lg outline outline-1">
             <tr>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th scope="col" className="px-6 py-3 w-1/6">
                 Detalhes
               </th>
-              <th scope="col" className="px-6 py-3 font-normal" />
+              <th scope="col" className="w-5/6" />
             </tr>
           </thead>
           <tbody>
