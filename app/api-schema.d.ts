@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/peptideos/{id}": {
+    "/api/peptideos/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -20,7 +20,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/organismos/{id}": {
+    "/api/organismos/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -36,39 +36,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/peptideos": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["findAll"];
-        put?: never;
-        post: operations["create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/organismos": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["findAll_1"];
-        put?: never;
-        post: operations["create_1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/register": {
+    "/api/register": {
         parameters: {
             query?: never;
             header?: never;
@@ -84,7 +52,39 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/auth/login": {
+    "/api/peptideos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["findAll"];
+        put?: never;
+        post: operations["create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/organismos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["findAll_1"];
+        put?: never;
+        post: operations["create_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/login": {
         parameters: {
             query?: never;
             header?: never;
@@ -104,7 +104,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/query": {
+    "/api/query": {
         parameters: {
             query?: never;
             header?: never;
@@ -120,7 +120,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/images": {
+    "/api/images": {
         parameters: {
             query?: never;
             header?: never;
@@ -157,16 +157,14 @@ export interface components {
             id?: number;
             nomeIdentificador?: string;
             sequencia?: string;
-            patenteado?: boolean;
+            sintetizado?: boolean;
             resultadoInterno?: boolean;
             /** Format: int32 */
             quantidadeAminoacidos?: number;
-            /** @enum {string} */
-            tipoPeptideo?: "SINTETIZADO" | "NATURAL";
             /** Format: double */
             massaMolecular?: number;
-            /** @enum {string} */
-            unidadeMassaMolecular?: "GRAMAS_POR_MOL" | "DALTON";
+            /** Format: double */
+            massaMolar?: number;
             funcaoBiologica?: string[];
             microbiologia?: string[];
             atividadeAntifungica?: string[];
@@ -197,16 +195,14 @@ export interface components {
             id?: number;
             nomeIdentificador?: string;
             sequencia?: string;
-            patenteado?: boolean;
+            sintetizado?: boolean;
             resultadoInterno?: boolean;
             /** Format: int32 */
             quantidadeAminoacidos?: number;
-            /** @enum {string} */
-            tipoPeptideo?: "SINTETIZADO" | "NATURAL";
             /** Format: double */
             massaMolecular?: number;
-            /** @enum {string} */
-            unidadeMassaMolecular?: "GRAMAS_POR_MOL" | "DALTON";
+            /** Format: double */
+            massaMolar?: number;
             funcaoBiologica?: string[];
             microbiologia?: string[];
             atividadeAntifungica?: string[];
@@ -218,6 +214,7 @@ export interface components {
         };
         SignupRequest: {
             username?: string;
+            displayName?: string;
             email?: string;
             password?: string;
         };
@@ -391,6 +388,30 @@ export interface operations {
             };
         };
     };
+    registerUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignupRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
     findAll: {
         parameters: {
             query?: never;
@@ -475,30 +496,6 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["Organismo"];
-                };
-            };
-        };
-    };
-    registerUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SignupRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": string;
                 };
             };
         };

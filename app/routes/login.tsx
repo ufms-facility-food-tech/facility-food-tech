@@ -6,17 +6,28 @@ import {
 } from "@remix-run/react";
 import { Container } from "~/components/container";
 import { SubmitButton, TextInput } from "~/components/form";
+import type { components } from "~/api-schema";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
-  const email = formData.get("email");
-  const senha = formData.get("senha");
+  const username = formData.get("username") as string;
+  const password = formData.get("password") as string;
 
   const user = {
-    email,
-    senha,
-  };
-  console.log(user);
+    username,
+    password,
+  } satisfies components["schemas"]["LoginRequest"];
+
+  const res = await fetch("/api/login", {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  console.log(res);
+  res.json().then(console.log);
 
   return redirect("/admin");
 }
@@ -24,16 +35,16 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 export default function Entrar() {
   return (
     <Container title="Entrar">
-      <Form method="post" action="/entrar" className="flex flex-col gap-4">
+      <Form method="post" className="flex flex-col gap-4">
         <TextInput
-          name="email"
-          label="Email"
-          type="email"
+          name="username"
+          label="Email ou nome de usuário"
+          type="text"
           autoComplete="email"
         />
         <div>
           <TextInput
-            name="senha"
+            name="password"
             label="Senha"
             type="password"
             autoComplete="current-password"
