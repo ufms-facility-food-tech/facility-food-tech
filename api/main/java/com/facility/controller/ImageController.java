@@ -169,9 +169,8 @@ public class ImageController {
       var filesNotInMetadata = fileNames.filter(fileName -> {
         return !imageMetadataDb
           .stream()
-          .anyMatch(
-            metadata ->
-              metadata.fileName().equals(fileName.getFileName().toString())
+          .anyMatch(metadata ->
+            metadata.fileName().equals(fileName.getFileName().toString())
           );
       });
 
@@ -245,8 +244,8 @@ public class ImageController {
         bufferedImage.getWidth(),
         bufferedImage.getHeight()
       );
-      imageMetadataDb.removeIf(
-        imageMetadata -> imageMetadata.fileName().equals(fileName)
+      imageMetadataDb.removeIf(imageMetadata ->
+        imageMetadata.fileName().equals(fileName)
       );
       imageMetadataDb.add(metadata);
 
@@ -291,8 +290,7 @@ public class ImageController {
         Path.of(uploadDir, fileName.replaceAll("(?<!^)[.][^.]*$", "") + ".txt")
       );
 
-      imageMetadataDb.removeIf(
-        metadata -> metadata.fileName().equals(fileName)
+      imageMetadataDb.removeIf(metadata -> metadata.fileName().equals(fileName)
       );
 
       return ResponseEntity.ok().build();

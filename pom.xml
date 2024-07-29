@@ -106,7 +106,8 @@
 
 	  <build>
 		<sourceDirectory>${project.basedir}/api/main/java</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/api/test/java</testSourceDirectory>
+        <testSourceDirectory
+    >${project.basedir}/api/test/java</testSourceDirectory>
 		<resources>
 		  <resource>
 			<directory>api/main/resources</directory>
