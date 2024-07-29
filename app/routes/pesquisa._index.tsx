@@ -1,7 +1,7 @@
 import { Form, NavLink } from "@remix-run/react";
 import { useState } from "react";
 import { Container } from "~/components/container";
-import { SubmitButton, TextInput, SelectInput } from "~/components/form";
+import { SelectInput, SubmitButton, TextInput } from "~/components/form";
 
 export default function Pesquisa() {
   const queryItems = [
