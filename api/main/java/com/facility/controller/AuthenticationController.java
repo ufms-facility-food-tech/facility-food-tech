@@ -1,8 +1,5 @@
 package com.facility.controller;
 
-import com.facility.dto.auth.JwtResponse;
-import com.facility.dto.auth.LoginRequest;
-import com.facility.dto.auth.SignupRequest;
 import com.facility.enums.Role;
 import com.facility.model.User;
 import com.facility.repository.UserRepository;
@@ -25,6 +22,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("auth")
 public class AuthenticationController {
 
+  public record LoginRequest(String username, String password) {}
+
+  public record SignupRequest(String username, String email, String password) {}
+
+  public record JwtResponse(
+    String token,
+    Long id,
+    String username,
+    String email,
+    Set<String> roles,
+    String type
+  ) {}
+
   private final AuthenticationManager authenticationManager;
   private final UserRepository userRepository;
   private final JwtService jwtService;
@@ -46,7 +56,7 @@ public class AuthenticationController {
   public ResponseEntity<?> authenticateUser(
     @RequestBody LoginRequest loginRequest
   ) {
-    if (!userRepository.existsByUsername(loginRequest.getUsername())) {
+    if (!userRepository.existsByUsername(loginRequest.username())) {
       return ResponseEntity.badRequest().body("usuário não encontrado.");
     }
 
@@ -54,8 +64,8 @@ public class AuthenticationController {
     try {
       auth = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
-          loginRequest.getUsername(),
-          loginRequest.getPassword()
+          loginRequest.username(),
+          loginRequest.password()
         )
       );
     } catch (BadCredentialsException e) {
@@ -83,7 +93,8 @@ public class AuthenticationController {
           userDetails.getId(),
           userDetails.getUsername(),
           userDetails.getEmail(),
-          roles
+          roles,
+          "Bearer"
         )
       );
   }
@@ -92,18 +103,18 @@ public class AuthenticationController {
   public ResponseEntity<?> registerUser(
     @RequestBody SignupRequest signUpRequest
   ) {
-    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    if (userRepository.existsByUsername(signUpRequest.username())) {
       return ResponseEntity.badRequest().body("nome de usuário já cadastrado.");
     }
 
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+    if (userRepository.existsByEmail(signUpRequest.email())) {
       return ResponseEntity.badRequest().body("email já cadastrado.");
     }
 
     User user = new User(
-      signUpRequest.getUsername(),
-      signUpRequest.getEmail(),
-      passwordEncoder.encode(signUpRequest.getPassword())
+      signUpRequest.username(),
+      signUpRequest.email(),
+      passwordEncoder.encode(signUpRequest.password())
     );
 
     user.setAuthorities(Set.of(Role.INSERT, Role.UPDATE, Role.DELETE));

@@ -57,6 +57,6 @@ public class QueryController {
       return new ArrayList<>();
     }
 
-    return result.stream().map(PeptideoDTO::new).toList();
+    return result.stream().map(PeptideoDTO::fromEntity).toList();
   }
 }
