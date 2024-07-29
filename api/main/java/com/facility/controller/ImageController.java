@@ -210,8 +210,9 @@ public class ImageController {
       var filesNotInMetadata = fileNames.filter(fileName -> {
         return !imageMetadataDb
           .stream()
-          .anyMatch(metadata ->
-            metadata.fileName().equals(fileName.getFileName().toString())
+          .anyMatch(
+            metadata ->
+              metadata.fileName().equals(fileName.getFileName().toString())
           );
       });
 
@@ -281,23 +282,20 @@ public class ImageController {
       // save metadata
       ImageMetadata metadata = new ImageMetadata(
         fileName,
-        alt.orElse(null),
+        alt.orElse("").isEmpty() ? null : alt.get(),
         bufferedImage.getWidth(),
         bufferedImage.getHeight()
       );
-      imageMetadataDb.removeIf(imageMetadata ->
-        imageMetadata.fileName().equals(fileName)
+      imageMetadataDb.removeIf(
+        imageMetadata -> imageMetadata.fileName().equals(fileName)
       );
       imageMetadataDb.add(metadata);
 
-      if (alt.isPresent()) {
-        Files.write(
-          Path.of(
-            uploadDir,
-            fileName.replaceAll("(?<!^)[.][^.]*$", "") + ".txt"
-          ),
-          alt.get().getBytes()
-        );
+      var altFileName = fileName.replaceAll("(?<!^)[.][^.]*$", "") + ".txt";
+      if (metadata.alt() != null) {
+        Files.write(Path.of(uploadDir, altFileName), alt.get().getBytes());
+      } else {
+        Files.deleteIfExists(Path.of(uploadDir, altFileName));
       }
 
       return ResponseEntity.ok().body(metadata);
@@ -331,7 +329,8 @@ public class ImageController {
         Path.of(uploadDir, fileName.replaceAll("(?<!^)[.][^.]*$", "") + ".txt")
       );
 
-      imageMetadataDb.removeIf(metadata -> metadata.fileName().equals(fileName)
+      imageMetadataDb.removeIf(
+        metadata -> metadata.fileName().equals(fileName)
       );
 
       return ResponseEntity.ok().build();
