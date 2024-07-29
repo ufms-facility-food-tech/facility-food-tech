@@ -1,7 +1,5 @@
 package com.facility.dto;
 
-import com.facility.enums.TipoPeptideo;
-import com.facility.enums.UnidadeMassaMolecular;
 import com.facility.model.Peptideo;
 import com.facility.model.Publicacao;
 import java.util.HashSet;
@@ -12,12 +10,11 @@ public record PeptideoDTO(
   Long id,
   String nomeIdentificador,
   String sequencia,
-  Boolean patenteado,
+  Boolean sintetizado,
   Boolean resultadoInterno,
   Integer quantidadeAminoacidos,
-  TipoPeptideo tipoPeptideo,
   Double massaMolecular,
-  UnidadeMassaMolecular unidadeMassaMolecular,
+  Double massaMolar,
   List<String> funcaoBiologica,
   List<String> microbiologia,
   List<String> atividadeAntifungica,
@@ -103,12 +100,11 @@ public record PeptideoDTO(
       peptideo.getId(),
       peptideo.getNomeIdentificador(),
       peptideo.getSequencia(),
-      peptideo.getPatenteado(),
+      peptideo.getSintetizado(),
       peptideo.getResultadoInterno(),
       peptideo.getQuantidadeAminoacidos(),
-      peptideo.getTipoPeptideo(),
       peptideo.getMassaMolecular(),
-      peptideo.getUnidadeMassaMolecular(),
+      peptideo.getMassaMolar(),
       entityFuncaoBiologica,
       entityMicrobiologia,
       entityAtividadeAntifungica,
@@ -126,12 +122,11 @@ public record PeptideoDTO(
     peptideoEntity.setId(id());
     peptideoEntity.setNomeIdentificador(nomeIdentificador());
     peptideoEntity.setSequencia(sequencia());
-    peptideoEntity.setPatenteado(patenteado());
+    peptideoEntity.setSintetizado(sintetizado());
     peptideoEntity.setResultadoInterno(resultadoInterno());
     peptideoEntity.setQuantidadeAminoacidos(quantidadeAminoacidos());
-    peptideoEntity.setTipoPeptideo(tipoPeptideo());
     peptideoEntity.setMassaMolecular(massaMolecular());
-    peptideoEntity.setUnidadeMassaMolecular(unidadeMassaMolecular());
+    peptideoEntity.setMassaMolar(massaMolar());
     peptideoEntity.setFuncaoBiologica(new HashSet<>(funcaoBiologica()));
     peptideoEntity.setMicrobiologia(new HashSet<>(microbiologia()));
     peptideoEntity.setAtividadeAntifungica(
