@@ -35,3 +35,7 @@ export default function App() {
 export function HydrateFallback() {
   return <p>Loading...</p>;
 }
+
+// export function ErrorBoundaryFallback() {
+//   return <p>Something went wrong.</p>;
+// }
