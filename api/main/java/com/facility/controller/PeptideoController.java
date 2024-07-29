@@ -1,6 +1,5 @@
 package com.facility.controller;
 
-import com.facility.dto.OrganismoDTO;
 import com.facility.dto.PeptideoDTO;
 import com.facility.model.Organismo;
 import com.facility.model.Peptideo;
@@ -39,8 +38,8 @@ public class PeptideoController {
     var peptideoEntity = peptideoDTO.toEntity();
 
     // optionally persist organismo
-    if (peptideoDTO.getOrganismo() != null) {
-      var organismoEntity = peptideoDTO.getOrganismo().toEntity();
+    if (peptideoDTO.organismo() != null) {
+      var organismoEntity = peptideoDTO.organismo().toEntity();
 
       if (organismoEntity.getId() == null) {
         var optional = organismoRepository.findBy(
@@ -64,7 +63,7 @@ public class PeptideoController {
       organismoRepository.save(organismoEntity);
     }
 
-    var saved = new PeptideoDTO(peptideoRepository.save(peptideoEntity));
+    var saved = PeptideoDTO.fromEntity(peptideoRepository.save(peptideoEntity));
     return ResponseEntity.ok().body(saved);
   }
 
@@ -73,12 +72,12 @@ public class PeptideoController {
     List<PeptideoDTO> peptideos = peptideoRepository
       .findAll()
       .stream()
-      .map(PeptideoDTO::new)
+      .map(PeptideoDTO::fromEntity)
       .collect(Collectors.toList());
     return ResponseEntity.ok().body(peptideos);
   }
 
-  @GetMapping(path = { "/{id}" })
+  @GetMapping("/{id}")
   public ResponseEntity<PeptideoDTO> findById(@PathVariable Long id) {
     if (id == null) {
       return ResponseEntity.badRequest().build();
@@ -86,31 +85,30 @@ public class PeptideoController {
 
     return peptideoRepository
       .findById(id)
-      .map(record -> ResponseEntity.ok().body(new PeptideoDTO(record)))
+      .map(record -> ResponseEntity.ok().body(PeptideoDTO.fromEntity(record)))
       .orElse(ResponseEntity.notFound().build());
   }
 
-  @PutMapping(value = "/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<PeptideoDTO> update(
     @PathVariable("id") Optional<Long> id,
     @RequestBody PeptideoDTO peptideoDTO
   ) {
     if (id.isEmpty()) {
-      if (peptideoDTO.getId() == null) {
+      if (peptideoDTO.id() == null) {
         return ResponseEntity.badRequest().build();
       }
-      id = Optional.of(peptideoDTO.getId());
+      id = Optional.of(peptideoDTO.id());
     }
-
-    peptideoDTO.setId(id.get());
 
     return peptideoRepository
       .findById(id.get())
       .map(peptideo -> {
         Peptideo toSave = peptideoDTO.toEntity();
+        toSave.setId(peptideo.getId());
 
-        if (peptideoDTO.getOrganismo() instanceof OrganismoDTO o) {
-          Organismo organismoToSave = o.toEntity();
+        if (peptideoDTO.organismo() != null) {
+          Organismo organismoToSave = peptideoDTO.organismo().toEntity();
 
           if (peptideo.getOrganismo() != null) {
             organismoToSave.setId(peptideo.getOrganismo().getId());
@@ -127,12 +125,12 @@ public class PeptideoController {
         }
 
         return ResponseEntity.ok()
-          .body(new PeptideoDTO(peptideoRepository.save(toSave)));
+          .body(PeptideoDTO.fromEntity(peptideoRepository.save(toSave)));
       })
       .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = { "/{id}" })
+  @DeleteMapping("/{id}")
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return peptideoRepository
       .findById(id)

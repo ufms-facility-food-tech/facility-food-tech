@@ -28,8 +28,7 @@ public class Organismo {
 
   @OneToMany(
     mappedBy = "organismo",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
+    cascade = CascadeType.ALL
   )
   @JsonManagedReference
   private Set<Peptideo> peptideo = new HashSet<>();
