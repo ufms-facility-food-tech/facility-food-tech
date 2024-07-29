@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("images")
+@RequestMapping("api/images")
 public class ImageController {
 
   public record ImageMetadata(
