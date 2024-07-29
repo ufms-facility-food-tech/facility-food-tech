@@ -1,5 +1,9 @@
 package com.facility.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +34,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("images")
 public class ImageController {
 
-  record ImageMetadata(String fileName, String alt, int width, int height) {}
+  public record ImageMetadata(
+    String fileName,
+    String alt,
+    int width,
+    int height
+  ) {}
 
   @Value("${image.upload.dir}")
   private String uploadDir;
@@ -164,6 +173,33 @@ public class ImageController {
   }
 
   @GetMapping
+  @Operation(
+    operationId="getImages",
+    summary = "Get all images",
+    description = "Get all images in the upload directory",
+    responses = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = {
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = ImageMetadata.class)
+          ),
+        }
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = {
+          @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = String.class)
+          ),
+        }
+      ),
+    }
+  )
   public ResponseEntity<?> getImages() {
     try {
       var fileNames = Files.list(Path.of(uploadDir)).filter(
