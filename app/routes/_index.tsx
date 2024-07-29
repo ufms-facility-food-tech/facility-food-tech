@@ -58,13 +58,13 @@ export default function Index() {
               <input
                 type="text"
                 name="especie"
-                className="w-full rounded-l-xl border-2 border-white bg-white px-4 py-2 text-black"
+                className="w-full rounded-l-3xl border-2 border-white bg-white px-4 py-2 text-black"
                 placeholder="Pesquisar"
               />
               <button
                 aria-label="Pesquisar"
                 type="submit"
-                className="rounded-r-xl bg-cyan-500 px-4 py-2 text-white"
+                className="rounded-r-3xl bg-cyan-500 px-4 py-2 text-white"
               >
                 {searchIcon}
               </button>
