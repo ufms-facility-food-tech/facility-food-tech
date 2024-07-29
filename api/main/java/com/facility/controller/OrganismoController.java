@@ -34,7 +34,7 @@ public class OrganismoController {
     return ResponseEntity.ok().body(organismoRepository.save(organismo));
   }
 
-  @GetMapping(path = { "/{id}" })
+  @GetMapping("/{id}")
   public ResponseEntity<Organismo> findById(@PathVariable Long id) {
     return organismoRepository
       .findById(id)
@@ -42,7 +42,7 @@ public class OrganismoController {
       .orElse(ResponseEntity.notFound().build());
   }
 
-  @PutMapping(value = "/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<Organismo> update(
     @PathVariable("id") Optional<Long> id,
     @RequestBody Organismo organismo
@@ -64,7 +64,7 @@ public class OrganismoController {
       .orElse(ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping(path = { "/{id}" })
+  @DeleteMapping("/{id}")
   public ResponseEntity<?> delete(@PathVariable Long id) {
     return organismoRepository
       .findById(id)
