@@ -14,14 +14,14 @@ export function Header() {
         <div className="my-6 flex flex-wrap justify-end gap-3">
           <NavLink
             prefetch="intent"
-            to="/entrar"
+            to="/login"
             className="rounded-full bg-cyan-500 px-6 py-2 text-lg font-bold text-white"
           >
             Entrar
           </NavLink>
           <NavLink
             prefetch="intent"
-            to="/cadastrar"
+            to="/register"
             className="rounded-full bg-neutral-100 px-6 py-2 text-lg font-bold outline outline-2 -outline-offset-2 outline-neutral-200 focus-visible:outline-inherit"
           >
             Cadastrar

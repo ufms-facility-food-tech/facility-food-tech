@@ -22,6 +22,8 @@ public class User implements UserDetails {
   @Column(unique = true)
   private String email;
 
+  private String displayName;
+
   private String password;
 
   private Set<Role> authorities;
@@ -33,8 +35,14 @@ public class User implements UserDetails {
 
   public User() {}
 
-  public User(String username, String email, String password) {
+  public User(
+    String username,
+    String displayName,
+    String email,
+    String password
+  ) {
     this.username = username;
+    this.displayName = displayName;
     this.email = email;
     this.password = password;
     this.accountNonExpired = true;
@@ -58,6 +66,14 @@ public class User implements UserDetails {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
   }
 
   public String getEmail() {

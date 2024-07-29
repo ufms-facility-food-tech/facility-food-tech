@@ -24,12 +24,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("api")
 public class AuthenticationController {
 
   public record LoginRequest(String username, String password) {}
 
-  public record SignupRequest(String username, String email, String password) {}
+  public record SignupRequest(
+    String username,
+    String displayName,
+    String email,
+    String password
+  ) {}
 
   public record JwtResponse(
     String token,
@@ -116,15 +121,21 @@ public class AuthenticationController {
   public ResponseEntity<?> authenticateUser(
     @RequestBody LoginRequest loginRequest
   ) {
-    if (!userRepository.existsByUsername(loginRequest.username())) {
-      return ResponseEntity.badRequest().body("usuário não encontrado.");
+    var username = loginRequest.username();
+
+    if (!userRepository.existsByUsername(username)) {
+      if (!userRepository.existsByEmail(username)) {
+        return ResponseEntity.badRequest().body("usuário não encontrado.");
+      }
+      var user = userRepository.findByEmail(username);
+      username = user.get().getUsername();
     }
 
     Authentication auth;
     try {
       auth = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
-          loginRequest.username(),
+          username,
           loginRequest.password()
         )
       );
@@ -173,6 +184,7 @@ public class AuthenticationController {
 
     User user = new User(
       signUpRequest.username(),
+      signUpRequest.displayName(),
       signUpRequest.email(),
       passwordEncoder.encode(signUpRequest.password())
     );
