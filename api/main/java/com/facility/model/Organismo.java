@@ -26,10 +26,7 @@ public class Organismo {
   @ElementCollection(fetch = FetchType.EAGER)
   private Set<String> nomePopular = new HashSet<>();
 
-  @OneToMany(
-    mappedBy = "organismo",
-    cascade = CascadeType.ALL
-  )
+  @OneToMany(mappedBy = "organismo", cascade = CascadeType.ALL)
   @JsonManagedReference
   private Set<Peptideo> peptideo = new HashSet<>();
 
