@@ -1,4 +1,4 @@
-package com.facility;
+package com.facility.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

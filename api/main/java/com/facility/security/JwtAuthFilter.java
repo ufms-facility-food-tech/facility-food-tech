@@ -1,4 +1,4 @@
-package com.facility;
+package com.facility.security;
 
 import com.facility.service.JwtService;
 import com.facility.service.UserService;

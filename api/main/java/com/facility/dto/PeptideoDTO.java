@@ -8,284 +8,148 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PeptideoDTO {
-
-  private Long id;
-  private String nomeIdentificador;
-  private String sequencia;
-  private Boolean patenteado;
-  private Boolean resultadoInterno;
-  private Integer quantidadeAminoacidos;
-  private TipoPeptideo tipoPeptideo;
-  private Double massaMolecular;
-  private UnidadeMassaMolecular unidadeMassaMolecular;
-  private List<String> funcaoBiologica;
-  private List<String> microbiologia;
-  private List<String> atividadeAntifungica;
-  private List<String> atividadeCelular;
-  private List<String> propriedadesFisicoQuimicas;
-  private List<String> casoSucesso;
-  private List<String> caracteristicasAdicionais;
-  List<Publicacao> publicacao;
-  OrganismoDTO organismo;
-
-  public PeptideoDTO(Peptideo peptideo) {
-    this.id = peptideo.getId();
-    this.nomeIdentificador = peptideo.getNomeIdentificador();
-    this.sequencia = peptideo.getSequencia();
-    this.patenteado = peptideo.getPatenteado();
-    this.resultadoInterno = peptideo.getResultadoInterno();
-    this.quantidadeAminoacidos = peptideo.getQuantidadeAminoacidos();
-    this.tipoPeptideo = peptideo.getTipoPeptideo();
-    this.massaMolecular = peptideo.getMassaMolecular();
-    this.unidadeMassaMolecular = peptideo.getUnidadeMassaMolecular();
+public record PeptideoDTO(
+  Long id,
+  String nomeIdentificador,
+  String sequencia,
+  Boolean patenteado,
+  Boolean resultadoInterno,
+  Integer quantidadeAminoacidos,
+  TipoPeptideo tipoPeptideo,
+  Double massaMolecular,
+  UnidadeMassaMolecular unidadeMassaMolecular,
+  List<String> funcaoBiologica,
+  List<String> microbiologia,
+  List<String> atividadeAntifungica,
+  List<String> atividadeCelular,
+  List<String> propriedadesFisicoQuimicas,
+  List<String> casoSucesso,
+  List<String> caracteristicasAdicionais,
+  List<Publicacao> publicacao,
+  OrganismoDTO organismo
+) {
+  public static PeptideoDTO fromEntity(Peptideo peptideo) {
+    List<String> entityFuncaoBiologica = null;
+    List<String> entityMicrobiologia = null;
+    List<String> entityAtividadeAntifungica = null;
+    List<String> entityAtividadeCelular = null;
+    List<String> entityPropriedadesFisicoQuimicas = null;
+    List<String> entityCasoSucesso = null;
+    List<String> entityCaracteristicasAdicionais = null;
+    List<Publicacao> entityPublicacao = null;
+    OrganismoDTO entityOrganismo = null;
 
     if (peptideo.getFuncaoBiologica() != null) {
-      this.funcaoBiologica = peptideo
+      entityFuncaoBiologica = peptideo
         .getFuncaoBiologica()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getMicrobiologia() != null) {
-      this.microbiologia = peptideo
+      entityMicrobiologia = peptideo
         .getMicrobiologia()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getAtividadeAntifungica() != null) {
-      this.atividadeAntifungica = peptideo
+      entityAtividadeAntifungica = peptideo
         .getAtividadeAntifungica()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getAtividadeCelular() != null) {
-      this.atividadeCelular = peptideo
+      entityAtividadeCelular = peptideo
         .getAtividadeCelular()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getPropriedadesFisicoQuimicas() != null) {
-      this.propriedadesFisicoQuimicas = peptideo
+      entityPropriedadesFisicoQuimicas = peptideo
         .getPropriedadesFisicoQuimicas()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getCasoSucesso() != null) {
-      this.casoSucesso = peptideo
+      entityCasoSucesso = peptideo
         .getCasoSucesso()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getCaracteristicasAdicionais() != null) {
-      this.caracteristicasAdicionais = peptideo
+      entityCaracteristicasAdicionais = peptideo
         .getCaracteristicasAdicionais()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getPublicacao() != null) {
-      this.publicacao = peptideo
+      entityPublicacao = peptideo
         .getPublicacao()
         .stream()
         .collect(Collectors.toList());
     }
 
     if (peptideo.getOrganismo() != null) {
-      this.organismo = new OrganismoDTO(peptideo.getOrganismo());
+      entityOrganismo = OrganismoDTO.fromEntity(peptideo.getOrganismo());
     }
-  }
 
-  public PeptideoDTO() {}
+    return new PeptideoDTO(
+      peptideo.getId(),
+      peptideo.getNomeIdentificador(),
+      peptideo.getSequencia(),
+      peptideo.getPatenteado(),
+      peptideo.getResultadoInterno(),
+      peptideo.getQuantidadeAminoacidos(),
+      peptideo.getTipoPeptideo(),
+      peptideo.getMassaMolecular(),
+      peptideo.getUnidadeMassaMolecular(),
+      entityFuncaoBiologica,
+      entityMicrobiologia,
+      entityAtividadeAntifungica,
+      entityAtividadeCelular,
+      entityPropriedadesFisicoQuimicas,
+      entityCasoSucesso,
+      entityCaracteristicasAdicionais,
+      entityPublicacao,
+      entityOrganismo
+    );
+  }
 
   public Peptideo toEntity() {
     Peptideo peptideoEntity = new Peptideo();
-    peptideoEntity.setId(this.getId());
-    peptideoEntity.setNomeIdentificador(this.getNomeIdentificador());
-    peptideoEntity.setSequencia(this.getSequencia());
-    peptideoEntity.setPatenteado(this.getPatenteado());
-    peptideoEntity.setResultadoInterno(this.getResultadoInterno());
-    peptideoEntity.setQuantidadeAminoacidos(this.getQuantidadeAminoacidos());
-    peptideoEntity.setTipoPeptideo(this.getTipoPeptideo());
-    peptideoEntity.setMassaMolecular(this.getMassaMolecular());
-    peptideoEntity.setUnidadeMassaMolecular(this.getUnidadeMassaMolecular());
-    peptideoEntity.setFuncaoBiologica(new HashSet<>(this.getFuncaoBiologica()));
-    peptideoEntity.setMicrobiologia(new HashSet<>(this.getMicrobiologia()));
+    peptideoEntity.setId(id());
+    peptideoEntity.setNomeIdentificador(nomeIdentificador());
+    peptideoEntity.setSequencia(sequencia());
+    peptideoEntity.setPatenteado(patenteado());
+    peptideoEntity.setResultadoInterno(resultadoInterno());
+    peptideoEntity.setQuantidadeAminoacidos(quantidadeAminoacidos());
+    peptideoEntity.setTipoPeptideo(tipoPeptideo());
+    peptideoEntity.setMassaMolecular(massaMolecular());
+    peptideoEntity.setUnidadeMassaMolecular(unidadeMassaMolecular());
+    peptideoEntity.setFuncaoBiologica(new HashSet<>(funcaoBiologica()));
+    peptideoEntity.setMicrobiologia(new HashSet<>(microbiologia()));
     peptideoEntity.setAtividadeAntifungica(
-      new HashSet<>(this.getAtividadeAntifungica())
+      new HashSet<>(atividadeAntifungica())
     );
-    peptideoEntity.setAtividadeCelular(
-      new HashSet<>(this.getAtividadeCelular())
-    );
+    peptideoEntity.setAtividadeCelular(new HashSet<>(atividadeCelular()));
     peptideoEntity.setPropriedadesFisicoQuimicas(
-      new HashSet<>(this.getPropriedadesFisicoQuimicas())
+      new HashSet<>(propriedadesFisicoQuimicas())
     );
-    peptideoEntity.setCasoSucesso(new HashSet<>(this.getCasoSucesso()));
+    peptideoEntity.setCasoSucesso(new HashSet<>(casoSucesso()));
     peptideoEntity.setCaracteristicasAdicionais(
-      new HashSet<>(this.getCaracteristicasAdicionais())
+      new HashSet<>(caracteristicasAdicionais())
     );
-
-    if (this.getPublicacao() != null) {
-      for (Publicacao pub : this.getPublicacao()) {
+    if (publicacao() != null) {
+      for (Publicacao pub : publicacao()) {
         peptideoEntity.addPublicacao(pub);
       }
     }
-
     return peptideoEntity;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getNomeIdentificador() {
-    return nomeIdentificador;
-  }
-
-  public void setNomeIdentificador(String nomeIdentificador) {
-    this.nomeIdentificador = nomeIdentificador;
-  }
-
-  public String getSequencia() {
-    return sequencia;
-  }
-
-  public void setSequencia(String sequencia) {
-    this.sequencia = sequencia;
-  }
-
-  public Boolean getPatenteado() {
-    return patenteado;
-  }
-
-  public void setPatenteado(Boolean patenteado) {
-    this.patenteado = patenteado;
-  }
-
-  public Boolean getResultadoInterno() {
-    return resultadoInterno;
-  }
-
-  public void setResultadoInterno(Boolean resultadoInterno) {
-    this.resultadoInterno = resultadoInterno;
-  }
-
-  public Integer getQuantidadeAminoacidos() {
-    return quantidadeAminoacidos;
-  }
-
-  public void setQuantidadeAminoacidos(Integer quantidadeAminoacidos) {
-    this.quantidadeAminoacidos = quantidadeAminoacidos;
-  }
-
-  public TipoPeptideo getTipoPeptideo() {
-    return tipoPeptideo;
-  }
-
-  public void setTipoPeptideo(TipoPeptideo tipoPeptideo) {
-    this.tipoPeptideo = tipoPeptideo;
-  }
-
-  public Double getMassaMolecular() {
-    return massaMolecular;
-  }
-
-  public void setMassaMolecular(Double massaMolecular) {
-    this.massaMolecular = massaMolecular;
-  }
-
-  public UnidadeMassaMolecular getUnidadeMassaMolecular() {
-    return unidadeMassaMolecular;
-  }
-
-  public void setUnidadeMassaMolecular(
-    UnidadeMassaMolecular unidadeMassaMolecular
-  ) {
-    this.unidadeMassaMolecular = unidadeMassaMolecular;
-  }
-
-  public List<String> getFuncaoBiologica() {
-    return funcaoBiologica;
-  }
-
-  public void setFuncaoBiologica(List<String> funcaoBiologica) {
-    this.funcaoBiologica = funcaoBiologica;
-  }
-
-  public List<String> getMicrobiologia() {
-    return microbiologia;
-  }
-
-  public void setMicrobiologia(List<String> microbiologia) {
-    this.microbiologia = microbiologia;
-  }
-
-  public List<String> getAtividadeAntifungica() {
-    return atividadeAntifungica;
-  }
-
-  public void setAtividadeAntifungica(List<String> atividadeAntifungica) {
-    this.atividadeAntifungica = atividadeAntifungica;
-  }
-
-  public List<String> getAtividadeCelular() {
-    return atividadeCelular;
-  }
-
-  public void setAtividadeCelular(List<String> atividadeCelular) {
-    this.atividadeCelular = atividadeCelular;
-  }
-
-  public List<String> getPropriedadesFisicoQuimicas() {
-    return propriedadesFisicoQuimicas;
-  }
-
-  public void setPropriedadesFisicoQuimicas(
-    List<String> propriedadesFisicoQuimicas
-  ) {
-    this.propriedadesFisicoQuimicas = propriedadesFisicoQuimicas;
-  }
-
-  public List<String> getCasoSucesso() {
-    return casoSucesso;
-  }
-
-  public void setCasoSucesso(List<String> casoSucesso) {
-    this.casoSucesso = casoSucesso;
-  }
-
-  public List<String> getCaracteristicasAdicionais() {
-    return caracteristicasAdicionais;
-  }
-
-  public void setCaracteristicasAdicionais(
-    List<String> caracteristicasAdicionais
-  ) {
-    this.caracteristicasAdicionais = caracteristicasAdicionais;
-  }
-
-  public List<Publicacao> getPublicacao() {
-    return publicacao;
-  }
-
-  public void setPublicacao(List<Publicacao> publicacao) {
-    this.publicacao = publicacao;
-  }
-
-  public OrganismoDTO getOrganismo() {
-    return organismo;
-  }
-
-  public void setOrganismo(OrganismoDTO organismo) {
-    this.organismo = organismo;
   }
 }
