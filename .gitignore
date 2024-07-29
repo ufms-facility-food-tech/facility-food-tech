@@ -24,3 +24,7 @@ db.sqlite
 
 # logs
 *.log
+*.log*gz
+
+# image upload
+upload/
