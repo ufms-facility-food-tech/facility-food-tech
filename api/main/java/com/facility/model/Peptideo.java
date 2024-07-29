@@ -1,7 +1,5 @@
 package com.facility.model;
 
-import com.facility.enums.TipoPeptideo;
-import com.facility.enums.UnidadeMassaMolecular;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -27,12 +25,11 @@ public class Peptideo {
 
   private String nomeIdentificador;
   private String sequencia;
-  private Boolean patenteado;
-  private Boolean resultadoInterno;
+  private Boolean sintetizado = false;
+  private Boolean resultadoInterno = false;
   private Integer quantidadeAminoacidos;
-  private TipoPeptideo tipoPeptideo;
   private Double massaMolecular;
-  private UnidadeMassaMolecular unidadeMassaMolecular;
+  private Double massaMolar;
 
   @ManyToOne
   @JoinColumn(name = "organismo_id", nullable = true)
@@ -101,12 +98,12 @@ public class Peptideo {
     this.sequencia = sequencia;
   }
 
-  public Boolean getPatenteado() {
-    return patenteado;
+  public Boolean getSintetizado() {
+    return sintetizado;
   }
 
-  public void setPatenteado(Boolean patenteado) {
-    this.patenteado = patenteado;
+  public void setSintetizado(Boolean sintetizado) {
+    this.sintetizado = sintetizado;
   }
 
   public Boolean getResultadoInterno() {
@@ -125,14 +122,6 @@ public class Peptideo {
     this.quantidadeAminoacidos = quantidadeAminoacidos;
   }
 
-  public TipoPeptideo getTipoPeptideo() {
-    return tipoPeptideo;
-  }
-
-  public void setTipoPeptideo(TipoPeptideo tipoPeptideo) {
-    this.tipoPeptideo = tipoPeptideo;
-  }
-
   public Double getMassaMolecular() {
     return massaMolecular;
   }
@@ -141,14 +130,12 @@ public class Peptideo {
     this.massaMolecular = massaMolecular;
   }
 
-  public UnidadeMassaMolecular getUnidadeMassaMolecular() {
-    return unidadeMassaMolecular;
+  public Double getMassaMolar() {
+    return massaMolar;
   }
 
-  public void setUnidadeMassaMolecular(
-    UnidadeMassaMolecular unidadeMassaMolecular
-  ) {
-    this.unidadeMassaMolecular = unidadeMassaMolecular;
+  public void setMassaMolar(Double massaMolar) {
+    this.massaMolar = massaMolar;
   }
 
   public Set<String> getFuncaoBiologica() {
