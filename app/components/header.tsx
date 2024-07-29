@@ -7,7 +7,7 @@ export function Header() {
         <Link to="/">
           <img
             className="my-2 h-24 max-w-md text-balance text-center"
-            src="/images/lppfb-logo.jpg"
+            src="/images/static/lppfb-logo.jpg"
             alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
           />
         </Link>
