@@ -24,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/auth")
 public class AuthenticationController {
 
   public record LoginRequest(String username, String password) {}
@@ -40,6 +40,7 @@ public class AuthenticationController {
     String token,
     Long id,
     String username,
+    String displayName,
     String email,
     Set<String> roles,
     String type
@@ -66,7 +67,7 @@ public class AuthenticationController {
   @Operation(
     operationId = "authenticateUser",
     summary = "Authenticate user",
-    description = "Authenticate user",
+    description = "Returns a JWT token and user details if the credentials are valid.",
     requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
       description = "Login request",
       content = @Content(
@@ -163,6 +164,7 @@ public class AuthenticationController {
           jwt,
           userDetails.getId(),
           userDetails.getUsername(),
+          userDetails.getDisplayName(),
           userDetails.getEmail(),
           roles,
           "Bearer"

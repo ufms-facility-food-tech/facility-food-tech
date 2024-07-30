@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -22,10 +23,9 @@ public class SecurityConfig {
   private final JwtAuthFilter jwtAuthFilter;
 
   private static final String[] WHITE_LIST_URL = {
-    "**",
-    "/docs/**",
-    "/auth/login",
-    "/auth/register",
+    "api/images/**",
+    "api/docs/**",
+    "api/auth/**",
   };
 
   public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
@@ -36,15 +36,17 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
       .csrf(AbstractHttpConfigurer::disable)
-      .authorizeHttpRequests(auth ->
-        auth
-          .requestMatchers(WHITE_LIST_URL)
-          .permitAll()
-          .anyRequest()
-          .authenticated()
+      .authorizeHttpRequests(
+        auth ->
+          auth
+            .requestMatchers(WHITE_LIST_URL)
+            .permitAll()
+            .anyRequest()
+            .authenticated()
       )
-      .sessionManagement(session ->
-        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .sessionManagement(
+        session ->
+          session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       )
       .addFilterBefore(
         jwtAuthFilter,
@@ -55,7 +57,7 @@ public class SecurityConfig {
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+    return new BCryptPasswordEncoder(BCryptVersion.$2B, 10);
   }
 
   @Bean
