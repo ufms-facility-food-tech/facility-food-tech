@@ -4,9 +4,9 @@ import {
   json,
   useLoaderData,
 } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import type { components } from "~/api-schema";
 import { Container } from "~/components/container";
-import { useNavigate } from "@remix-run/react";
 
 export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
   const jwt = window.localStorage.getItem("jwt");
