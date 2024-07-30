@@ -5,9 +5,9 @@ import {
   redirect,
   useLoaderData,
 } from "@remix-run/react";
+import type { components } from "~/api-schema";
 import { Container } from "~/components/container";
 import { SubmitButton, TextInput } from "~/components/form";
-import type { components } from "~/api-schema";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
