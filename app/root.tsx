@@ -8,8 +8,8 @@ import {
 } from "@remix-run/react";
 import "./tailwind.css";
 import type { ReactNode } from "react";
-import { Header } from "~/components/header";
 import type { components } from "~/api-schema";
+import { Header } from "~/components/header";
 
 export function clientLoader() {
   const user = window.localStorage.getItem("user");
