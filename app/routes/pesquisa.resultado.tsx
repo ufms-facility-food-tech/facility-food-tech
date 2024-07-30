@@ -9,10 +9,19 @@ import { Container } from "~/components/container";
 import { useNavigate } from "@remix-run/react";
 
 export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
-  const url = new URL(request.url);
+  const jwt = window.localStorage.getItem("jwt");
+  if (!jwt) {
+    return [];
+  }
 
+  const url = new URL(request.url);
   const res = await fetch(
     `${url.origin}/api/query?${url.searchParams.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    },
   );
 
   if (!res.ok) {
@@ -73,9 +82,7 @@ export default function Resultado() {
                 <td className="px-4 py-4">
                   {organismo?.nomePopular?.join(", ")}
                 </td>
-                <td className="px-4 py-4">
-                  {organismo?.especie}
-                </td>
+                <td className="px-4 py-4">{organismo?.especie}</td>
                 <td className="text-wrap px-4 py-4">
                   {sequencia && sequencia?.length > 15
                     ? sequencia?.slice(0, 15).concat("...")

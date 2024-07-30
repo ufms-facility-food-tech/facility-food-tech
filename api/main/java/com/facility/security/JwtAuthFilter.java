@@ -2,6 +2,7 @@ package com.facility.security;
 
 import com.facility.service.JwtService;
 import com.facility.service.UserService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,14 +39,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       return;
     }
 
-    final String jwt = authHeader.substring(7);
-    final String username = jwtService.extractUsername(jwt);
-    if (
-      username != null &&
-      SecurityContextHolder.getContext().getAuthentication() == null
-    ) {
-      UserDetails userDetails = this.userService.loadUserByUsername(username);
-      if (jwtService.isTokenValid(jwt, userDetails)) {
+    if (SecurityContextHolder.getContext().getAuthentication() == null) {
+      final String jwt = authHeader.substring(7);
+      try {
+        String username = jwtService.verifyToken(jwt);
+        UserDetails userDetails = this.userService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authToken =
           new UsernamePasswordAuthenticationToken(
             userDetails,
@@ -56,10 +54,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           new WebAuthenticationDetailsSource().buildDetails(request)
         );
         SecurityContextHolder.getContext().setAuthentication(authToken);
+      } catch (JwtException e) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        filterChain.doFilter(request, response);
+        return;
       }
     }
 
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     filterChain.doFilter(request, response);
   }
 }

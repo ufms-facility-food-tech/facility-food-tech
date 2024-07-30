@@ -11,9 +11,17 @@ export async function clientLoader({
   request,
   params,
 }: ClientLoaderFunctionArgs) {
-  const url = new URL(request.url);
+  const jwt = window.localStorage.getItem("jwt");
+  if (!jwt) {
+    return {};
+  }
 
-  const peptideo = await fetch(`${url.origin}/api/peptideos/${params.id}`);
+  const url = new URL(request.url);
+  const peptideo = await fetch(`${url.origin}/api/peptideos/${params.id}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
 
   if (!peptideo.ok) {
     return {};
@@ -41,7 +49,7 @@ export default function Peptideo() {
         <table className="w-full text-left">
           <thead className="bg-white text-lg outline outline-1">
             <tr>
-              <th scope="col" className="px-6 py-3 w-1/6">
+              <th scope="col" className="w-1/6 px-6 py-3">
                 Detalhes
               </th>
               <th scope="col" className="w-5/6" />
@@ -55,10 +63,6 @@ export default function Peptideo() {
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Sequência</td>
               <td className="px-6 py-4">{peptideo.sequencia}</td>
-            </tr>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Tipo de peptídeo</td>
-              <td className="px-6 py-4">{peptideo.tipoPeptideo}</td>
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Espécie</td>

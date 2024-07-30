@@ -227,6 +227,7 @@ export interface components {
             /** Format: int64 */
             id?: number;
             username?: string;
+            displayName?: string;
             email?: string;
             roles?: string[];
             type?: string;

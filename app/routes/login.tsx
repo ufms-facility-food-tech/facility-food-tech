@@ -1,8 +1,9 @@
 import {
   type ClientActionFunctionArgs,
+  type ClientLoaderFunctionArgs,
   Form,
-  NavLink,
   redirect,
+  useLoaderData,
 } from "@remix-run/react";
 import { Container } from "~/components/container";
 import { SubmitButton, TextInput } from "~/components/form";
@@ -18,7 +19,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     password,
   } satisfies components["schemas"]["LoginRequest"];
 
-  const res = await fetch("/api/login", {
+  const res = await fetch("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(user),
     headers: {
@@ -26,15 +27,44 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     },
   });
 
-  console.log(res);
-  res.json().then(console.log);
+  if (!res.ok) {
+    const text = await res.text();
+    return redirect(`/login?errorMessage=${text}`);
+  }
 
-  return redirect("/admin");
+  const jwtResponse =
+    (await res.json()) as components["schemas"]["JwtResponse"];
+
+  window.localStorage.setItem("user", JSON.stringify(jwtResponse));
+  window.localStorage.setItem("jwt", jwtResponse.token as string);
+
+  return redirect("/");
+}
+
+export function clientLoader({ request }: ClientLoaderFunctionArgs) {
+  const user = window.localStorage.getItem("user");
+  if (user) {
+    return redirect("/");
+  }
+
+  const urlSeachParams = new URL(request.url).searchParams;
+
+  return urlSeachParams;
 }
 
 export default function Entrar() {
+  const urlSeachParams = useLoaderData<typeof clientLoader>();
+
   return (
     <Container title="Entrar">
+      {urlSeachParams.has("errorMessage") && (
+        <div className="my-16 flex flex-col items-center">
+          <p>
+            Erro ao realizar login
+            {`: ${urlSeachParams.get("message")}`}
+          </p>
+        </div>
+      )}
       <Form method="post" className="flex flex-col gap-4">
         <TextInput
           name="username"
@@ -54,9 +84,7 @@ export default function Entrar() {
           </div>
         </div>
         <div className="m-4 flex justify-center">
-          <SubmitButton>
-            <NavLink to="/admin">Entrar</NavLink>
-          </SubmitButton>
+          <SubmitButton>Entrar</SubmitButton>
         </div>
       </Form>
     </Container>

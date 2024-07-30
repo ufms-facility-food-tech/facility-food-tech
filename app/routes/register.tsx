@@ -1,7 +1,10 @@
 import {
   type ClientActionFunctionArgs,
+  type ClientLoaderFunctionArgs,
   Form,
+  Link,
   redirect,
+  useLoaderData,
 } from "@remix-run/react";
 import type { components } from "~/api-schema";
 import { Container } from "~/components/container";
@@ -21,7 +24,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     password,
   } satisfies components["schemas"]["SignupRequest"];
 
-  const res = await fetch("/api/register", {
+  const res = await fetch("/api/auth/register", {
     method: "POST",
     body: JSON.stringify(newUser),
     headers: {
@@ -29,15 +32,53 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     },
   });
 
-  console.log(res);
-  res.json().then(console.log);
+  const params = {
+    success: res.ok ? "true" : "false",
+    message: await res.text(),
+  };
 
-  return redirect("/admin");
+  return redirect(`/register?${new URLSearchParams(params).toString()}`);
+}
+
+export function clientLoader({ request }: ClientLoaderFunctionArgs) {
+  const user = window.localStorage.getItem("user");
+  if (user) {
+    return redirect("/");
+  }
+
+  const urlSeachParams = new URL(request.url).searchParams;
+  return urlSeachParams;
 }
 
 export default function Cadastrar() {
+  const urlSeachParams = useLoaderData<typeof clientLoader>();
+  const registerSuccess = urlSeachParams.get("success");
+
+  if (registerSuccess != null && registerSuccess === "true") {
+    return (
+      <Container title="Cadastrar">
+        <div className="my-16 flex flex-col items-center">
+          <p>Cadastro realizado com sucesso.</p>
+          <Link to="/" className="text-cyan-600 underline">
+            Voltar para a página inicial
+          </Link>
+        </div>
+      </Container>
+    );
+  }
+
   return (
     <Container title="Cadastrar">
+      {registerSuccess != null && registerSuccess === "false" && (
+        <div className="my-16 flex flex-col items-center">
+          <p>
+            Erro ao cadastrar usuário
+            {urlSeachParams.has("message")
+              ? `: ${urlSeachParams.get("message")}`
+              : ""}
+          </p>
+        </div>
+      )}
       <Form method="post" className="flex flex-col gap-4">
         <TextInput
           name="displayName"
