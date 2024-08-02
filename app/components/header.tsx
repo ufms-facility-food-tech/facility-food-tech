@@ -21,7 +21,7 @@ export function Header({
             <NavLink
               prefetch="intent"
               to="/admin"
-              className="rounded-full bg-cyan-500 px-6 py-2 text-lg font-bold text-white"
+              className="rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-6 py-2 text-lg font-bold text-white"
             >
               {user.displayName as string}
             </NavLink>
@@ -37,7 +37,7 @@ export function Header({
             <NavLink
               prefetch="intent"
               to="/login"
-              className="rounded-full bg-cyan-500 px-6 py-2 text-lg font-bold text-white"
+              className="to-cyan-5000 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-6 py-2 text-lg font-bold text-white"
             >
               Entrar
             </NavLink>

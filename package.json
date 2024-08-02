@@ -14,7 +14,8 @@
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.2.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
