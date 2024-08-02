@@ -1,11 +1,4 @@
-import type {
-  ChangeEventHandler,
-  HTMLInputTypeAttribute,
-  InputHTMLAttributes,
-  ReactNode,
-  SelectHTMLAttributes,
-  TextareaHTMLAttributes,
-} from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 export function SubmitButton({ children }: { children: ReactNode }) {
   return (
@@ -19,98 +12,75 @@ export function SubmitButton({ children }: { children: ReactNode }) {
 }
 
 export function TextInput({
-  name,
   label,
-  type,
-  onChange,
-  autoComplete,
+  ...props
 }: {
-  name?: InputHTMLAttributes<HTMLInputElement>["name"];
-  label: string;
-  type?: HTMLInputTypeAttribute;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  autoComplete?: InputHTMLAttributes<HTMLInputElement>["autoComplete"];
-}) {
+  label?: string;
+} & ComponentProps<"input">) {
+  if (!label)
+    return (
+      <input
+        className="mt-1 w-full rounded-xl border bg-neutral-50 p-2 text-base text-black"
+        {...props}
+      />
+    );
+
   return (
-    <label className="flex flex-col text-lg text-cyan-600">
+    <label className="flex flex-col text-cyan-600">
       {label}
       <input
         className="mt-1 rounded-xl border bg-neutral-50 p-2 text-base text-black"
-        name={name}
-        type={type}
-        onChange={onChange}
-        autoComplete={autoComplete}
+        {...props}
       />
     </label>
   );
 }
 
 export function TextAreaInput({
-  name,
   label,
-  rows,
-  onChange,
+  ...props
 }: {
-  name?: TextareaHTMLAttributes<HTMLTextAreaElement>["name"];
   label: string;
-  rows?: TextareaHTMLAttributes<HTMLTextAreaElement>["rows"];
-  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
-}) {
+} & ComponentProps<"textarea">) {
   return (
-    <label className="flex flex-col text-lg text-cyan-600">
+    <label className="flex flex-col text-base text-cyan-600">
       {label}
       <textarea
         className="mt-1 resize-none overflow-auto rounded-xl border bg-neutral-50 p-2 text-base text-black"
-        name={name}
-        rows={rows || 4}
-        onChange={onChange}
+        {...props}
       />
     </label>
   );
 }
 
 export function CheckboxInput({
-  name,
   label,
-  checked,
-  onChange,
+  ...props
 }: {
-  name?: InputHTMLAttributes<HTMLInputElement>["name"];
   label: string;
-  checked?: InputHTMLAttributes<HTMLInputElement>["defaultChecked"];
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-}) {
+} & ComponentProps<"input">) {
   return (
-    <label className="flex gap-2 text-lg text-cyan-600">
-      <input
-        type="checkbox"
-        name={name}
-        defaultChecked={checked}
-        onChange={onChange}
-      />
+    <label className="flex gap-2 text-cyan-600">
+      <input type="checkbox" {...props} />
       {label}
     </label>
   );
 }
 
 export function SelectInput({
-  name,
   label,
   options,
-  onChange,
+  ...props
 }: {
-  name?: SelectHTMLAttributes<HTMLSelectElement>["name"];
   label: string;
   options: Array<{ value: string; label: string }>;
-  onChange?: ChangeEventHandler<HTMLSelectElement>;
-}) {
+} & ComponentProps<"select">) {
   return (
-    <label className="flex flex-col text-lg text-cyan-600">
+    <label className="flex flex-col text-cyan-600">
       {label}
       <select
-        name={name}
         className="mt-1 rounded-xl border bg-neutral-50 p-2 text-base text-black"
-        onChange={onChange}
+        {...props}
       >
         {options.map(({ value, label }) => (
           <option key={value} value={value}>
@@ -119,5 +89,14 @@ export function SelectInput({
         ))}
       </select>
     </label>
+  );
+}
+
+export function FormErrorMessage({ errors }: { errors?: Array<string> }) {
+  if (!errors) return null;
+  return (
+    <p className="rounded-xl bg-red-50 p-2 text-sm text-red-800">
+      {errors.join(" ")}
+    </p>
   );
 }

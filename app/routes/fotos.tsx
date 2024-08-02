@@ -20,31 +20,26 @@ export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
 }
 
 export default function Fotos() {
-  const photos = useLoaderData<typeof clientLoader>() as Array<
+  const images = useLoaderData<typeof clientLoader>() as Array<
     components["schemas"]["ImageMetadata"]
   >;
 
   return (
     <Container title="Fotos">
-      {/* TODO: fix max-height */}
-      <ul className="flex flex-wrap justify-center gap-2 md:max-h-[8500px] md:flex-col md:justify-start xl:max-h-[4800px] 2xl:max-h-[3500px]">
-        {photos.map(({ fileName, alt }) => (
-          <li
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {images.map(({ fileName, alt }) => (
+          <div
             key={fileName}
-            className="bg-neutral-100 md:w-1/2 xl:w-1/3 2xl:w-1/4"
+            className="relative w-full overflow-hidden rounded-lg pb-[100%] shadow-md"
           >
-            <label>
-              <img
-                className="h-full w-auto"
-                src={`/images/upload/${fileName}`}
-                alt={alt || ""}
-                loading="lazy"
-              />
-              {alt ? <span className="m-1">{alt}</span> : null}
-            </label>
-          </li>
+            <img
+              src={`/images/upload/${fileName}`}
+              alt={alt || ""}
+              className="absolute inset-0 h-full w-full object-contain transition-transform duration-300 hover:scale-105"
+            />
+          </div>
         ))}
-      </ul>
+      </div>
     </Container>
   );
 }
