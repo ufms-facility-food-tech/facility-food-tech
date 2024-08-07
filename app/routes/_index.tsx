@@ -4,7 +4,7 @@ import { TbSearch } from "react-icons/tb";
 export default function Index() {
   return (
     <>
-      <div className="mt-6 min-h-96 overflow-x-hidden lg:mt-0">
+      <div className="min-h-96 overflow-x-hidden bg-[url('/images/static/molecula.png')] bg-contain bg-fixed bg-right bg-no-repeat pt-6 lg:pt-0">
         <div className="flex flex-col items-center justify-around lg:flex-row">
           <div className="lg:min-w-2/5 flex w-full flex-col items-center gap-8">
             <h1 className="text-balance px-6 text-center text-4xl font-bold text-white lg:w-96 lg:px-0">
@@ -34,12 +34,12 @@ export default function Index() {
             <img
               src="/images/static/img-01.jpg"
               alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
-              className="h-56 max-w-md translate-x-4 translate-y-10 rotate-12 text-balance border-4 border-neutral-300"
+              className="h-56 max-w-md translate-x-6 translate-y-16 rotate-1 text-balance border-4 border-neutral-300"
             />
             <img
               src="/images/static/img-02.jpg"
               alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
-              className="h-56 max-w-md -rotate-6 text-balance border-4 border-neutral-300"
+              className="h-56 max-w-md -translate-x-2 -translate-y-4 -rotate-2 text-balance border-4 border-neutral-300"
             />
           </div>
         </div>
