@@ -1,17 +1,5 @@
-import type { MetaFunction } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import { TbSearch } from "react-icons/tb";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Facility FoodTech do Cerrado-Pantanal" },
-    {
-      name: "description",
-      content:
-        "Bem-vindo ao nosso site dedicado à pesquisa biológica com enfoque exclusivo nas riquezas naturais do cerrado e pantanal!",
-    },
-  ];
-};
 
 export default function Index() {
   return (
