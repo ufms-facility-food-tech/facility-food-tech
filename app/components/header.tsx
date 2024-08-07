@@ -1,5 +1,5 @@
 import { Link, NavLink } from "@remix-run/react";
-import { TbLogin, TbUserPlus } from "react-icons/tb";
+import { TbLogin, TbLogout, TbUserCircle, TbUserPlus } from "react-icons/tb";
 import type { components } from "~/api-schema";
 
 export function Header({
@@ -22,15 +22,15 @@ export function Header({
             <NavLink
               prefetch="intent"
               to="/admin"
-              className="rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-6 py-2 text-lg font-bold text-white"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-6 py-2 text-lg font-bold text-white"
             >
-              {user.displayName as string}
+              {user.displayName as string} <TbUserCircle size="2rem" />
             </NavLink>
             <NavLink
               to="/logout"
-              className="rounded-full bg-gradient-to-r from-neutral-200 to-neutral-100 px-6 py-2 text-lg font-bold"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-l from-neutral-200 to-neutral-100 py-2 pl-5 pr-4 text-lg font-bold"
             >
-              Sair
+              Sair <TbLogout size="2rem" />
             </NavLink>
           </div>
         ) : (
@@ -40,14 +40,14 @@ export function Header({
               to="/login"
               className="flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 py-2 pl-5 pr-4 text-lg font-bold text-white"
             >
-              Entrar <TbLogin />
+              Entrar <TbLogin size="2rem" />
             </NavLink>
             <NavLink
               prefetch="intent"
               to="/register"
               className="flex items-center gap-2 rounded-full bg-gradient-to-l from-neutral-200 to-neutral-100 py-2 pl-5 pr-4 text-lg font-bold"
             >
-              Cadastrar <TbUserPlus />
+              Cadastrar <TbUserPlus size="2rem" />
             </NavLink>
           </div>
         )}
