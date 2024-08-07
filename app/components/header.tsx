@@ -1,4 +1,5 @@
 import { Link, NavLink } from "@remix-run/react";
+import { TbLogin, TbUserPlus } from "react-icons/tb";
 import type { components } from "~/api-schema";
 
 export function Header({
@@ -27,7 +28,7 @@ export function Header({
             </NavLink>
             <NavLink
               to="/logout"
-              className="rounded-full bg-neutral-100 px-6 py-2 text-lg font-bold outline outline-2 -outline-offset-2 outline-neutral-200 focus-visible:outline-inherit"
+              className="rounded-full bg-gradient-to-r from-neutral-200 to-neutral-100 px-6 py-2 text-lg font-bold"
             >
               Sair
             </NavLink>
@@ -37,16 +38,16 @@ export function Header({
             <NavLink
               prefetch="intent"
               to="/login"
-              className="to-cyan-5000 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-6 py-2 text-lg font-bold text-white"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 py-2 pl-5 pr-4 text-lg font-bold text-white"
             >
-              Entrar
+              Entrar <TbLogin />
             </NavLink>
             <NavLink
               prefetch="intent"
               to="/register"
-              className="rounded-full bg-neutral-100 px-6 py-2 text-lg font-bold outline outline-2 -outline-offset-2 outline-neutral-200 focus-visible:outline-inherit"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-l from-neutral-200 to-neutral-100 py-2 pl-5 pr-4 text-lg font-bold"
             >
-              Cadastrar
+              Cadastrar <TbUserPlus />
             </NavLink>
           </div>
         )}
