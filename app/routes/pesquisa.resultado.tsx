@@ -9,24 +9,14 @@ import type { components } from "~/api-schema";
 import { Container } from "~/components/container";
 
 export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
-  const jwt = window.localStorage.getItem("jwt");
-  if (!jwt) {
-    return [];
-  }
-
   const url = new URL(request.url);
-  const res = await fetch(
-    `${url.origin}/api/query?${url.searchParams.toString()}`,
-    {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    },
-  );
+  const res = await fetch(`/api/query?${url.searchParams.toString()}`, {
+    method: "GET",
+  });
 
   if (!res.ok) {
     console.error(res);
-    return [];
+    return json([]);
   }
 
   return json(await res.json());
