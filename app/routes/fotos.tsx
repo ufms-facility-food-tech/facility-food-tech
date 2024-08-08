@@ -1,15 +1,15 @@
-import {
-  type ClientLoaderFunctionArgs,
-  json,
-  useLoaderData,
-} from "@remix-run/react";
+import { json, useLoaderData } from "@remix-run/react";
 import type { components } from "~/api-schema";
 import { Container } from "~/components/container";
 
-export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
-  const url = new URL(request.url);
+// TODO: hit db directly
+// export async function loader() {
 
-  const res = await fetch(`${url.origin}/api/images`);
+//   return json([]);
+// }
+
+export async function clientLoader() {
+  const res = await fetch("/api/images");
 
   if (!res.ok) {
     console.error(res);

@@ -7,27 +7,17 @@ import {
 import type { components } from "~/api-schema";
 import { Container } from "~/components/container";
 
-export async function clientLoader({
-  request,
-  params,
-}: ClientLoaderFunctionArgs) {
-  const jwt = window.localStorage.getItem("jwt");
-  if (!jwt) {
-    return {};
-  }
-
-  const url = new URL(request.url);
-  const peptideo = await fetch(`${url.origin}/api/peptideos/${params.id}`, {
-    headers: {
-      Authorization: `Bearer ${jwt}`,
-    },
+export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
+  const res = await fetch(`/api/peptideos/${params.id}`, {
+    method: "GET",
   });
 
-  if (!peptideo.ok) {
+  if (!res.ok) {
+    console.error(res);
     return {};
   }
 
-  return json(await peptideo.json());
+  return json(await res.json());
 }
 
 export default function Peptideo() {
