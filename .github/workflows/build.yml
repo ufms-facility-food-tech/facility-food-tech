@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  build-java-prod:
+  build:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -29,46 +29,6 @@ jobs:
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
-      - name: setup java
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: maven
-      - name: maven
-        run: ./mvnw verify
-        env:
-          SPRING_PROFILES_ACTIVE: prod
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: postgres
-          APPLICATION_SECURITY_JWT_SECRET_KEY: 3PuqrpPQjSyGVOgRgqbwc4uAkgYpxSjpTnvzByA7yAoVxvBSLd3UiBGD2E7c1TejB54/gK59rBONutoMqbiZfDK5uCtWT3XJT4xxQW2sWs8vv7q4IBXxeS0C5wWZ+yngyjavrZhkO/B33HZyCLx/hJf8WAFBO2Aow88kFjmwZoPOrcucbDUPAdqsuv05OKW4AgZU9XFdPuZvIS7dFw3+lvcI79wL6QQE8W2bNPDf9at+oXrVi8PA39aIB2nNAMsZUT+CqSADikNBjuxfY3BOLALjxB9If9RDLuip57znekUAnLzVo8P8opZqbsIdHT/vvwO+qocVC2G91Dtg5Zh6heKRyG2KLRWmtjRrOVOLYI5YrDFip3z0wXwVRbqIcrOiV7T3d/oFQwY5areUzSspsWEixoQttejrWz1r0ROOLyE76bZl+25aIm2GPgqq7ZZ18Wu7aZf82F4Z7o52hnVF8RyxUgsnNeExeDl+0EZQYVNlJBIt/np52p6FEuHlGEUACg/sHig7yAwYlYQU1VBmg/LLU0R75mLKSwhtqJID2sed2FS+Lg86jf4PX/ATOmLyCuZ9yBdt/PPriYOJJYU4AIOBINbWaQD1rgrD5IcZmwesfGzFHkqsFa2Y/QJZy1PJWJA8jCkPGYu1EbmV8HzPSG6L+w0A8Xgr2mdL32OsoUw=
-
-  build-java-dev:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
-          fetch-depth: 0
-      - name: setup java
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: maven
-      - name: maven
-        run: ./mvnw verify
-
-  build-npm:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
-          fetch-depth: 0
       - name: setup node
         uses: actions/setup-node@v4
         with:
@@ -79,3 +39,11 @@ jobs:
         run: |
           npm ci
           npm run build
+        env:
+          NODE_ENV: production
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: postgres
+          JWT_SECRET_KEY: 3PuqrpPQjSyGVOgRgqbwc4uAkgYpxSjpTnvzByA7yAoVxvBSLd3UiBGD2E7c1TejB54/gK59rBONutoMqbiZfDK5uCtWT3XJT4xxQW2sWs8vv7q4IBXxeS0C5wWZ+yngyjavrZhkO/B33HZyCLx/hJf8WAFBO2Aow88kFjmwZoPOrcucbDUPAdqsuv05OKW4AgZU9XFdPuZvIS7dFw3+lvcI79wL6QQE8W2bNPDf9at+oXrVi8PA39aIB2nNAMsZUT+CqSADikNBjuxfY3BOLALjxB9If9RDLuip57znekUAnLzVo8P8opZqbsIdHT/vvwO+qocVC2G91Dtg5Zh6heKRyG2KLRWmtjRrOVOLYI5YrDFip3z0wXwVRbqIcrOiV7T3d/oFQwY5areUzSspsWEixoQttejrWz1r0ROOLyE76bZl+25aIm2GPgqq7ZZ18Wu7aZf82F4Z7o52hnVF8RyxUgsnNeExeDl+0EZQYVNlJBIt/np52p6FEuHlGEUACg/sHig7yAwYlYQU1VBmg/LLU0R75mLKSwhtqJID2sed2FS+Lg86jf4PX/ATOmLyCuZ9yBdt/PPriYOJJYU4AIOBINbWaQD1rgrD5IcZmwesfGzFHkqsFa2Y/QJZy1PJWJA8jCkPGYu1EbmV8HzPSG6L+w0A8Xgr2mdL32OsoUw=

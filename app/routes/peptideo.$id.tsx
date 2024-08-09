@@ -1,29 +1,32 @@
-import {
-  type ClientLoaderFunctionArgs,
-  json,
-  useLoaderData,
-  useNavigate,
-} from "@remix-run/react";
-import type { components } from "~/api-schema";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { Container } from "~/components/container";
+import { db } from "~/db.server/connection";
+import { eq } from "drizzle-orm";
+import { peptideoTable } from "~/db.server/schema";
 
-export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
-  const res = await fetch(`/api/peptideos/${params.id}`, {
-    method: "GET",
+export async function loader({ params }: LoaderFunctionArgs) {
+  const { id } = params;
+  const peptideo = await db.query.peptideoTable.findFirst({
+    where: eq(peptideoTable.id, Number(id)),
+    with: {
+      organismo: true,
+      funcaoBiologica: true,
+      microbiologia: true,
+      atividadeAntifungica: true,
+      atividadeCelular: true,
+      propriedadesFisicoQuimicas: true,
+      casoSucesso: true,
+      caracteristicasAdicionais: true,
+      publicacao: true,
+    },
   });
 
-  if (!res.ok) {
-    console.error(res);
-    return {};
-  }
-
-  return json(await res.json());
+  return json(peptideo);
 }
 
 export default function Peptideo() {
-  const peptideo = useLoaderData<
-    typeof clientLoader
-  >() as components["schemas"]["PeptideoDTO"];
+  const peptideo = useLoaderData<typeof loader>();
 
   const navigate = useNavigate();
   return (
@@ -56,12 +59,16 @@ export default function Peptideo() {
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Espécie</td>
-              <td className="px-6 py-4">{peptideo.organismo?.especie}</td>
+              <td className="px-6 py-4">
+                {peptideo.organismo?.nomeCientifico}
+              </td>
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Nomes populares</td>
               <td className="px-6 py-4">
-                {peptideo.organismo?.nomePopular?.join(", ")}
+                {peptideo.organismo?.nomesPopulares
+                  ?.map((nome) => nome)
+                  .join(", ")}
               </td>
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
@@ -71,7 +78,9 @@ export default function Peptideo() {
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
               <td className="px-6 py-4">Funções biológicas</td>
               <td className="px-6 py-4">
-                {peptideo.funcaoBiologica?.join(", ")}
+                {peptideo.funcaoBiologica
+                  .map((funcao) => funcao.value)
+                  .join(", ")}
               </td>
             </tr>
             <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">

@@ -5,11 +5,11 @@ import { SelectInput, SubmitButton, TextInput } from "~/components/form";
 
 export default function Pesquisa() {
   const queryItems = [
-    { value: "especie", label: "Espécie" },
+    { value: "nomeCientifico", label: "Nome Científico" },
+    { value: "nomePopular", label: "Nome Popular" },
     { value: "origem", label: "Origem" },
     { value: "familia", label: "Família" },
-    { value: "nomePopular", label: "Nome Popular" },
-    { value: "casoSucesso", label: "Caso de Sucesso" },
+    { value: "casoSucesso", label: "Casos de Sucesso" },
   ];
 
   const [queryItemName, setQueryItemName] = useState(queryItems[0].value);

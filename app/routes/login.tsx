@@ -1,15 +1,9 @@
-import {
-  type ClientActionFunctionArgs,
-  type ClientLoaderFunctionArgs,
-  Form,
-  redirect,
-  useLoaderData,
-} from "@remix-run/react";
-import type { components } from "~/api-schema";
+import { type ActionFunctionArgs, redirect } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 import { Container } from "~/components/container";
 import { SubmitButton, TextInput } from "~/components/form";
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const username = formData.get("username") as string;
   const password = formData.get("password") as string;
@@ -17,54 +11,44 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const user = {
     username,
     password,
-  } satisfies components["schemas"]["LoginRequest"];
+  };
+  console.log(user);
 
-  const res = await fetch("/api/auth/login", {
-    method: "POST",
-    body: JSON.stringify(user),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  // const res = await fetch("/api/auth/login", {
+  //   method: "POST",
+  //   body: JSON.stringify(user),
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
 
-  if (!res.ok) {
-    const text = await res.text();
-    return redirect(`/login?errorMessage=${text}`);
-  }
+  // if (!res.ok) {
+  //   const text = await res.text();
+  //   return redirect(`/login?errorMessage=${text}`);
+  // }
 
-  const jwtResponse =
-    (await res.json()) as components["schemas"]["JwtResponse"];
+  // const jwtResponse = await res.json();
 
-  window.localStorage.setItem("user", JSON.stringify(jwtResponse));
-  window.localStorage.setItem("jwt", jwtResponse.token as string);
+  // window.localStorage.setItem("user", JSON.stringify(jwtResponse));
+  // window.localStorage.setItem("jwt", jwtResponse.token as string);
 
-  return redirect("/");
+  return redirect("/admin");
 }
 
-export function clientLoader({ request }: ClientLoaderFunctionArgs) {
-  const user = window.localStorage.getItem("user");
-  if (user) {
-    return redirect("/");
-  }
+// export function clientLoader({ request }: ClientLoaderFunctionArgs) {
+//   const user = window.localStorage.getItem("user");
+//   if (user) {
+//     return redirect("/");
+//   }
 
-  const urlSeachParams = new URL(request.url).searchParams;
+//   const urlSeachParams = new URL(request.url).searchParams;
 
-  return urlSeachParams;
-}
+//   return urlSeachParams;
+// }
 
 export default function Entrar() {
-  const urlSeachParams = useLoaderData<typeof clientLoader>();
-
   return (
     <Container title="Entrar">
-      {urlSeachParams.has("errorMessage") && (
-        <div className="my-16 flex flex-col items-center">
-          <p>
-            Erro ao realizar login
-            {`: ${urlSeachParams.get("message")}`}
-          </p>
-        </div>
-      )}
       <Form method="post" className="flex flex-col gap-4">
         <TextInput
           name="username"
