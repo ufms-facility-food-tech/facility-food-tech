@@ -1,6 +1,6 @@
 services:
   facility-db:
-    image: "postgres:16.3-alpine"
+    image: "postgres:16.4-alpine"
     env_file: .env
     environment:
       - POSTGRES_USER=${DB_USER}
