@@ -11,8 +11,10 @@ export async function loader() {
     with: {
       organismo: {
         columns: {
-          nomesPopulares: true,
           nomeCientifico: true,
+        },
+        with: {
+          nomesPopulares: true,
         },
       },
     },
