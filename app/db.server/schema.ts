@@ -2,7 +2,6 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   integer,
-  jsonb,
   numeric,
   pgEnum,
   pgTable,
@@ -16,8 +15,24 @@ export const organismoTable = pgTable("organismo", {
   nomeCientifico: text("nome_cientifico"),
   familia: text("familia"),
   origem: text("origem"),
-  nomesPopulares: jsonb("nomes_populares").$type<Array<string>>(),
 });
+
+export const organismoRelations = relations(organismoTable, ({ many }) => ({
+  nomesPopulares: many(nomePopularTable),
+}));
+
+export const nomePopularTable = pgTable("nome_popular", {
+  id: serial("id").primaryKey(),
+  nome: text("nome").notNull(),
+  organismoId: integer("organismo_id").notNull(),
+});
+
+export const nomePopularRelations = relations(nomePopularTable, ({ one }) => ({
+  organismo: one(organismoTable, {
+    fields: [nomePopularTable.organismoId],
+    references: [organismoTable.id],
+  }),
+}));
 
 export const peptideoTable = pgTable("peptideo", {
   id: serial("id").primaryKey(),
@@ -175,7 +190,12 @@ export const publicacaoRelations = relations(publicacaoTable, ({ one }) => ({
   }),
 }));
 
-export const rolesEnum = pgEnum("roles", ["ADMIN", "INSERT", "UPDATE", "DELETE"]);
+export const rolesEnum = pgEnum("roles", [
+  "ADMIN",
+  "INSERT",
+  "UPDATE",
+  "DELETE",
+]);
 
 export const userTable = pgTable("user", {
   id: serial("id").primaryKey(),

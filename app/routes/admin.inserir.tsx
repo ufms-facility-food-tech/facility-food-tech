@@ -36,6 +36,7 @@ import {
   publicacaoTable,
   caracteristicasAdicionaisTable,
   casoSucessoTable,
+  nomePopularTable,
 } from "~/db.server/schema";
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -62,11 +63,22 @@ export async function action({ request }: ActionFunctionArgs) {
 
   let organismoId: number | undefined;
   if (organismo) {
+    const { nomesPopulares, ...restOfOrganismo } = organismo;
     const ids = await db
       .insert(organismoTable)
-      .values(structuredClone(organismo))
+      .values(restOfOrganismo)
       .returning({ id: organismoTable.id });
     organismoId = ids[0].id;
+
+    if (nomesPopulares !== undefined && organismoId !== undefined) {
+      await db.insert(nomePopularTable).values(
+        // @ts-expect-error ??? organismoId type not narrowing
+        nomesPopulares.map((nomePopular) => ({
+          nome: nomePopular,
+          organismoId,
+        })),
+      );
+    }
   }
 
   const [{ peptideoId }] = await db
