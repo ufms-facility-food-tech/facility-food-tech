@@ -8,12 +8,13 @@ import {
   useLoaderData,
   useRouteError,
   isRouteErrorResponse,
+  useNavigate,
 } from "@remix-run/react";
 import "./tailwind.css";
 import type { ReactNode } from "react";
-import type { components } from "~/api-schema";
 import { Header } from "~/components/header";
 import { Container } from "~/components/container";
+import type { User } from "~/db.server/schema";
 
 export const meta: MetaFunction = () => {
   return [
@@ -59,9 +60,7 @@ export function clientLoader() {
 }
 
 export default function App() {
-  const user = useLoaderData<typeof clientLoader>() as
-    | components["schemas"]["JwtResponse"]
-    | null;
+  const user = useLoaderData<typeof clientLoader>() as User | null;
 
   return (
     <>
@@ -77,6 +76,7 @@ export function HydrateFallback() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
+  const navigate = useNavigate();
 
   if (isRouteErrorResponse(error)) {
     return (
@@ -86,6 +86,15 @@ export function ErrorBoundary() {
         <p className="rounded-xl bg-red-50 p-2 text-base text-red-800">
           {error.data}
         </p>
+        <button
+          type="button"
+          onClick={() => {
+            window.history.back();
+          }}
+          className="mx-auto my-4 flex self-center rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-6 py-2 text-lg font-bold text-white"
+        >
+          Voltar
+        </button>
       </Container>
     );
   }
@@ -93,9 +102,17 @@ export function ErrorBoundary() {
   return (
     <Container title="Erro">
       <p className="rounded-xl bg-red-50 p-2 text-base text-red-800">
-        {/* @ts-expect-error */}
-        {error?.message ?? "Erro desconhecido."}
+        {error instanceof Error ? error.message : "Erro desconhecido. 😢"}
       </p>
+      <button
+        type="button"
+        onClick={() => {
+          navigate(-1);
+        }}
+        className="mx-auto my-4 flex self-center rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-6 py-2 text-lg font-bold text-white"
+      >
+        Voltar
+      </button>
     </Container>
   );
 }

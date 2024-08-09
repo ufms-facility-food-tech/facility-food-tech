@@ -8,34 +8,26 @@ services:
     volumes:
       - facility_db:/var/lib/postgresql/data
 
-  facility-api:
-    build:
-      dockerfile: api.Dockerfile
+  facility:
+    build: .
     env_file: .env
-    ports:
-      - 8080:8080
-    depends_on:
-      - facility-db
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://facility-db:5432/facility
-      - SPRING_DATASOURCE_USERNAME=${DB_USER}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - APPLICATION_SECURITY_JWT_SECRET_KEY=${JWT_SECRET_KEY}
-    volumes:
-      - ./public:/public
-
-  facility-ui:
-    build:
-      dockerfile: app.Dockerfile
     ports:
       - "80:80"
       - "443:443"
+    depends_on:
+      - facility-db
     environment:
       - DOMAIN=${DOMAIN}
+      - PGHOST=facility-db
+      - PGPORT=${PGPORT}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - NODE_ENV=production
     volumes:
-      - ./public/images/upload:/srv/images/upload
-      - ./prod.Caddyfile:/etc/caddy/Caddyfile
+      - ./fotos:/srv/images/upload
+      - Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
 
