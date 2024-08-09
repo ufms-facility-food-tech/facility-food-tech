@@ -4,21 +4,19 @@ import {
   getTextareaProps,
   useForm,
 } from "@conform-to/react";
-import {
-  type ClientActionFunctionArgs,
-  Form,
-  useActionData,
-} from "@remix-run/react";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
 import { getValibotConstraint, parseWithValibot } from "conform-to-valibot";
 import { TbPlus, TbTrash } from "react-icons/tb";
 import {
-  pipe,
   array,
-  maxLength,
   number,
   object,
   optional,
   string,
+  boolean,
+  pipe,
+  transform,
 } from "valibot";
 import {
   FormErrorMessage,
@@ -26,36 +24,21 @@ import {
   TextAreaInput,
   TextInput,
 } from "~/components/form";
+import { db } from "~/db.server/connection";
+import {
+  peptideoTable,
+  organismoTable,
+  funcaoBiologicaTable,
+  atividadeAntifungicaTable,
+  atividadeCelularTable,
+  microbiologiaTable,
+  propriedadesFisicoQuimicasTable,
+  publicacaoTable,
+  caracteristicasAdicionaisTable,
+  casoSucessoTable,
+} from "~/db.server/schema";
 
-const schema = object({
-  nomeIdentificador: optional(pipe(string(), maxLength(255))),
-  sequencia: optional(pipe(string(), maxLength(4095))),
-  sintetizado: optional(string()),
-  resultadoInterno: optional(string()),
-  quantidadeAminoacidos: optional(number()),
-  massaMolecular: optional(number()),
-  massaMolar: optional(number()),
-  funcaoBiologica: optional(array(pipe(string(), maxLength(255)))),
-  microbiologia: optional(array(pipe(string(), maxLength(255)))),
-  atividadeAntifungica: optional(array(pipe(string(), maxLength(255)))),
-  atividadeCelular: optional(array(pipe(string(), maxLength(255)))),
-  propriedadesFisicoQuimicas: optional(array(pipe(string(), maxLength(255)))),
-  casoSucesso: optional(array(pipe(string(), maxLength(255)))),
-  caracteristicasAdicionais: optional(array(pipe(string(), maxLength(255)))),
-  publicacao: optional(
-    array(object({ doi: optional(string()), titulo: optional(string()) })),
-  ),
-  organismo: optional(
-    object({
-      especie: optional(pipe(string(), maxLength(255))),
-      origem: optional(pipe(string(), maxLength(255))),
-      familia: optional(pipe(string(), maxLength(255))),
-      nomePopular: optional(array(pipe(string(), maxLength(255)))),
-    }),
-  ),
-});
-
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const submission = parseWithValibot(formData, { schema });
 
@@ -63,29 +46,126 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     return submission.reply();
   }
 
-  const res = await fetch("/api/peptideos", {
-    method: "POST",
-    body: JSON.stringify(submission.value),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const {
+    organismo,
+    funcaoBiologica,
+    atividadeAntifungica,
+    atividadeCelular,
+    caracteristicasAdicionais,
+    casoSucesso,
+    microbiologia,
+    propriedadesFisicoQuimicas,
+    publicacao,
+    ...peptideo
+  } = submission.value;
+  console.log(peptideo);
 
-  if (!res.ok) {
-    return submission.reply({
-      formErrors: [
-        "Erro ao inserir peptídeo.",
-        `${res.status} - ${res.statusText.toUpperCase()}`,
-      ],
-    });
+  let organismoId: number | undefined;
+  if (organismo) {
+    const ids = await db
+      .insert(organismoTable)
+      .values(structuredClone(organismo))
+      .returning({ id: organismoTable.id });
+    organismoId = ids[0].id;
   }
-  return submission.reply({
-    formErrors: [],
-  });
+
+  const [{ peptideoId }] = await db
+    .insert(peptideoTable)
+    .values({
+      ...peptideo,
+      organismoId,
+    })
+    .returning({ peptideoId: peptideoTable.id });
+
+  for (const { table, values } of [
+    { table: funcaoBiologicaTable, values: funcaoBiologica },
+    { table: atividadeAntifungicaTable, values: atividadeAntifungica },
+    { table: atividadeCelularTable, values: atividadeCelular },
+    { table: microbiologiaTable, values: microbiologia },
+    { table: casoSucessoTable, values: casoSucesso },
+    {
+      table: caracteristicasAdicionaisTable,
+      values: caracteristicasAdicionais,
+    },
+    {
+      table: propriedadesFisicoQuimicasTable,
+      values: propriedadesFisicoQuimicas,
+    },
+  ]) {
+    if (values && values.length > 0) {
+      await db.insert(table).values(
+        values.map((value) => ({
+          peptideoId,
+          value,
+        })),
+      );
+    }
+  }
+
+  if (publicacao && publicacao.length > 0) {
+    await db
+      .insert(publicacaoTable)
+      .values(
+        publicacao.map(({ doi, titulo }) => ({
+          peptideoId,
+          doi,
+          titulo,
+        })),
+      )
+      // if DOI already exists, do nothing
+      .onConflictDoNothing({ target: publicacaoTable.doi });
+  }
+
+  return submission.reply();
 }
 
+// TODO: use drizzle-valibot
+// waiting for https://github.com/drizzle-team/drizzle-orm/pull/2481
+const schema = object({
+  nomeIdentificador: optional(string()),
+  sequencia: optional(string()),
+  sintetizado: optional(boolean()),
+  resultadoInterno: optional(boolean()),
+  quantidadeAminoacidos: optional(number()),
+  massaMolecular: optional(
+    pipe(
+      number(),
+      transform((num) => num.toString()),
+    ),
+  ),
+  massaMolar: optional(
+    pipe(
+      number(),
+      transform((num) => num.toString()),
+    ),
+  ),
+  funcaoBiologica: optional(array(string())),
+  microbiologia: optional(array(string())),
+  atividadeAntifungica: optional(array(string())),
+  atividadeCelular: optional(array(string())),
+  propriedadesFisicoQuimicas: optional(array(string())),
+  casoSucesso: optional(array(string())),
+  caracteristicasAdicionais: optional(array(string())),
+  publicacao: optional(
+    array(
+      object({
+        doi: optional(string()),
+        titulo: optional(string()),
+      }),
+    ),
+  ),
+  organismo: optional(
+    object({
+      nomeCientifico: optional(string()),
+      origem: optional(string()),
+      familia: optional(string()),
+      nomesPopulares: optional(array(string())),
+    }),
+  ),
+});
+
 export default function InsertPanel() {
-  const lastResult = useActionData<typeof clientAction>();
+  const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm({
     lastResult,
     constraint: getValibotConstraint(schema),
@@ -97,7 +177,7 @@ export default function InsertPanel() {
   });
 
   const organismo = fields.organismo.getFieldset();
-  const nomesPopulares = organismo.nomePopular.getFieldList();
+  const nomesPopulares = organismo.nomesPopulares.getFieldList();
   const publicacao = fields.publicacao.getFieldList();
   const funcoesBiologicas = fields.funcaoBiologica.getFieldList();
   const microbiologias = fields.microbiologia.getFieldList();
@@ -154,9 +234,9 @@ export default function InsertPanel() {
         </legend>
         <TextInput
           label="Espécie"
-          {...getInputProps(organismo.especie, { type: "text" })}
+          {...getInputProps(organismo.nomeCientifico, { type: "text" })}
         />
-        <FormErrorMessage errors={organismo.especie.errors} />
+        <FormErrorMessage errors={organismo.nomeCientifico.errors} />
         <TextInput
           label="Origem"
           {...getInputProps(organismo.origem, { type: "text" })}
@@ -174,7 +254,7 @@ export default function InsertPanel() {
             <button
               className="flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-2 py-1 text-sm font-bold text-white"
               {...form.insert.getButtonProps({
-                name: organismo.nomePopular.name,
+                name: organismo.nomesPopulares.name,
               })}
             >
               <TbPlus /> adicionar
@@ -190,7 +270,7 @@ export default function InsertPanel() {
                 <button
                   className="mt-2 flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-red-800 to-red-700 px-2 py-1 text-sm font-bold text-white"
                   {...form.remove.getButtonProps({
-                    name: organismo.nomePopular.name,
+                    name: organismo.nomesPopulares.name,
                     index,
                   })}
                 >
@@ -443,7 +523,7 @@ export default function InsertPanel() {
           <button
             className="my-2 flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-2 py-1 text-sm font-bold text-white"
             {...form.insert.getButtonProps({
-              name: fields.propriedadesFisicoQuimicas.name,
+              name: fields.caracteristicasAdicionais.name,
             })}
           >
             <TbPlus /> adicionar

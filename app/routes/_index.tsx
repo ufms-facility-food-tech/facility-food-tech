@@ -34,12 +34,12 @@ export default function Index() {
             <img
               src="/images/static/img-01.jpg"
               alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
-              className="h-56 max-w-md translate-x-6 translate-y-16 rotate-1 text-balance border-4 border-neutral-300"
+              className="h-56 max-w-md translate-x-6 translate-y-16 text-balance border-4 border-neutral-300"
             />
             <img
               src="/images/static/img-02.jpg"
               alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
-              className="h-56 max-w-md -translate-x-2 -translate-y-4 -rotate-2 text-balance border-4 border-neutral-300"
+              className="h-56 max-w-md -translate-x-2 -translate-y-4 text-balance border-4 border-neutral-300"
             />
           </div>
         </div>

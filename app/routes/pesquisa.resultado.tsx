@@ -1,31 +1,35 @@
-import {
-  type ClientLoaderFunctionArgs,
-  NavLink,
-  json,
-  useLoaderData,
-} from "@remix-run/react";
-import { useNavigate } from "@remix-run/react";
-import type { components } from "~/api-schema";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
 import { Container } from "~/components/container";
+import { db } from "~/db.server/connection";
 
-export async function clientLoader({ request }: ClientLoaderFunctionArgs) {
-  const url = new URL(request.url);
-  const res = await fetch(`/api/query?${url.searchParams.toString()}`, {
-    method: "GET",
-  });
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { searchParams } = new URL(request.url);
 
-  if (!res.ok) {
-    console.error(res);
-    return json([]);
-  }
-
-  return json(await res.json());
+  return json([
+    {
+      id: 1,
+      nomeIdentificador: "teste",
+      organismo: { nomePopular: ["teste"], nomeCientifico: "teste" },
+      sequencia: "teste",
+      sintetizado: true,
+      resultadoInterno: true,
+      quantidadeAminoacidos: 1,
+      massaMolecular: 1,
+      massaMolar: 1,
+      funcaoBiologica: ["teste"],
+      microbiologia: ["teste"],
+      atividadeAntifungica: ["teste"],
+      atividadeCelular: ["teste"],
+      propriedadesFisicoQuimicas: ["teste"],
+      casoSucesso: ["teste"],
+      caracteristicasAdicionais: ["teste"],
+    },
+  ]);
 }
 
 export default function Resultado() {
-  const data = useLoaderData<typeof clientLoader>() as Array<
-    components["schemas"]["PeptideoDTO"]
-  >;
+  const data = useLoaderData<typeof loader>();
 
   const navigate = useNavigate();
   return (
@@ -48,11 +52,11 @@ export default function Resultado() {
               <th scope="col" className="w-12 px-4 py-3">
                 Identificação
               </th>
+              <th scope="col" className="w-60 px-4 py-3">
+                Nome científico
+              </th>
               <th scope="col" className="w-48 px-4 py-3">
                 Nome popular
-              </th>
-              <th scope="col" className="w-60 px-4 py-3">
-                Espécie
               </th>
               <th scope="col" className="w-96 px-4 py-3">
                 Sequência
@@ -69,10 +73,12 @@ export default function Resultado() {
                 className="border-b odd:bg-neutral-50 even:bg-neutral-200"
               >
                 <td className="px-4 py-4">{nomeIdentificador}</td>
-                <td className="px-4 py-4">
-                  {organismo?.nomePopular?.join(", ")}
+                <td className="px-4 py-4 italic">
+                  {organismo?.nomeCientifico}
                 </td>
-                <td className="px-4 py-4">{organismo?.especie}</td>
+                <td className="px-4 py-4">
+                  {organismo?.nomePopular?.map((nome) => nome).join(", ")}
+                </td>
                 <td className="text-wrap px-4 py-4">
                   {sequencia && sequencia?.length > 15
                     ? sequencia?.slice(0, 15).concat("...")

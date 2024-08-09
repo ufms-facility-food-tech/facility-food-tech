@@ -1,12 +1,8 @@
 import { Link, NavLink } from "@remix-run/react";
 import { TbLogin, TbLogout, TbUserCircle, TbUserPlus } from "react-icons/tb";
-import type { components } from "~/api-schema";
+import type { User } from "~/db.server/schema";
 
-export function Header({
-  user,
-}: {
-  user: components["schemas"]["JwtResponse"] | null;
-}) {
+export function Header({ user }: { user: User | null }) {
   return (
     <header>
       <div className="min-h-26 flex items-center justify-between bg-white px-4">
