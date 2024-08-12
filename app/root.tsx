@@ -1,7 +1,6 @@
 import {
   Links,
   Meta,
-  type MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -15,6 +14,26 @@ import type { ReactNode } from "react";
 import { Header } from "~/components/header";
 import { Container } from "~/components/container";
 import type { User } from "~/db.server/schema";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
+
+export const links: LinksFunction = () => {
+  return [
+    {
+      rel: "icon",
+      href: "/favicon.png",
+      type: "image/png",
+      sizes: "64x64",
+    },
+    {
+      rel: "preconnect",
+      href: "https://rsms.me/",
+    },
+    {
+      rel: "stylesheet",
+      href: "https://rsms.me/inter/inter.css",
+    },
+  ];
+};
 
 export const meta: MetaFunction = () => {
   return [
