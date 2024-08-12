@@ -49,7 +49,7 @@ export function Header({ user }: { user: User | null }) {
         )}
       </div>
       <nav className="bg-neutral-100 py-3">
-        <ul className="flex flex-wrap items-center justify-evenly gap-2 text-lg font-bold sm:mx-20 sm:justify-normal sm:gap-12">
+        <ul className="flex flex-wrap items-center justify-evenly gap-2 text-lg font-bold sm:mx-8 sm:justify-normal">
           <li>
             <NavLink
               prefetch="intent"
@@ -57,7 +57,7 @@ export function Header({ user }: { user: User | null }) {
               className={({ isActive }) =>
                 `${
                   isActive ? "underline" : ""
-                } underline-offset-4 hover:underline`
+                } p-3 underline-offset-4 hover:underline`
               }
             >
               Início
@@ -70,7 +70,7 @@ export function Header({ user }: { user: User | null }) {
               className={({ isActive }) =>
                 `${
                   isActive ? "underline" : ""
-                } underline-offset-4 hover:underline`
+                } p-3 underline-offset-4 hover:underline`
               }
             >
               Pesquisar
@@ -83,7 +83,7 @@ export function Header({ user }: { user: User | null }) {
               className={({ isActive }) =>
                 `${
                   isActive ? "underline" : ""
-                } underline-offset-4 hover:underline`
+                } p-3 underline-offset-4 hover:underline`
               }
             >
               Glossário
@@ -96,7 +96,7 @@ export function Header({ user }: { user: User | null }) {
               className={({ isActive }) =>
                 `${
                   isActive ? "underline" : ""
-                } underline-offset-4 hover:underline`
+                } p-3 underline-offset-4 hover:underline`
               }
             >
               Fotos

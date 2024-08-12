@@ -1,16 +1,20 @@
-import { json, NavLink } from "@remix-run/react";
-import { TbCameraPlus } from "react-icons/tb";
+import { json, NavLink, useLoaderData } from "@remix-run/react";
+import { TbPhotoPlus } from "react-icons/tb";
+import { db } from "~/db.server/connection";
+import { imageMetadataTable } from "~/db.server/schema";
 
-// TODO: hit db directly
 export async function loader() {
-  return json([]);
+  const images = await db
+    .select({
+      fileName: imageMetadataTable.fileName,
+      alt: imageMetadataTable.alt,
+    })
+    .from(imageMetadataTable);
+  return json(images);
 }
 
 export default function Fotos() {
-  const images = [
-    { fileName: "IMG-20240410-WA0005.jpg", alt: "Alt 1" },
-    { fileName: "IMG-20240410-WA0006.jpg", alt: "Alt 2" },
-  ];
+  const images = useLoaderData<typeof loader>();
 
   return (
     <>
@@ -20,7 +24,7 @@ export default function Fotos() {
           to="upload"
           className="flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 py-2 pl-5 pr-4 text-lg font-bold text-white"
         >
-          Adicionar foto <TbCameraPlus size="2rem" />
+          Adicionar foto <TbPhotoPlus size="2rem" />
         </NavLink>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

@@ -50,7 +50,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const alt = formData.get("alt");
 
-    db.insert(imageMetadataTable).values({
+    await db.insert(imageMetadataTable).values({
       fileName: file.name,
       alt: alt?.toString().trim(),
     });
@@ -100,7 +100,7 @@ export default function Upload() {
           <SubmitButton>Enviar</SubmitButton>
           <button
             type="button"
-            className="rounded-full bg-neutral-200 px-6 py-2 text-lg font-bold hover:bg-red-600"
+            className="rounded-full bg-neutral-200 px-6 py-2 text-lg font-bold"
             onClick={() => navigate(-1)}
           >
             Cancelar
