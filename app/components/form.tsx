@@ -20,16 +20,19 @@ export function TextInput({
   if (!label)
     return (
       <input
-        className="mt-1 w-full rounded-xl border bg-neutral-50 p-2 text-base text-black"
+        className="mt-1 w-full rounded-xl border bg-neutral-50 p-2 text-base text-black disabled:bg-neutral-200"
         {...props}
       />
     );
 
   return (
-    <label className="flex flex-col text-cyan-600">
+    <label
+      className="flex flex-col text-cyan-600 aria-disabled:text-neutral-500"
+      aria-disabled={props.disabled}
+    >
       {label}
       <input
-        className="mt-1 rounded-xl border bg-neutral-50 p-2 text-base text-black"
+        className="mt-1 rounded-xl border bg-neutral-50 p-2 text-base text-black disabled:bg-neutral-200"
         {...props}
       />
     </label>

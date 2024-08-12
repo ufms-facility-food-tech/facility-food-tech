@@ -1,65 +1,9 @@
 {
-  "id": "988a3b12-f8c4-400b-9e39-0393f636eb9a",
+  "id": "5392b57c-1f2c-4f0a-bc66-1e76978ae97b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.atividade_antifungica": {
-      "name": "atividade_antifungica",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "peptideo_id": {
-          "name": "peptideo_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.atividade_celular": {
-      "name": "atividade_celular",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "peptideo_id": {
-          "name": "peptideo_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "public.caracteristicas_adicionais": {
       "name": "caracteristicas_adicionais",
       "schema": "",
@@ -144,6 +88,48 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.glossario": {
+      "name": "glossario",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "definition": {
+          "name": "definition",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "example": {
+          "name": "example",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "glossario_name_unique": {
+          "name": "glossario_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
     "public.image_metadata": {
       "name": "image_metadata",
       "schema": "",
@@ -187,8 +173,8 @@
         }
       }
     },
-    "public.microbiologia": {
-      "name": "microbiologia",
+    "public.nome_popular": {
+      "name": "nome_popular",
       "schema": "",
       "columns": {
         "id": {
@@ -197,14 +183,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "value": {
-          "name": "value",
+        "nome": {
+          "name": "nome",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "peptideo_id": {
-          "name": "peptideo_id",
+        "organismo_id": {
+          "name": "organismo_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -242,12 +228,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
-        },
-        "nomes_populares": {
-          "name": "nomes_populares",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
@@ -265,8 +245,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "nome_identificador": {
-          "name": "nome_identificador",
+        "identificador": {
+          "name": "identificador",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -277,17 +257,19 @@
           "primaryKey": false,
           "notNull": false
         },
-        "sintetizado": {
-          "name": "sintetizado",
+        "sintetico": {
+          "name": "sintetico",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": false
         },
-        "resultado_interno": {
-          "name": "resultado_interno",
+        "descoberta_lppfb": {
+          "name": "descoberta_lppfb",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": false
         },
         "quantidade_aminoacidos": {
           "name": "quantidade_aminoacidos",
@@ -307,39 +289,35 @@
           "primaryKey": false,
           "notNull": false
         },
+        "ensaio_celular": {
+          "name": "ensaio_celular",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "microbiologia": {
+          "name": "microbiologia",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "atividade_antifungica": {
+          "name": "atividade_antifungica",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "propriedades_fisico_quimicas": {
+          "name": "propriedades_fisico_quimicas",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "organismo_id": {
           "name": "organismo_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.propriedades_fisico_quimicas": {
-      "name": "propriedades_fisico_quimicas",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "peptideo_id": {
-          "name": "peptideo_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
@@ -423,12 +401,13 @@
           "primaryKey": false,
           "notNull": true
         },
-        "authorities": {
-          "name": "authorities",
+        "role": {
+          "name": "role",
           "type": "roles",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'read'"
         },
         "created_at": {
           "name": "created_at",
@@ -464,10 +443,11 @@
       "name": "roles",
       "schema": "public",
       "values": [
-        "ADMIN",
-        "INSERT",
-        "UPDATE",
-        "DELETE"
+        "read",
+        "update",
+        "insert",
+        "delete",
+        "admin"
       ]
     }
   },

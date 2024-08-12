@@ -5,7 +5,7 @@ export async function loader() {
   return await db.query.peptideoTable.findMany({
     columns: {
       id: true,
-      nomeIdentificador: true,
+      identificador: true,
       sequencia: true,
     },
     with: {
@@ -14,7 +14,7 @@ export async function loader() {
           nomeCientifico: true,
         },
         with: {
-          nomesPopulares: true,
+          nomePopular: true,
         },
       },
     },
@@ -35,7 +35,7 @@ export default function ListPanel() {
           <thead className="bg-neutral-100 text-lg font-bold outline outline-1">
             <tr>
               <th scope="col" className="w-12 px-4 py-3">
-                Identificação
+                Identificador
               </th>
               <th scope="col" className="w-60 px-4 py-3">
                 Nome científico
@@ -52,21 +52,21 @@ export default function ListPanel() {
             </tr>
           </thead>
           <tbody>
-            {data.map(({ nomeIdentificador, sequencia, organismo, id }) => (
+            {data.map(({ identificador, sequencia, organismo, id }) => (
               <tr
                 key={id}
                 className="border-b odd:bg-neutral-50 even:bg-neutral-200"
               >
-                <td className="px-4 py-4">{nomeIdentificador}</td>
+                <td className="px-4 py-4">{identificador}</td>
                 <td className="px-4 py-4 italic">
                   {organismo?.nomeCientifico}
                 </td>
                 <td className="px-4 py-4">
-                  {organismo?.nomesPopulares?.join(", ")}
+                  {organismo?.nomePopular?.map(({ nome }) => nome).join(", ")}
                 </td>
                 <td className="text-wrap px-4 py-4">
-                  {sequencia && sequencia?.length > 15
-                    ? sequencia?.slice(0, 15).concat("...")
+                  {sequencia && sequencia?.length > 20
+                    ? sequencia?.slice(0, 20).concat("...")
                     : sequencia}
                 </td>
                 <td className="px-4 py-4">

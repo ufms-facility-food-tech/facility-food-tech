@@ -7,7 +7,7 @@ export default function Admin() {
   return (
     <Container title="Área Administrativa">
       <div className="flex h-full">
-        <aside className="m-2 w-1/4 py-6 pr-2">
+        <aside className="mr-4 w-1/4 pr-1">
           <nav>
             <ul className="flex flex-col gap-4">
               <AdminNavItem
@@ -21,7 +21,7 @@ export default function Admin() {
                 icon={<TbDatabasePlus />}
               />
               <AdminNavItem
-                label="Controle de usuários"
+                label="Usuários"
                 route="usuarios"
                 icon={<TbUsersGroup />}
               />

@@ -10,12 +10,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const peptideo = await db.query.peptideoTable.findFirst({
     where: eq(peptideoTable.id, Number(id)),
     with: {
-      organismo: true,
+      organismo: {
+        with: {
+          nomePopular: true,
+        },
+      },
       funcaoBiologica: true,
-      microbiologia: true,
-      atividadeAntifungica: true,
-      atividadeCelular: true,
-      propriedadesFisicoQuimicas: true,
       casoSucesso: true,
       caracteristicasAdicionais: true,
       publicacao: true,
@@ -30,7 +30,7 @@ export default function Peptideo() {
 
   const navigate = useNavigate();
   return (
-    <Container title="Peptideo">
+    <Container>
       <button
         type="button"
         onClick={() => navigate(-1)}
@@ -38,57 +38,11 @@ export default function Peptideo() {
       >
         &lt; Voltar
       </button>
-      <div className="relative my-2 w-full overflow-x-auto rounded-lg outline outline-1">
-        <table className="w-full text-left">
-          <thead className="bg-white text-lg outline outline-1">
-            <tr>
-              <th scope="col" className="w-1/6 px-6 py-3">
-                Detalhes
-              </th>
-              <th scope="col" className="w-5/6" />
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Peptídeo</td>
-              <td className="px-6 py-4">{peptideo.nomeIdentificador}</td>
-            </tr>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Sequência</td>
-              <td className="px-6 py-4">{peptideo.sequencia}</td>
-            </tr>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Espécie</td>
-              <td className="px-6 py-4">
-                {peptideo.organismo?.nomeCientifico}
-              </td>
-            </tr>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Nomes populares</td>
-              <td className="px-6 py-4">
-                {peptideo.organismo?.nomesPopulares
-                  ?.map((nome) => nome)
-                  .join(", ")}
-              </td>
-            </tr>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Família</td>
-              <td className="px-6 py-4">{peptideo.organismo?.familia}</td>
-            </tr>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Funções biológicas</td>
-              <td className="px-6 py-4">
-                {peptideo.funcaoBiologica
-                  .map((funcao) => funcao.value)
-                  .join(", ")}
-              </td>
-            </tr>
-            <tr className="border-b odd:bg-neutral-100 even:bg-neutral-300">
-              <td className="px-6 py-4">Massa molecular</td>
-              <td className="px-6 py-4">{peptideo.massaMolecular}</td>
-            </tr>
-          </tbody>
-        </table>
+      <h2 className="mb-4 flex gap-4 border-b-2 border-neutral-100 text-4xl font-bold text-cyan-600">
+        Informações gerais
+      </h2>
+
+      <div className="relative my-2 w-full overflow-x-auto rounded-lg border border-neutral-100">
       </div>
     </Container>
   );
