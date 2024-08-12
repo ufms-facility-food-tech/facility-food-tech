@@ -190,13 +190,6 @@ export const publicacaoRelations = relations(publicacaoTable, ({ one }) => ({
   }),
 }));
 
-export const rolesEnum = pgEnum("roles", [
-  "ADMIN",
-  "INSERT",
-  "UPDATE",
-  "DELETE",
-]);
-
 export const userTable = pgTable("user", {
   id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
