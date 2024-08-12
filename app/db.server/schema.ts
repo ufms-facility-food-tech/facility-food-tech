@@ -18,7 +18,7 @@ export const organismoTable = pgTable("organismo", {
 });
 
 export const organismoRelations = relations(organismoTable, ({ many }) => ({
-  nomesPopulares: many(nomePopularTable),
+  nomePopular: many(nomePopularTable),
 }));
 
 export const nomePopularTable = pgTable("nome_popular", {
@@ -36,13 +36,17 @@ export const nomePopularRelations = relations(nomePopularTable, ({ one }) => ({
 
 export const peptideoTable = pgTable("peptideo", {
   id: serial("id").primaryKey(),
-  nomeIdentificador: text("nome_identificador"),
+  identificador: text("identificador"),
   sequencia: text("sequencia"),
-  sintetizado: boolean("sintetizado"),
-  resultadoInterno: boolean("resultado_interno"),
+  sintetico: boolean("sintetico").notNull().default(false),
+  descobertaLPPFB: boolean("descoberta_lppfb").notNull().default(false),
   quantidadeAminoacidos: integer("quantidade_aminoacidos"),
   massaMolecular: numeric("massa_molecular", { precision: 10, scale: 4 }),
   massaMolar: numeric("massa_molar", { precision: 10, scale: 4 }),
+  ensaioCelular: text("ensaio_celular"),
+  microbiologia: text("microbiologia"),
+  atividadeAntifungica: text("atividade_antifungica"),
+  propriedadesFisicoQuimicas: text("propriedades_fisico_quimicas"),
   organismoId: integer("organismo_id"),
 });
 
@@ -52,10 +56,6 @@ export const peptideoRelations = relations(peptideoTable, ({ one, many }) => ({
     references: [organismoTable.id],
   }),
   funcaoBiologica: many(funcaoBiologicaTable),
-  microbiologia: many(microbiologiaTable),
-  atividadeAntifungica: many(atividadeAntifungicaTable),
-  atividadeCelular: many(atividadeCelularTable),
-  propriedadesFisicoQuimicas: many(propriedadesFisicoQuimicasTable),
   casoSucesso: many(casoSucessoTable),
   caracteristicasAdicionais: many(caracteristicasAdicionaisTable),
   publicacao: many(publicacaoTable),
@@ -77,72 +77,6 @@ export const funcaoBiologicaRelations = relations(
   }),
 );
 
-export const microbiologiaTable = pgTable("microbiologia", {
-  id: serial("id").primaryKey(),
-  value: text("value").notNull(),
-  peptideoId: integer("peptideo_id").notNull(),
-});
-
-export const microbiologiaRelations = relations(
-  microbiologiaTable,
-  ({ one }) => ({
-    peptideo: one(peptideoTable, {
-      fields: [microbiologiaTable.peptideoId],
-      references: [peptideoTable.id],
-    }),
-  }),
-);
-
-export const atividadeAntifungicaTable = pgTable("atividade_antifungica", {
-  id: serial("id").primaryKey(),
-  value: text("value").notNull(),
-  peptideoId: integer("peptideo_id").notNull(),
-});
-
-export const atividadeAntifungicaRelations = relations(
-  atividadeAntifungicaTable,
-  ({ one }) => ({
-    peptideo: one(peptideoTable, {
-      fields: [atividadeAntifungicaTable.peptideoId],
-      references: [peptideoTable.id],
-    }),
-  }),
-);
-
-export const atividadeCelularTable = pgTable("atividade_celular", {
-  id: serial("id").primaryKey(),
-  value: text("value").notNull(),
-  peptideoId: integer("peptideo_id").notNull(),
-});
-
-export const atividadeCelularRelations = relations(
-  atividadeCelularTable,
-  ({ one }) => ({
-    peptideo: one(peptideoTable, {
-      fields: [atividadeCelularTable.peptideoId],
-      references: [peptideoTable.id],
-    }),
-  }),
-);
-
-export const propriedadesFisicoQuimicasTable = pgTable(
-  "propriedades_fisico_quimicas",
-  {
-    id: serial("id").primaryKey(),
-    value: text("value").notNull(),
-    peptideoId: integer("peptideo_id").notNull(),
-  },
-);
-
-export const propriedadesFisicoQuimicasRelations = relations(
-  propriedadesFisicoQuimicasTable,
-  ({ one }) => ({
-    peptideo: one(peptideoTable, {
-      fields: [propriedadesFisicoQuimicasTable.peptideoId],
-      references: [peptideoTable.id],
-    }),
-  }),
-);
 
 export const casoSucessoTable = pgTable("caso_sucesso", {
   id: serial("id").primaryKey(),
@@ -190,13 +124,21 @@ export const publicacaoRelations = relations(publicacaoTable, ({ one }) => ({
   }),
 }));
 
+export const rolesEnum = pgEnum("roles", [
+  "read",
+  "update",
+  "insert",
+  "delete",
+  "admin",
+]);
+
 export const userTable = pgTable("user", {
   id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
   displayName: text("display_name").notNull(),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
-  authorities: rolesEnum("authorities").notNull(),
+  role: rolesEnum("role").notNull().default("read"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -207,4 +149,11 @@ export const imageMetadataTable = pgTable("image_metadata", {
   fileName: text("file_name").notNull().unique(),
   alt: text("alt"),
   uploadedAt: timestamp("uploaded_at").notNull().defaultNow(),
+});
+
+export const glossarioTable = pgTable("glossario", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  definition: text("definition").notNull(),
+  example: text("example").notNull(),
 });

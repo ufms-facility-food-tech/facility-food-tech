@@ -32,7 +32,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const results = await db
     .select({
       peptideoId: peptideoTable.id,
-      nomeIdentificador: peptideoTable.nomeIdentificador,
+      identificador: peptideoTable.identificador,
       sequencia: peptideoTable.sequencia,
       nomeCientifico: organismoTable.nomeCientifico,
       nomesPopulares: sql<Array<string>>`array_agg(${nomePopularTable.nome})`,
@@ -50,7 +50,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     .where(or(...likes))
     .groupBy(
       peptideoTable.id,
-      peptideoTable.nomeIdentificador,
+      peptideoTable.identificador,
       peptideoTable.sequencia,
       organismoTable.nomeCientifico,
     );
@@ -99,7 +99,7 @@ export default function Resultado() {
           <tbody>
             {data.map(
               ({
-                nomeIdentificador,
+                identificador,
                 sequencia,
                 nomeCientifico,
                 nomesPopulares,
@@ -109,12 +109,12 @@ export default function Resultado() {
                   key={peptideoId}
                   className="border-b odd:bg-neutral-50 even:bg-neutral-200"
                 >
-                  <td className="px-4 py-4">{nomeIdentificador}</td>
+                  <td className="px-4 py-4">{identificador}</td>
                   <td className="px-4 py-4 italic">{nomeCientifico}</td>
                   <td className="px-4 py-4">{nomesPopulares?.join(", ")}</td>
                   <td className="text-wrap px-4 py-4">
                     {sequencia && sequencia?.length > 15
-                      ? sequencia?.slice(0, 15).concat("...")
+                      ? sequencia?.slice(0, 25).concat("...")
                       : sequencia}
                   </td>
                   <td className="px-4 py-4">

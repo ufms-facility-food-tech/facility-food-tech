@@ -1,4 +1,4 @@
-import { Form, NavLink } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import { useState } from "react";
 import { Container } from "~/components/container";
 import { SelectInput, SubmitButton, TextInput } from "~/components/form";
@@ -24,9 +24,6 @@ export default function Pesquisa() {
         />
         <TextInput label="Pesquisar por:" name={queryItemName} />
         <div className="mx-5 my-9 flex items-center justify-end gap-4">
-          <NavLink to="avancada" className="text-cyan-600 underline">
-            Fazer uma Pesquisa Avançada
-          </NavLink>
           <SubmitButton>Pesquisar</SubmitButton>
         </div>
       </Form>
