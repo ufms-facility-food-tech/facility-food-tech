@@ -1,6 +1,7 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
 import { eq, like, or, sql } from "drizzle-orm";
+import { TbFlaskFilled } from "react-icons/tb";
 import { Container } from "~/components/container";
 import { db } from "~/db.server/connection";
 import {
@@ -31,6 +32,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const results = await db
     .select({
+      descobertaLPPFB: peptideoTable.descobertaLPPFB,
+      sintetico: peptideoTable.sintetico,
       peptideoId: peptideoTable.id,
       identificador: peptideoTable.identificador,
       sequencia: peptideoTable.sequencia,
@@ -65,72 +68,62 @@ export default function Resultado() {
   return (
     <Container>
       <div className="m-4 flex items-center justify-between">
-        <p>{data.length} resultados encontrados</p>
+        <p className="text-sm text-neutral-800">
+          {data.length} resultados encontrados
+        </p>
         <button
           type="button"
+          className="w-min self-center rounded-full bg-neutral-100 px-6 py-2 text-lg font-bold"
           onClick={() => navigate(-1)}
-          className="rounded-full bg-neutral-100 px-6 py-2 text-lg font-bold outline outline-2 -outline-offset-2 outline-neutral-200 focus-visible:outline-inherit"
         >
           Voltar
         </button>
       </div>
 
-      <div className="relative w-full overflow-x-auto rounded-lg outline outline-1">
-        <table className="w-full text-left">
-          <thead className="bg-neutral-100 text-lg font-bold outline outline-1">
-            <tr>
-              <th scope="col" className="w-12 px-4 py-3">
-                Identificação
-              </th>
-              <th scope="col" className="w-60 px-4 py-3">
-                Nome científico
-              </th>
-              <th scope="col" className="w-48 px-4 py-3">
-                Nome popular
-              </th>
-              <th scope="col" className="w-96 px-4 py-3">
-                Sequência
-              </th>
-              <th scope="col" className="px-4 py-3">
-                Detalhes
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(
-              ({
-                identificador,
-                sequencia,
-                nomeCientifico,
-                nomesPopulares,
-                peptideoId,
-              }) => (
-                <tr
-                  key={peptideoId}
-                  className="border-b odd:bg-neutral-50 even:bg-neutral-200"
-                >
-                  <td className="px-4 py-4">{identificador}</td>
-                  <td className="px-4 py-4 italic">{nomeCientifico}</td>
-                  <td className="px-4 py-4">{nomesPopulares?.join(", ")}</td>
-                  <td className="text-wrap px-4 py-4">
-                    {sequencia && sequencia?.length > 15
-                      ? sequencia?.slice(0, 25).concat("...")
-                      : sequencia}
-                  </td>
-                  <td className="px-4 py-4">
-                    <NavLink
-                      to={`/peptideo/${peptideoId}`}
-                      className="underline"
-                    >
-                      Visualizar
-                    </NavLink>
-                  </td>
-                </tr>
-              ),
-            )}
-          </tbody>
-        </table>
-      </div>
+      <ul className="m-4 flex flex-col gap-6 rounded-lg bg-neutral-50 px-4 py-2 text-lg">
+        {data.map(
+          ({
+            peptideoId,
+            identificador,
+            sintetico,
+            nomeCientifico,
+            nomesPopulares,
+            sequencia,
+            descobertaLPPFB,
+          }) => (
+            <li key={peptideoId} className="flex flex-col gap-1">
+              <NavLink
+                to={`/peptideo/${peptideoId}`}
+                className="text-2xl font-bold text-cyan-600 hover:underline"
+              >
+                {identificador ? identificador : "(sem identificador)"}{" "}
+                {!sintetico ? (
+                  nomeCientifico ? (
+                    <i>- {nomeCientifico}</i>
+                  ) : (
+                    "- (sem nome científico)"
+                  )
+                ) : null}
+              </NavLink>
+              {descobertaLPPFB ? (
+                <div className="flex w-fit items-center gap-2 rounded-2xl bg-gradient-to-br from-cyan-600 to-cyan-500 px-2 text-sm font-bold text-white">
+                  <TbFlaskFilled /> Descoberta do LPPFB
+                </div>
+              ) : null}
+              <p className="text-sm text-neutral-900">
+                <b>Nome popular: </b>
+                {nomesPopulares.filter((nome) => nome !== "NULL").length > 0
+                  ? nomesPopulares?.join(", ")
+                  : "(sem dados)"}
+              </p>
+              <p className="break-words text-sm text-neutral-900">
+                <b>Sequência: </b>
+                {sequencia ?? "(sem dados)"}
+              </p>
+            </li>
+          ),
+        )}
+      </ul>
     </Container>
   );
 }
