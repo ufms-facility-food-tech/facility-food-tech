@@ -1,4 +1,4 @@
-import { NavLink, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { db } from "../db.server/connection";
 
 export async function loader() {
@@ -25,13 +25,13 @@ export default function ListPanel() {
 
   return (
     <>
-      <div className="m-4 flex items-center justify-between">
+      <div className="m-4 flex items-center justify-between text-cyan-700">
         <p>{data.length} registros encontrados</p>
       </div>
 
-      <div className="relative w-full overflow-x-auto rounded-lg outline outline-1">
+      <div className="relative my-2 w-full overflow-x-auto rounded-lg border border-neutral-100">
         <table className="w-full text-left">
-          <thead className="bg-neutral-100 text-lg font-bold outline outline-1">
+          <thead className="bg-gradient-to-t from-neutral-200 to-neutral-100 text-lg font-bold outline outline-1">
             <tr>
               <th scope="col" className="px-4 py-3">
                 Identificador
@@ -42,30 +42,35 @@ export default function ListPanel() {
               <th scope="col" className="px-4 py-3">
                 Nome popular
               </th>
-              <th scope="col" className="px-4 py-3">
-                Detalhes
-              </th>
+              <th scope="col" className="px-4 py-3" />
+              <th scope="col" className="px-4 py-3" />
             </tr>
           </thead>
           <tbody>
             {data.map(({ identificador, organismo, id }) => (
-              <tr
-                key={id}
-                className="border-b odd:bg-neutral-50 even:bg-neutral-200"
-              >
+              <tr key={id} className="odd:bg-neutral-50 even:bg-neutral-200">
                 <td className="px-4 py-4">{identificador ?? "(sem dados)"}</td>
-                <td className="px-4 py-4 italic">
-                  {organismo?.nomeCientifico ?? "(sem dados)"}
-                </td>
+                {organismo?.nomeCientifico ? (
+                  <td className="px-4 py-4 italic">
+                    {organismo.nomeCientifico}
+                  </td>
+                ) : (
+                  <td className="px-4 py-4">(sem dados)</td>
+                )}
                 <td className="px-4 py-4">
                   {organismo?.nomePopular && organismo?.nomePopular.length > 0
                     ? organismo?.nomePopular?.map(({ nome }) => nome).join(", ")
                     : "(sem dados)"}
                 </td>
                 <td className="px-4 py-4">
-                  <NavLink to={`/peptideo/${id}`} className="underline">
+                  <Link to={`/peptideo/${id}`} className="underline">
                     Visualizar
-                  </NavLink>
+                  </Link>
+                </td>
+                <td className="px-4 py-4">
+                  <Link to={`/peptideo/edit/${id}`} className="underline">
+                    Editar
+                  </Link>
                 </td>
               </tr>
             ))}
