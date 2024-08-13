@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "@remix-run/react";
 import { IconContext } from "react-icons";
-import { TbDatabasePlus, TbDatabaseSearch, TbUsersGroup } from "react-icons/tb";
+import { TbBook, TbDatabasePlus, TbDatabaseSearch, TbLibraryPhoto, TbUsersGroup } from "react-icons/tb";
 import { Container } from "~/components/container";
 
 export default function Admin() {
@@ -9,7 +9,7 @@ export default function Admin() {
       <div className="flex h-full">
         <aside className="mr-4 w-1/4 pr-1">
           <nav>
-            <ul className="flex flex-col gap-4">
+            <ul className="flex flex-col gap-3">
               <AdminNavItem
                 label="Listar registros"
                 route="listar"
@@ -24,6 +24,16 @@ export default function Admin() {
                 label="Usuários"
                 route="usuarios"
                 icon={<TbUsersGroup />}
+              />
+              <AdminNavItem
+                label="Fotos"
+                route="fotos"
+                icon={<TbLibraryPhoto />}
+              />
+              <AdminNavItem
+                label="Glossário"
+                route="glossario"
+                icon={<TbBook />}
               />
             </ul>
           </nav>

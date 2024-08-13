@@ -6,7 +6,6 @@ export async function loader() {
     columns: {
       id: true,
       identificador: true,
-      sequencia: true,
     },
     with: {
       organismo: {
@@ -34,17 +33,14 @@ export default function ListPanel() {
         <table className="w-full text-left">
           <thead className="bg-neutral-100 text-lg font-bold outline outline-1">
             <tr>
-              <th scope="col" className="w-12 px-4 py-3">
+              <th scope="col" className="px-4 py-3">
                 Identificador
               </th>
-              <th scope="col" className="w-60 px-4 py-3">
+              <th scope="col" className="px-4 py-3">
                 Nome científico
               </th>
-              <th scope="col" className="w-48 px-4 py-3">
+              <th scope="col" className="px-4 py-3">
                 Nome popular
-              </th>
-              <th scope="col" className="w-96 px-4 py-3">
-                Sequência
               </th>
               <th scope="col" className="px-4 py-3">
                 Detalhes
@@ -52,22 +48,19 @@ export default function ListPanel() {
             </tr>
           </thead>
           <tbody>
-            {data.map(({ identificador, sequencia, organismo, id }) => (
+            {data.map(({ identificador, organismo, id }) => (
               <tr
                 key={id}
                 className="border-b odd:bg-neutral-50 even:bg-neutral-200"
               >
-                <td className="px-4 py-4">{identificador}</td>
+                <td className="px-4 py-4">{identificador ?? "(sem dados)"}</td>
                 <td className="px-4 py-4 italic">
-                  {organismo?.nomeCientifico}
+                  {organismo?.nomeCientifico ?? "(sem dados)"}
                 </td>
                 <td className="px-4 py-4">
-                  {organismo?.nomePopular?.map(({ nome }) => nome).join(", ")}
-                </td>
-                <td className="text-wrap px-4 py-4">
-                  {sequencia && sequencia?.length > 20
-                    ? sequencia?.slice(0, 20).concat("...")
-                    : sequencia}
+                  {organismo?.nomePopular && organismo?.nomePopular.length > 0
+                    ? organismo?.nomePopular?.map(({ nome }) => nome).join(", ")
+                    : "(sem dados)"}
                 </td>
                 <td className="px-4 py-4">
                   <NavLink to={`/peptideo/${id}`} className="underline">

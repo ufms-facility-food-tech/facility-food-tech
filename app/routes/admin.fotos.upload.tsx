@@ -79,7 +79,7 @@ export default function Upload() {
       <Form
         method="post"
         encType="multipart/form-data"
-        className="w-full md:w-4/5 lg:w-3/5"
+        className="w-full lg:w-4/5"
       >
         <label className="mb-2 flex h-36 w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-neutral-200 bg-neutral-50">
           <TbFileUpload size="2rem" />

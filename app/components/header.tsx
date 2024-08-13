@@ -102,6 +102,19 @@ export function Header({ user }: { user: User | null }) {
               Fotos
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              prefetch="intent"
+              to="/descobertas-lppfb"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "underline" : ""
+                } p-3 underline-offset-4 hover:underline`
+              }
+            >
+              Descobertas do LPPFB
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

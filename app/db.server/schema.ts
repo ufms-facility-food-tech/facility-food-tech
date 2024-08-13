@@ -77,7 +77,6 @@ export const funcaoBiologicaRelations = relations(
   }),
 );
 
-
 export const casoSucessoTable = pgTable("caso_sucesso", {
   id: serial("id").primaryKey(),
   value: text("value").notNull(),
