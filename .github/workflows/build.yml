@@ -7,14 +7,6 @@ on:
       - renovate/*
   pull_request:
 
-env:
-  NODE_ENV: production
-  PGHOST: localhost
-  PGPORT: 5432
-  PGUSER: postgres
-  PGPASSWORD: postgres
-  PGDATABASE: postgres
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -43,7 +35,14 @@ jobs:
           node-version: "lts/*"
           cache: "npm"
           cache-dependency-path: "package-lock.json"
+      - name: install
+        run: npm ci
       - name: build
-        run: |
-          npm install
-          npm run build
+        run: npm run build
+        env:
+          NODE_ENV: production
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: postgres
