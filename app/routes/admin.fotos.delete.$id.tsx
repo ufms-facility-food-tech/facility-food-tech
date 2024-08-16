@@ -9,9 +9,6 @@ export async function action({ params }: ActionFunctionArgs) {
   if (!id) {
     return json({ message: "Id inválido", ok: false });
   }
-  //   try {
-  //     await formData.get("csrfToken");
-  //   }
 
   const metadata = await db.query.imageMetadataTable.findFirst({
     where: eq(imageMetadataTable.id, Number(id)),

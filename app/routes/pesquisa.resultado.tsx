@@ -22,8 +22,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const familia = searchParams.get("familia");
   const casoSucesso = searchParams.get("casoSucesso");
 
-  const query = searchParams.get("query");
-
   // ilike = case-insensitive like
   // postgres only
   const likes = [
