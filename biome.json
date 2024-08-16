@@ -7,8 +7,7 @@
     "indentWidth": 2,
     "lineEnding": "lf",
     "lineWidth": 80,
-    "attributePosition": "auto",
-    "ignore": ["api-schema.d.ts"]
+    "attributePosition": "auto"
   },
   "organizeImports": { "enabled": true },
   "linter": {
@@ -30,7 +29,7 @@
         }
       }
     },
-    "ignore": ["api-schema.d.ts"]
+    "ignore": ["entry.server.tsx"]
   },
   "javascript": {
     "globals": ["React"],

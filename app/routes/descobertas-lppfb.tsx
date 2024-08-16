@@ -7,8 +7,8 @@ import {
   funcaoBiologicaTable,
   nomePopularTable,
   organismoTable,
-  peptideoTable,
   organismoToNomePopularTable,
+  peptideoTable,
 } from "~/db.server/schema";
 
 export async function loader() {

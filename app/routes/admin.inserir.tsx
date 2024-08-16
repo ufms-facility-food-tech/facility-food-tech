@@ -12,16 +12,16 @@ import { inArray } from "drizzle-orm";
 import { TbPlus, TbTrash } from "react-icons/tb";
 import {
   array,
+  boolean,
+  fallback,
+  integer,
   number,
   object,
   optional,
-  string,
-  boolean,
   pipe,
-  transform,
-  integer,
   setSpecificMessage,
-  fallback,
+  string,
+  transform,
 } from "valibot";
 import {
   CheckboxInput,
@@ -32,15 +32,15 @@ import {
 } from "~/components/form";
 import { db } from "~/db.server/connection";
 import {
-  peptideoTable,
-  organismoTable,
-  funcaoBiologicaTable,
-  publicacaoTable,
   caracteristicasAdicionaisTable,
   casoSucessoTable,
+  funcaoBiologicaTable,
   nomePopularTable,
-  peptideoToPublicacaoTable,
+  organismoTable,
   organismoToNomePopularTable,
+  peptideoTable,
+  peptideoToPublicacaoTable,
+  publicacaoTable,
 } from "~/db.server/schema";
 
 export async function action({ request }: ActionFunctionArgs) {

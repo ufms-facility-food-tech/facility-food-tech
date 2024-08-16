@@ -1,16 +1,16 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
 import { eq, ilike, or, sql } from "drizzle-orm";
 import { TbFlaskFilled } from "react-icons/tb";
 import { Container } from "~/components/container";
 import { db } from "~/db.server/connection";
 import {
-  organismoTable,
-  peptideoTable,
   casoSucessoTable,
-  nomePopularTable,
   funcaoBiologicaTable,
+  nomePopularTable,
+  organismoTable,
   organismoToNomePopularTable,
+  peptideoTable,
 } from "~/db.server/schema";
 
 export async function loader({ request }: LoaderFunctionArgs) {

@@ -1,5 +1,5 @@
-import { Form, Link, useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { TbPencil, TbTextPlus, TbTrash } from "react-icons/tb";
 import { db } from "~/db.server/connection";
 import { glossarioTable } from "~/db.server/schema";
