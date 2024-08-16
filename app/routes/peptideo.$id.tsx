@@ -1,10 +1,10 @@
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link, redirect, useLoaderData, useNavigate } from "@remix-run/react";
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { eq } from "drizzle-orm";
+import { TbFlaskFilled, TbPencil } from "react-icons/tb";
 import { Container } from "~/components/container";
 import { db } from "~/db.server/connection";
-import { eq } from "drizzle-orm";
 import { peptideoTable } from "~/db.server/schema";
-import { TbFlaskFilled, TbPencil } from "react-icons/tb";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;

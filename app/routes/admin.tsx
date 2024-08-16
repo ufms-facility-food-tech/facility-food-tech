@@ -1,6 +1,12 @@
 import { NavLink, Outlet } from "@remix-run/react";
 import { IconContext } from "react-icons";
-import { TbBook, TbDatabasePlus, TbDatabaseSearch, TbLibraryPhoto, TbUsersGroup } from "react-icons/tb";
+import {
+  TbBook,
+  TbDatabasePlus,
+  TbDatabaseSearch,
+  TbLibraryPhoto,
+  TbUsersGroup,
+} from "react-icons/tb";
 import { Container } from "~/components/container";
 
 export default function Admin() {

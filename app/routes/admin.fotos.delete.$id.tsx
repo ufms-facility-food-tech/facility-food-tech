@@ -1,8 +1,8 @@
-import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
+import { rm } from "node:fs";
+import { type ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { eq } from "drizzle-orm";
 import { db } from "~/db.server/connection";
 import { imageMetadataTable } from "~/db.server/schema";
-import { rm } from "node:fs";
 
 export async function action({ params }: ActionFunctionArgs) {
   const id = params.id;

@@ -1,4 +1,4 @@
-import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
+import { type ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { eq } from "drizzle-orm";
 import { db } from "~/db.server/connection";
 import { peptideoTable } from "~/db.server/schema";
