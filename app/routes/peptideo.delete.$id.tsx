@@ -1,7 +1,7 @@
 import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
 import { eq } from "drizzle-orm";
 import { db } from "~/db.server/connection";
-import { glossarioTable } from "~/db.server/schema";
+import { peptideoTable } from "~/db.server/schema";
 
 export async function action({ params }: ActionFunctionArgs) {
   const id = params.id;
@@ -9,15 +9,15 @@ export async function action({ params }: ActionFunctionArgs) {
     return json({ message: "Id inválido", ok: false });
   }
 
-  const item = await db.query.glossarioTable.findFirst({
-    where: eq(glossarioTable.id, Number(id)),
+  const item = await db.query.peptideoTable.findFirst({
+    where: eq(peptideoTable.id, Number(id)),
   });
 
   if (!item) {
-    return json({ message: "Item não encontrado", ok: false });
+    return json({ message: "Peptídeo não encontrado", ok: false });
   }
 
-  await db.delete(glossarioTable).where(eq(glossarioTable.id, item.id));
+  await db.delete(peptideoTable).where(eq(peptideoTable.id, item.id));
 
-  return redirect("/admin/glossario");
+  return redirect("/admin/listar");
 }

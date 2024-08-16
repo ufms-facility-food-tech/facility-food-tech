@@ -47,15 +47,13 @@ export default function Glossario() {
                   method="post"
                   onSubmit={(event) => {
                     const response = confirm(
-                      "Tem certeza que deseja excluir esta imagem?",
+                      "Tem certeza que deseja excluir este item?",
                     );
                     if (!response) {
                       event.preventDefault();
                     }
                   }}
                 >
-                  {/* <input type="hidden" name="csrfToken" value={csrfToken} /> */}
-
                   <button
                     type="submit"
                     className="flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-red-800 to-red-700 py-1 pl-2 pr-4 text-sm font-bold text-white"

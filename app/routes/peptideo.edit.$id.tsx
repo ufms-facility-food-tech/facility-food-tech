@@ -796,6 +796,27 @@ export default function EditPeptideo() {
           </button>
         </div>
       </Form>
+
+      <Form
+        action={`/peptideo/delete/${fields.id.value}`}
+        method="post"
+        onSubmit={(event) => {
+          const response = confirm(
+            "Tem certeza que deseja excluir este peptídeo?",
+          );
+          if (!response) {
+            event.preventDefault();
+          }
+        }}
+        className="mt-4 flex justify-center"
+      >
+        <button
+          type="submit"
+          className="flex items-center gap-2 rounded-full bg-gradient-to-r from-red-800 to-red-700 px-6 py-2 text-lg font-bold text-white"
+        >
+          <TbTrash size="1.5rem" /> Apagar peptídeo
+        </button>
+      </Form>
       {lastResult?.status === "success" ? (
         <p
           className={
