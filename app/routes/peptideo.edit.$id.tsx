@@ -5,24 +5,34 @@ import {
   getTextareaProps,
   useForm,
 } from "@conform-to/react";
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import {
+  redirect,
+  type ActionFunctionArgs,
+  type LoaderFunctionArgs,
+} from "@remix-run/node";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+} from "@remix-run/react";
 import { getValibotConstraint, parseWithValibot } from "conform-to-valibot";
-import { inArray } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { TbPlus, TbTrash } from "react-icons/tb";
 import {
   array,
+  boolean,
+  fallback,
+  integer,
   number,
   object,
   optional,
-  string,
-  boolean,
   pipe,
-  transform,
-  integer,
   setSpecificMessage,
-  fallback,
+  string,
+  transform,
 } from "valibot";
+import { Container } from "~/components/container";
 import {
   CheckboxInput,
   FormErrorMessage,
@@ -32,153 +42,83 @@ import {
 } from "~/components/form";
 import { db } from "~/db.server/connection";
 import {
-  peptideoTable,
-  organismoTable,
-  funcaoBiologicaTable,
-  publicacaoTable,
   caracteristicasAdicionaisTable,
   casoSucessoTable,
+  funcaoBiologicaTable,
   nomePopularTable,
-  peptideoToPublicacaoTable,
+  organismoTable,
   organismoToNomePopularTable,
+  peptideoTable,
+  peptideoToPublicacaoTable,
+  publicacaoTable,
 } from "~/db.server/schema";
 
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const submission = parseWithValibot(formData, {
-    schema,
+export async function loader({ params }: LoaderFunctionArgs) {
+  const { id } = params;
+
+  const peptideo = await db.query.peptideoTable.findFirst({
+    where: eq(peptideoTable.id, Number(id)),
+    with: {
+      organismo: {
+        with: {
+          organismoToNomePopular: {
+            columns: {},
+            with: {
+              nomePopular: true,
+            },
+          },
+        },
+      },
+      caracteristicasAdicionais: true,
+      funcaoBiologica: true,
+      peptideoToPublicacao: {
+        columns: {},
+        with: {
+          publicacao: true,
+        },
+      },
+      casoSucesso: true,
+    },
   });
 
-  if (submission.status !== "success") {
-    return submission.reply();
+  if (!peptideo) {
+    return redirect("/");
   }
 
-  const {
-    organismo,
-    funcaoBiologica,
-    caracteristicasAdicionais,
-    casoSucesso,
+  const { organismo, ...rest } = peptideo;
+
+  const nomePopular = organismo?.organismoToNomePopular.map(
+    ({ nomePopular }) => nomePopular,
+  );
+
+  const publicacao = peptideo.peptideoToPublicacao.map(
+    ({ publicacao }) => publicacao,
+  );
+
+  return {
+    ...rest,
     publicacao,
-    ...peptideo
-  } = submission.value;
-
-  let organismoId: number | undefined;
-  if (!peptideo.sintetico && organismo) {
-    const { nomePopular, ...restOfOrganismo } = organismo;
-    const [{ insertedId }] = await db
-      .insert(organismoTable)
-      .values(restOfOrganismo)
-      .returning({ insertedId: organismoTable.id });
-    organismoId = insertedId;
-
-    if (nomePopular !== undefined) {
-      const ids = await db
-        .select({ id: nomePopularTable.id })
-        .from(nomePopularTable)
-        .where(
-          inArray(
-            nomePopularTable.nome,
-            nomePopular.map(({ nome }) => nome),
-          ),
-        );
-      const newIds = await db
-        .insert(nomePopularTable)
-        .values(nomePopular)
-        .onConflictDoNothing()
-        .returning({ id: nomePopularTable.id });
-
-      await db
-        .insert(organismoToNomePopularTable)
-        .values(
-          [...ids, ...newIds].map(({ id }) => ({
-            organismoId: insertedId,
-            nomePopularId: id,
-          })),
-        )
-        .onConflictDoNothing();
-    }
-  }
-
-  const [{ peptideoId }] = await db
-    .insert(peptideoTable)
-    .values({
-      ...peptideo,
-      organismoId,
-    })
-    .returning({ peptideoId: peptideoTable.id });
-
-  for (const { table, values } of [
-    { table: funcaoBiologicaTable, values: funcaoBiologica },
-    { table: casoSucessoTable, values: casoSucesso },
-    {
-      table: caracteristicasAdicionaisTable,
-      values: caracteristicasAdicionais,
+    organismo: {
+      ...organismo,
+      nomePopular,
     },
-  ]) {
-    if (values && values.length > 0) {
-      await db
-        .insert(table)
-        .values(values.map(({ value }) => ({ peptideoId, value })));
-    }
-  }
-
-  if (publicacao && publicacao.length > 0) {
-    const ids = await db
-      .select({ id: publicacaoTable.id })
-      .from(publicacaoTable)
-      .where(
-        inArray(
-          publicacaoTable.doi,
-          publicacao.map(({ doi }) => doi).filter((doi) => doi !== undefined),
-        ),
-      );
-    const newIds = await db
-      .insert(publicacaoTable)
-      .values(
-        publicacao.map(({ doi, titulo }) => ({
-          doi,
-          titulo,
-        })),
-      )
-      .onConflictDoNothing({
-        target: publicacaoTable.doi,
-      })
-      .returning({ id: publicacaoTable.id });
-
-    await db
-      .insert(peptideoToPublicacaoTable)
-      .values(
-        [...ids, ...newIds].map(({ id }) => ({
-          peptideoId,
-          publicacaoId: id,
-        })),
-      )
-      .onConflictDoNothing();
-  }
-
-  return submission.reply();
+  };
 }
 
 setSpecificMessage(string, "Campo obrigatório");
 setSpecificMessage(number, "Número inválido");
 setSpecificMessage(integer, "Informe um número inteiro");
-// TODO: use drizzle-valibot
-// waiting for https://github.com/drizzle-team/drizzle-orm/pull/2481
 const schema = object({
-  id: optional(pipe(number(), integer())),
+  id: pipe(number(), integer()),
   identificador: optional(string()),
   sequencia: string(),
   sintetico: fallback(boolean(), false),
   descobertaLPPFB: fallback(boolean(), false),
-  bancoDados: optional(string()),
-  palavrasChave: optional(string()),
-  quantidadeAminoacidos: optional(
-    pipe(
-      string(),
-      transform((qtd) => Number(qtd.replace(",", "."))),
-      number(),
-      integer(),
-    ),
+  quantidadeAminoacidos: pipe(
+    string(),
+    transform((qtd) => Number(qtd.replace(",", "."))),
+    number(),
+    integer(),
   ),
   massaMolecular: optional(
     pipe(
@@ -251,9 +191,236 @@ const schema = object({
   ),
 });
 
-export default function InsertPanel() {
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const submission = parseWithValibot(formData, {
+    schema,
+  });
+
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const {
+    organismo,
+    funcaoBiologica,
+    caracteristicasAdicionais,
+    casoSucesso,
+    publicacao,
+    ...peptideo
+  } = submission.value;
+
+  let organismoId = organismo?.id;
+  if (!peptideo.sintetico && organismo) {
+    const { nomePopular, ...restOfOrganismo } = organismo;
+
+    if (organismoId === undefined) {
+      const [{ insertedId }] = await db
+        .insert(organismoTable)
+        .values(restOfOrganismo)
+        .returning({ insertedId: organismoTable.id });
+      organismoId = insertedId;
+    } else {
+      await db
+        .update(organismoTable)
+        .set(restOfOrganismo)
+        .where(eq(organismoTable.id, organismoId));
+    }
+
+    if (nomePopular && nomePopular.length > 0) {
+      const previousIds = await db
+        .select({ id: nomePopularTable.id })
+        .from(nomePopularTable)
+        .innerJoin(
+          organismoToNomePopularTable,
+          eq(organismoToNomePopularTable.nomePopularId, nomePopularTable.id),
+        )
+        .innerJoin(
+          organismoTable,
+          eq(organismoToNomePopularTable.organismoId, organismoTable.id),
+        )
+        .where(eq(organismoTable.id, organismoId));
+
+      if (previousIds.length > 0) {
+        const currentIds = new Set(
+          nomePopular.map(({ id }) => id).filter((id) => id !== undefined),
+        );
+        const idsToDelete = previousIds.filter(({ id }) => !currentIds.has(id));
+        if (idsToDelete.length > 0) {
+          await db.delete(organismoToNomePopularTable).where(
+            and(
+              inArray(
+                organismoToNomePopularTable.nomePopularId,
+                idsToDelete.map(({ id }) => id),
+              ),
+              eq(organismoToNomePopularTable.organismoId, organismoId),
+            ),
+          );
+        }
+      }
+
+      await Promise.all(
+        nomePopular
+          .filter(({ id }) => id !== undefined)
+          .map(({ id, nome }) =>
+            db
+              .update(nomePopularTable)
+              .set({ nome })
+              .where(eq(nomePopularTable.id, id as number)),
+          ),
+      );
+
+      const nomesToInsert = nomePopular.filter(({ id }) => id === undefined);
+      if (nomesToInsert.length > 0) {
+        const newIds = await db
+          .insert(nomePopularTable)
+          .values(nomesToInsert)
+          .onConflictDoNothing()
+          .returning({ id: nomePopularTable.id });
+        const conflictedIds = await db
+          .select({ id: nomePopularTable.id })
+          .from(nomePopularTable)
+          .where(
+            inArray(
+              nomePopularTable.nome,
+              nomePopular
+                .filter(({ id }) => id === undefined)
+                .map(({ nome }) => nome),
+            ),
+          );
+        await db
+          .insert(organismoToNomePopularTable)
+          .values(
+            [...conflictedIds, ...newIds].map(({ id }) => ({
+              organismoId: organismoId as number,
+              nomePopularId: id,
+            })),
+          )
+          .onConflictDoNothing();
+      }
+    }
+  }
+
+  const peptideoId = peptideo.id;
+  await db
+    .update(peptideoTable)
+    .set({
+      ...peptideo,
+      organismoId,
+    })
+    .where(eq(peptideoTable.id, peptideoId));
+
+  for (const { table, values } of [
+    { table: funcaoBiologicaTable, values: funcaoBiologica },
+    { table: casoSucessoTable, values: casoSucesso },
+    {
+      table: caracteristicasAdicionaisTable,
+      values: caracteristicasAdicionais,
+    },
+  ]) {
+    if (values && values.length > 0) {
+      const toUpdate = values.filter(({ id }) => id !== undefined);
+      if (toUpdate.length > 0) {
+        await Promise.all(
+          toUpdate.map(({ id, value }) =>
+            db
+              .update(table)
+              .set({ value })
+              .where(eq(table.id, id as number)),
+          ),
+        );
+      }
+
+      const remaining = values
+        .filter(({ id }) => id === undefined)
+        .map(({ value }) => ({ peptideoId, value }));
+      if (remaining.length > 0) {
+        await db.insert(table).values(remaining);
+      }
+    }
+  }
+
+  if (publicacao && publicacao.length > 0) {
+    const previousIds = await db
+      .select({ id: publicacaoTable.id })
+      .from(publicacaoTable)
+      .innerJoin(
+        peptideoToPublicacaoTable,
+        eq(peptideoToPublicacaoTable.publicacaoId, publicacaoTable.id),
+      )
+      .innerJoin(
+        peptideoTable,
+        eq(peptideoToPublicacaoTable.peptideoId, peptideoTable.id),
+      )
+      .where(eq(peptideoTable.id, peptideoId));
+
+    if (previousIds.length > 0) {
+      const currentIds = new Set(
+        publicacao.map(({ id }) => id).filter((id) => id !== undefined),
+      );
+      const idsToDelete = previousIds
+        .filter(({ id }) => !currentIds.has(id))
+        .map(({ id }) => id);
+      if (idsToDelete.length > 0) {
+        await db
+          .delete(peptideoToPublicacaoTable)
+          .where(
+            and(
+              inArray(peptideoToPublicacaoTable.publicacaoId, idsToDelete),
+              eq(peptideoToPublicacaoTable.peptideoId, peptideoId),
+            ),
+          );
+      }
+    }
+
+    await Promise.all(
+      publicacao
+        .filter(({ id }) => id !== undefined)
+        .map(({ id, doi, titulo }) =>
+          db
+            .update(publicacaoTable)
+            .set({ doi, titulo })
+            .where(eq(publicacaoTable.id, id as number)),
+        ),
+    );
+
+    const pubToInsert = publicacao.filter(({ id }) => id === undefined);
+    if (pubToInsert.length > 0) {
+      const newIds = await db
+        .insert(publicacaoTable)
+        .values(pubToInsert)
+        .onConflictDoNothing()
+        .returning({ id: publicacaoTable.id });
+
+      const ids = await db
+        .select({ id: publicacaoTable.id })
+        .from(publicacaoTable)
+        .where(
+          inArray(
+            publicacaoTable.doi,
+            publicacao.map(({ doi }) => doi).filter((doi) => doi !== undefined),
+          ),
+        );
+      await db
+        .insert(peptideoToPublicacaoTable)
+        .values(
+          [...ids, ...newIds].map(({ id }) => ({
+            peptideoId: peptideoId,
+            publicacaoId: id,
+          })),
+        )
+        .onConflictDoNothing();
+    }
+  }
+
+  return submission.reply();
+}
+
+export default function EditPeptideo() {
+  const defaultValue = useLoaderData<typeof loader>();
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm({
+    defaultValue,
     lastResult,
     constraint: getValibotConstraint(schema),
     onValidate({ formData }) {
@@ -269,8 +436,10 @@ export default function InsertPanel() {
   const caracteristicasAdicionais =
     fields.caracteristicasAdicionais.getFieldList();
 
+  const navigate = useNavigate();
+
   return (
-    <>
+    <Container title="Editar Peptídeo">
       <Form
         method="post"
         {...getFormProps(form)}
@@ -616,9 +785,15 @@ export default function InsertPanel() {
             ([key, value]) => `${key}: ${value.join(", ")}`,
           )}
         />
-
-        <div className="self-center">
+        <div className="m-4 flex items-center justify-center gap-2">
           <SubmitButton>Enviar</SubmitButton>
+          <button
+            type="button"
+            className="rounded-full bg-neutral-200 px-6 py-2 text-lg font-bold"
+            onClick={() => navigate(-1)}
+          >
+            Voltar
+          </button>
         </div>
       </Form>
       {lastResult?.status === "success" ? (
@@ -627,9 +802,9 @@ export default function InsertPanel() {
             "my-4 rounded-xl bg-cyan-100 px-4 py-2 text-base text-cyan-700"
           }
         >
-          Peptídeo inserido com sucesso.
+          Peptídeo atualizado com sucesso.
         </p>
       ) : null}
-    </>
+    </Container>
   );
 }

@@ -1,4 +1,5 @@
 import { Form } from "@remix-run/react";
+import { useState } from "react";
 import { TbSearch } from "react-icons/tb";
 
 export default function Index() {
@@ -10,25 +11,7 @@ export default function Index() {
             <h1 className="text-balance px-6 text-center text-4xl font-bold text-white lg:w-96 lg:px-0">
               Facility FoodTech do Cerrado-Pantanal
             </h1>
-            <Form
-              method="get"
-              action="/pesquisa/resultado"
-              className="flex h-16 w-11/12"
-            >
-              <input
-                type="text"
-                name="especie"
-                className="w-full rounded-l-3xl border-2 border-white bg-white px-4 py-2 text-black"
-                placeholder="Pesquisar"
-              />
-              <button
-                aria-label="Pesquisar"
-                type="submit"
-                className="rounded-r-3xl bg-cyan-500 px-4 py-2 text-white"
-              >
-                <TbSearch size="2rem" />
-              </button>
-            </Form>
+            <SearchBar />
           </div>
           <div className="mx-4 mb-20 mt-12 flex items-center gap-16">
             <img
@@ -89,5 +72,37 @@ export default function Index() {
         </p>
       </div>
     </>
+  );
+}
+
+function SearchBar() {
+  const [query, setQuery] = useState("");
+
+  return (
+    <Form
+      method="get"
+      action="/pesquisa/resultado"
+      className="flex h-16 w-11/12"
+    >
+      <input type="hidden" name="nomePopular" value={query} />
+      <input type="hidden" name="nomeCientifico" value={query} />
+      <input type="hidden" name="origem" value={query} />
+      <input type="hidden" name="familia" value={query} />
+      <input type="hidden" name="casoSucesso" value={query} />
+      <input
+        type="text"
+        className="w-full rounded-l-3xl border-2 border-white bg-white px-4 py-2 text-black"
+        placeholder="Pesquisar"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <button
+        aria-label="Pesquisar"
+        type="submit"
+        className="rounded-r-3xl bg-cyan-500 px-4 py-2 text-white"
+      >
+        <TbSearch size="2rem" />
+      </button>
+    </Form>
   );
 }

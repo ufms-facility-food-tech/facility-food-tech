@@ -29,6 +29,7 @@ export function TextInput({
     <label
       className="flex flex-col text-cyan-600 aria-disabled:text-neutral-500"
       aria-disabled={props.disabled}
+      htmlFor={props.id}
     >
       {label}
       <input
@@ -46,7 +47,7 @@ export function TextAreaInput({
   label: string;
 } & ComponentProps<"textarea">) {
   return (
-    <label className="flex flex-col text-base text-cyan-600">
+    <label className="flex flex-col text-base text-cyan-600" htmlFor={props.id}>
       {label}
       <textarea
         className="mt-1 resize-none overflow-auto rounded-xl border bg-neutral-50 p-2 text-base text-black"
@@ -63,7 +64,7 @@ export function CheckboxInput({
   label: string;
 } & ComponentProps<"input">) {
   return (
-    <label className="flex gap-2 text-cyan-600">
+    <label className="flex gap-2 text-cyan-600" htmlFor={props.id}>
       <input type="checkbox" {...props} />
       {label}
     </label>
@@ -79,7 +80,7 @@ export function SelectInput({
   options: Array<{ value: string; label: string }>;
 } & ComponentProps<"select">) {
   return (
-    <label className="flex flex-col text-cyan-600">
+    <label className="flex flex-col text-cyan-600" htmlFor={props.id}>
       {label}
       <select
         className="mt-1 rounded-xl border bg-neutral-50 p-2 text-base text-black"
@@ -96,10 +97,12 @@ export function SelectInput({
 }
 
 export function FormErrorMessage({ errors }: { errors?: Array<string> }) {
-  if (!errors) return null;
+  if (!errors || errors.length === 0) return null;
   return (
-    <p className="rounded-xl bg-red-50 p-2 text-sm text-red-800">
-      {errors.join(" ")}
-    </p>
+    <ul className="flex list-inside list-disc flex-col gap-1 rounded-xl bg-red-50 px-4 py-2 text-sm text-red-800">
+      {errors.map((error) => (
+        <li key={error}>{error}</li>
+      ))}
+    </ul>
   );
 }

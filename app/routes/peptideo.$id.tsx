@@ -1,10 +1,10 @@
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { Link, redirect, useLoaderData, useNavigate } from "@remix-run/react";
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { Container } from "~/components/container";
 import { db } from "~/db.server/connection";
 import { eq } from "drizzle-orm";
 import { peptideoTable } from "~/db.server/schema";
-import { TbFlaskFilled } from "react-icons/tb";
+import { TbFlaskFilled, TbPencil } from "react-icons/tb";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
@@ -13,15 +13,29 @@ export async function loader({ params }: LoaderFunctionArgs) {
     with: {
       organismo: {
         with: {
-          nomePopular: true,
+          organismoToNomePopular: {
+            columns: {},
+            with: {
+              nomePopular: true,
+            },
+          },
         },
       },
       funcaoBiologica: true,
       casoSucesso: true,
       caracteristicasAdicionais: true,
-      publicacao: true,
+      peptideoToPublicacao: {
+        columns: {},
+        with: {
+          publicacao: true,
+        },
+      },
     },
   });
+
+  if (!peptideo) {
+    return redirect("/");
+  }
 
   return json(peptideo);
 }
@@ -35,10 +49,14 @@ export default function Peptideo() {
     propriedadesFisicoQuimicas,
     caracteristicasAdicionais,
     organismo,
-    publicacao,
+    peptideoToPublicacao,
     funcaoBiologica,
     ...peptideo
   } = useLoaderData<typeof loader>();
+  const publicacao = peptideoToPublicacao.map(({ publicacao }) => publicacao);
+  const nomePopular = organismo?.organismoToNomePopular.map(
+    ({ nomePopular }) => nomePopular,
+  );
 
   const navigate = useNavigate();
   return (
@@ -54,51 +72,57 @@ export default function Peptideo() {
           <h2 className="border-b-2 border-neutral-100 pb-2 text-2xl font-bold text-cyan-600">
             Peptídeo
           </h2>
-          <div className="rounded-lg bg-neutral-50 p-4">
+          <div className="flex flex-col gap-2 rounded-lg bg-neutral-50 p-4">
             {peptideo.sintetico ? (
               <p className="font-bold text-cyan-600">Sintético</p>
             ) : (
               <>
                 <p>
-                  <strong className="text-cyan-600">Nome científico:</strong>{" "}
+                  <span className="font-bold text-cyan-600">
+                    Nome científico:{" "}
+                  </span>
                   {organismo?.nomeCientifico ?? "(sem dados)"}
                 </p>
                 <p>
-                  <strong className="text-cyan-600">Família:</strong>{" "}
+                  <span className="font-bold text-cyan-600">Família: </span>
                   {organismo?.familia ?? "(sem dados)"}
                 </p>
 
                 <p>
-                  <strong className="text-cyan-600">Origem:</strong>{" "}
+                  <span className="font-bold text-cyan-600">Origem: </span>
                   {organismo?.origem ?? "(sem dados)"}
                 </p>
 
                 <p>
-                  <strong className="text-cyan-600">Nomes populares:</strong>{" "}
-                  {organismo?.nomePopular
-                    ? organismo?.nomePopular?.map(({ nome }) => nome).join(", ")
+                  <span className="font-bold text-cyan-600">
+                    Nomes populares:{" "}
+                  </span>
+                  {nomePopular
+                    ? nomePopular?.map(({ nome }) => nome).join(", ")
                     : "(sem dados)"}
                 </p>
               </>
             )}
             <p>
-              <strong className="text-cyan-600">Identificador:</strong>{" "}
+              <span className="font-bold text-cyan-600">Identificador: </span>
               {peptideo.identificador ?? "(sem dados)"}
             </p>
             <p>
-              <strong className="text-cyan-600">Massa molecular:</strong>{" "}
+              <span className="font-bold text-cyan-600">Massa molecular: </span>
               {peptideo.massaMolecular
                 ? `${peptideo.massaMolecular} Da`
                 : "(sem dados)"}
             </p>
             <p>
-              <strong className="text-cyan-600">Massa molar:</strong>{" "}
+              <span className="font-bold text-cyan-600">Massa molar: </span>
               {peptideo.massaMolar
                 ? `${peptideo.massaMolar} g/mol`
                 : "(sem dados)"}
             </p>
             <p>
-              <strong className="text-cyan-600">Qtd. aminoácidos:</strong>{" "}
+              <span className="font-bold text-cyan-600">
+                Qtd. aminoácidos:{" "}
+              </span>
               {peptideo.quantidadeAminoacidos ?? "(sem dados)"}
             </p>
           </div>
@@ -111,6 +135,24 @@ export default function Peptideo() {
           <p className="mt-2 break-words rounded-lg bg-neutral-50 px-4 py-2">
             {peptideo.sequencia ?? "(sem dados)"}
           </p>
+        </div>
+
+        <div>
+          <h3 className="border-b-2 border-neutral-100 pb-2 text-xl font-bold text-cyan-600">
+            Funções biológicas
+          </h3>
+
+          {funcaoBiologica.length > 0 ? (
+            funcaoBiologica.map(({ id, value }) => (
+              <p key={id} className="mt-2 rounded-lg bg-neutral-50 px-4 py-2">
+                {value}
+              </p>
+            ))
+          ) : (
+            <p className="mt-2 rounded-lg bg-neutral-50 px-4 py-2">
+              (sem dados)
+            </p>
+          )}
         </div>
 
         <div>
@@ -178,30 +220,14 @@ export default function Peptideo() {
                 className="mt-2 flex flex-col gap-2 rounded-lg bg-neutral-50 px-4 py-2"
               >
                 <p>
-                  <strong>DOI:</strong> {doi}
+                  <span className="font-bold text-cyan-600">DOI: </span>
+                  {doi}
                 </p>
                 <p>
-                  <strong>Título:</strong> {titulo}
+                  <span className="font-bold text-cyan-600">Título: </span>
+                  {titulo}
                 </p>
               </div>
-            ))
-          ) : (
-            <p className="mt-2 rounded-lg bg-neutral-50 px-4 py-2">
-              (sem dados)
-            </p>
-          )}
-        </div>
-
-        <div>
-          <h3 className="border-b-2 border-neutral-100 pb-2 text-xl font-bold text-cyan-600">
-            Funções biológicas
-          </h3>
-
-          {funcaoBiologica.length > 0 ? (
-            funcaoBiologica.map(({ id, value }) => (
-              <p key={id} className="mt-2 rounded-lg bg-neutral-50 px-4 py-2">
-                {value}
-              </p>
             ))
           ) : (
             <p className="mt-2 rounded-lg bg-neutral-50 px-4 py-2">
@@ -227,13 +253,22 @@ export default function Peptideo() {
           )}
         </div>
 
-        <button
-          type="button"
-          className="w-min self-center rounded-full bg-neutral-100 px-6 py-2 font-bold"
-          onClick={() => navigate(-1)}
-        >
-          Voltar
-        </button>
+        <div className="flex items-center justify-center gap-2">
+          <Link
+            prefetch="intent"
+            to={`/peptideo/edit/${peptideo.id}`}
+            className="flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 py-2 pl-3 pr-4 font-bold text-white"
+          >
+            <TbPencil size="1.5rem" /> Editar
+          </Link>
+          <button
+            type="button"
+            className="w-min rounded-full bg-neutral-100 px-6 py-2 font-bold"
+            onClick={() => navigate(-1)}
+          >
+            Voltar
+          </button>
+        </div>
       </div>
     </Container>
   );

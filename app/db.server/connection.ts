@@ -2,6 +2,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { sql } from "drizzle-orm";
 
 // connections will fallback to psql environment variables
 // PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE
@@ -23,5 +24,7 @@ migrate(drizzle(migrationClient), { migrationsFolder: "./migrations" });
 
 const queryClient = postgres({ ...connectionOptions });
 const db = drizzle(queryClient, { schema });
+
+await db.execute(sql`CREATE EXTENSION IF NOT EXISTS unaccent;`);
 
 export { db };

@@ -8,6 +8,7 @@ import {
   nomePopularTable,
   organismoTable,
   peptideoTable,
+  organismoToNomePopularTable,
 } from "~/db.server/schema";
 
 export async function loader() {
@@ -26,8 +27,12 @@ export async function loader() {
     .from(peptideoTable)
     .leftJoin(organismoTable, eq(peptideoTable.organismoId, organismoTable.id))
     .leftJoin(
+      organismoToNomePopularTable,
+      eq(organismoTable.id, organismoToNomePopularTable.organismoId),
+    )
+    .leftJoin(
       nomePopularTable,
-      eq(nomePopularTable.organismoId, organismoTable.id),
+      eq(nomePopularTable.id, organismoToNomePopularTable.nomePopularId),
     )
     .leftJoin(
       funcaoBiologicaTable,
@@ -45,7 +50,6 @@ export async function loader() {
 
 export default function Resultado() {
   const descobertas = useLoaderData<typeof loader>();
-  console.log(descobertas);
 
   return (
     <Container>
@@ -70,12 +74,12 @@ export default function Resultado() {
                 to={`/peptideo/${peptideoId}`}
                 className="mt-1 text-2xl font-bold text-cyan-600 hover:underline"
               >
-                {identificador ? identificador : "(sem identificador)"}{" "}
+                {identificador ? identificador : "(sem identificador)"}
                 {!sintetico ? (
                   nomeCientifico ? (
-                    <i>- {nomeCientifico}</i>
+                    <i> - {nomeCientifico}</i>
                   ) : (
-                    "- (sem nome científico)"
+                    " - (sem nome científico)"
                   )
                 ) : null}
               </Link>
