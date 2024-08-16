@@ -8,41 +8,80 @@ import {
   serial,
   text,
   timestamp,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
-export const organismoTable = pgTable("organismo", {
-  id: serial("id").primaryKey(),
-  nomeCientifico: text("nome_cientifico"),
-  familia: text("familia"),
-  origem: text("origem"),
-});
+export const organismoTable = pgTable(
+  "organismo",
+  {
+    id: serial("id").primaryKey(),
+    nomeCientifico: text("nome_cientifico").unique(),
+    familia: text("familia"),
+    origem: text("origem"),
+  },
+  (table) => ({
+    nomeCientificoIdx: uniqueIndex("nome_cientifico_idx").on(
+      table.nomeCientifico,
+    ),
+  }),
+);
 
 export const organismoRelations = relations(organismoTable, ({ many }) => ({
-  nomePopular: many(nomePopularTable),
+  organismoToNomePopular: many(organismoToNomePopularTable),
 }));
 
-export const nomePopularTable = pgTable("nome_popular", {
-  id: serial("id").primaryKey(),
-  nome: text("nome").notNull(),
-  organismoId: integer("organismo_id").notNull(),
-});
-
-export const nomePopularRelations = relations(nomePopularTable, ({ one }) => ({
-  organismo: one(organismoTable, {
-    fields: [nomePopularTable.organismoId],
-    references: [organismoTable.id],
+export const nomePopularTable = pgTable(
+  "nome_popular",
+  {
+    id: serial("id").primaryKey(),
+    nome: text("nome").notNull().unique(),
+  },
+  (table) => ({
+    nomeIdx: uniqueIndex("nome_idx").on(table.nome),
   }),
+);
+
+export const nomePopularRelations = relations(nomePopularTable, ({ many }) => ({
+  organismoToNomePopular: many(organismoToNomePopularTable),
 }));
+
+export const organismoToNomePopularTable = pgTable(
+  "organismo_to_nome_popular",
+  {
+    organismoId: integer("organismo_id")
+      .notNull()
+      .references(() => organismoTable.id, { onDelete: "cascade" }),
+    nomePopularId: integer("nome_popular_id")
+      .notNull()
+      .references(() => nomePopularTable.id, { onDelete: "cascade" }),
+  },
+);
+
+export const organismoToNomePopularRelations = relations(
+  organismoToNomePopularTable,
+  ({ one }) => ({
+    organismo: one(organismoTable, {
+      fields: [organismoToNomePopularTable.organismoId],
+      references: [organismoTable.id],
+    }),
+    nomePopular: one(nomePopularTable, {
+      fields: [organismoToNomePopularTable.nomePopularId],
+      references: [nomePopularTable.id],
+    }),
+  }),
+);
 
 export const peptideoTable = pgTable("peptideo", {
   id: serial("id").primaryKey(),
   identificador: text("identificador"),
-  sequencia: text("sequencia"),
+  sequencia: text("sequencia").notNull(),
   sintetico: boolean("sintetico").notNull().default(false),
   descobertaLPPFB: boolean("descoberta_lppfb").notNull().default(false),
+  bancoDados: text("banco_dados"),
+  palavrasChave: text("palavras_chave"),
   quantidadeAminoacidos: integer("quantidade_aminoacidos"),
-  massaMolecular: numeric("massa_molecular", { precision: 10, scale: 4 }),
-  massaMolar: numeric("massa_molar", { precision: 10, scale: 4 }),
+  massaMolecular: numeric("massa_molecular"),
+  massaMolar: numeric("massa_molar"),
   ensaioCelular: text("ensaio_celular"),
   microbiologia: text("microbiologia"),
   atividadeAntifungica: text("atividade_antifungica"),
@@ -58,8 +97,41 @@ export const peptideoRelations = relations(peptideoTable, ({ one, many }) => ({
   funcaoBiologica: many(funcaoBiologicaTable),
   casoSucesso: many(casoSucessoTable),
   caracteristicasAdicionais: many(caracteristicasAdicionaisTable),
-  publicacao: many(publicacaoTable),
+  peptideoToPublicacao: many(peptideoToPublicacaoTable),
 }));
+
+export const publicacaoTable = pgTable("publicacao", {
+  id: serial("id").primaryKey(),
+  doi: text("doi").unique(),
+  titulo: text("titulo"),
+});
+
+export const publicacaoRelations = relations(publicacaoTable, ({ many }) => ({
+  peptideoToPublicacao: many(peptideoToPublicacaoTable),
+}));
+
+export const peptideoToPublicacaoTable = pgTable("peptideo_to_publicacao", {
+  peptideoId: integer("peptideo_id")
+    .notNull()
+    .references(() => peptideoTable.id, { onDelete: "cascade" }),
+  publicacaoId: integer("publicacao_id")
+    .notNull()
+    .references(() => publicacaoTable.id, { onDelete: "cascade" }),
+});
+
+export const peptideoToPublicacaoRelations = relations(
+  peptideoToPublicacaoTable,
+  ({ one }) => ({
+    peptideo: one(peptideoTable, {
+      fields: [peptideoToPublicacaoTable.peptideoId],
+      references: [peptideoTable.id],
+    }),
+    publicacao: one(publicacaoTable, {
+      fields: [peptideoToPublicacaoTable.publicacaoId],
+      references: [publicacaoTable.id],
+    }),
+  }),
+);
 
 export const funcaoBiologicaTable = pgTable("funcao_biologica", {
   id: serial("id").primaryKey(),
@@ -103,25 +175,11 @@ export const caracteristicasAdicionaisRelations = relations(
   caracteristicasAdicionaisTable,
   ({ one }) => ({
     peptideo: one(peptideoTable, {
-      fields: [caracteristicasAdicionaisTable.id],
+      fields: [caracteristicasAdicionaisTable.peptideoId],
       references: [peptideoTable.id],
     }),
   }),
 );
-
-export const publicacaoTable = pgTable("publicacao", {
-  id: serial("id").primaryKey(),
-  doi: text("doi").unique(),
-  titulo: text("titulo"),
-  peptideoId: integer("peptideo_id").notNull(),
-});
-
-export const publicacaoRelations = relations(publicacaoTable, ({ one }) => ({
-  peptideo: one(peptideoTable, {
-    fields: [publicacaoTable.peptideoId],
-    references: [peptideoTable.id],
-  }),
-}));
 
 export const rolesEnum = pgEnum("roles", [
   "read",

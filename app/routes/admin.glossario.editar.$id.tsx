@@ -53,7 +53,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return submission.reply();
 }
 
-export default function Upload() {
+export default function EditGlossario() {
   const item = useLoaderData<typeof loader>();
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm({
@@ -61,8 +61,6 @@ export default function Upload() {
     lastResult,
     constraint: getValibotConstraint(schema),
     onValidate({ formData }) {
-      console.log(Object.fromEntries(formData));
-      console.log(parseWithValibot(formData, { schema }));
       return parseWithValibot(formData, { schema });
     },
   });

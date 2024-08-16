@@ -13,7 +13,12 @@ export async function loader() {
           nomeCientifico: true,
         },
         with: {
-          nomePopular: true,
+          organismoToNomePopular: {
+            columns: {},
+            with: {
+              nomePopular: true,
+            },
+          },
         },
       },
     },
@@ -58,8 +63,11 @@ export default function ListPanel() {
                   <td className="px-4 py-4">(sem dados)</td>
                 )}
                 <td className="px-4 py-4">
-                  {organismo?.nomePopular && organismo?.nomePopular.length > 0
-                    ? organismo?.nomePopular?.map(({ nome }) => nome).join(", ")
+                  {organismo?.organismoToNomePopular &&
+                  organismo?.organismoToNomePopular.length > 0
+                    ? organismo?.organismoToNomePopular
+                        ?.map(({ nomePopular: { nome } }) => nome)
+                        .join(", ")
                     : "(sem dados)"}
                 </td>
                 <td className="px-4 py-4">

@@ -41,7 +41,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return json({ message: "Legenda alterada com sucesso", ok: true });
 }
 
-export default function Upload() {
+export default function EditFoto() {
   const foto = useLoaderData<typeof loader>();
   const data = useActionData<typeof action>();
   const navigate = useNavigate();

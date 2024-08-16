@@ -35,8 +35,6 @@ export default function GlossarioInserir() {
     lastResult,
     constraint: getValibotConstraint(schema),
     onValidate({ formData }) {
-      console.log(Object.fromEntries(formData));
-      console.log(parseWithValibot(formData, { schema }));
       return parseWithValibot(formData, { schema });
     },
   });
