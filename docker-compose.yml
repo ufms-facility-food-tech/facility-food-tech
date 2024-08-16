@@ -3,35 +3,27 @@ services:
     image: "postgres:16.4-alpine"
     env_file: .env
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
     volumes:
       - facility_db:/var/lib/postgresql/data
 
   facility:
+    ports:
+      - "3000:3000"
     build: .
     env_file: .env
-    ports:
-      - "80:80"
-      - "443:443"
     depends_on:
       - facility-db
     environment:
-      - DOMAIN=${DOMAIN}
       - PGHOST=facility-db
       - PGPORT=${PGPORT}
       - PGUSER=${PGUSER}
       - PGPASSWORD=${PGPASSWORD}
       - PGDATABASE=${PGDATABASE}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - NODE_ENV=production
     volumes:
-      - ./fotos:/srv/images/upload
-      - Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
+      - ./public/images/upload:/srv/client/images/upload
 
 volumes:
-  caddy_data:
-  caddy_config:
   facility_db:
