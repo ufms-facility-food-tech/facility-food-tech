@@ -261,12 +261,15 @@ export async function action({ request }: ActionFunctionArgs) {
 
       await Promise.all(
         nomePopular
-          .filter(({ id }) => id !== undefined)
+          .filter(
+            (nome): nome is { id: number; nome: string } =>
+              typeof nome.id === "number",
+          )
           .map(({ id, nome }) =>
             db
               .update(nomePopularTable)
               .set({ nome })
-              .where(eq(nomePopularTable.id, id as number)),
+              .where(eq(nomePopularTable.id, id)),
           ),
       );
 
@@ -319,14 +322,14 @@ export async function action({ request }: ActionFunctionArgs) {
     },
   ]) {
     if (values && values.length > 0) {
-      const toUpdate = values.filter(({ id }) => id !== undefined);
+      const toUpdate = values.filter(
+        (value): value is { id: number; value: string } =>
+          typeof value.id === "number",
+      );
       if (toUpdate.length > 0) {
         await Promise.all(
           toUpdate.map(({ id, value }) =>
-            db
-              .update(table)
-              .set({ value })
-              .where(eq(table.id, id as number)),
+            db.update(table).set({ value }).where(eq(table.id, id)),
           ),
         );
       }
@@ -375,12 +378,15 @@ export async function action({ request }: ActionFunctionArgs) {
 
     await Promise.all(
       publicacao
-        .filter(({ id }) => id !== undefined)
+        .filter(
+          (pub): pub is { id: number; doi?: string; titulo?: string } =>
+            typeof pub.id === "number",
+        )
         .map(({ id, doi, titulo }) =>
           db
             .update(publicacaoTable)
             .set({ doi, titulo })
-            .where(eq(publicacaoTable.id, id as number)),
+            .where(eq(publicacaoTable.id, id)),
         ),
     );
 
@@ -398,7 +404,9 @@ export async function action({ request }: ActionFunctionArgs) {
         .where(
           inArray(
             publicacaoTable.doi,
-            publicacao.map(({ doi }) => doi).filter((doi) => doi !== undefined),
+            publicacao
+              .map(({ doi }) => doi)
+              .filter((doi): doi is string => !!doi),
           ),
         );
       await db

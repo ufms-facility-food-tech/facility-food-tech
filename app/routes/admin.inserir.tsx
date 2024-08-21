@@ -129,7 +129,9 @@ export async function action({ request }: ActionFunctionArgs) {
       .where(
         inArray(
           publicacaoTable.doi,
-          publicacao.map(({ doi }) => doi).filter((doi) => doi !== undefined),
+          publicacao
+            .map(({ doi }) => doi)
+            .filter((doi): doi is string => !!doi),
         ),
       );
     const newIds = await db
