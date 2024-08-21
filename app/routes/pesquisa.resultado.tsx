@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
-import { eq, ilike, or, sql } from "drizzle-orm";
+import { type SQL, eq, ilike, or, sql } from "drizzle-orm";
 import { TbFlaskFilled } from "react-icons/tb";
 import { Container } from "~/components/container";
 import { db } from "~/db.server/connection";
@@ -29,16 +29,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // depends on https://github.com/drizzle-team/drizzle-orm/issues/638
     // https://www.answeroverflow.com/m/1159982488429543545 | https://archive.is/a0bFQ
     // https://www.postgresql.org/docs/current/collation.html#ICU-CUSTOM-COLLATIONS | https://archive.is/vyGPm
-    nomePopular
-      ? sql`unaccent(${nomePopularTable.nome}) ilike unaccent(${`%${nomePopular}%`})`
-      : null,
-    nomeCientifico
-      ? ilike(organismoTable.nomeCientifico, `%${nomeCientifico}%`)
-      : null,
-    origem ? ilike(organismoTable.origem, `%${origem}%`) : null,
-    familia ? ilike(organismoTable.familia, `%${familia}%`) : null,
-    casoSucesso ? ilike(casoSucessoTable.value, `%${casoSucesso}%`) : null,
-  ].filter((like) => like !== null);
+    !!nomePopular &&
+      sql`unaccent(${nomePopularTable.nome}) ilike unaccent(${`%${nomePopular}%`})`,
+    !!nomeCientifico &&
+      ilike(organismoTable.nomeCientifico, `%${nomeCientifico}%`),
+    !!origem && ilike(organismoTable.origem, `%${origem}%`),
+    !!familia && ilike(organismoTable.familia, `%${familia}%`),
+    !!casoSucesso && ilike(casoSucessoTable.value, `%${casoSucesso}%`),
+  ].filter((like): like is SQL<unknown> => like !== false);
 
   const results = await db
     .select({
@@ -49,10 +47,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
       bancoDados: peptideoTable.bancoDados,
       palavrasChave: peptideoTable.palavrasChave,
       nomeCientifico: organismoTable.nomeCientifico,
-      nomesPopulares: sql<Array<string>>`array_agg(${nomePopularTable.nome})`,
+      nomesPopulares: sql<
+        Array<string>
+      >`array_agg(distinct ${nomePopularTable.nome})`,
       funcaoBiologica: sql<
         Array<string>
-      >`array_agg(${funcaoBiologicaTable.value})`,
+      >`array_agg(distinct ${funcaoBiologicaTable.value})`,
     })
     .from(peptideoTable)
     .leftJoin(

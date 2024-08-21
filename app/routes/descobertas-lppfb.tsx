@@ -14,15 +14,17 @@ import {
 export async function loader() {
   const descobertas = await db
     .select({
-      sintetico: peptideoTable.sintetico,
       peptideoId: peptideoTable.id,
       identificador: peptideoTable.identificador,
+      sintetico: peptideoTable.sintetico,
       sequencia: peptideoTable.sequencia,
       nomeCientifico: organismoTable.nomeCientifico,
-      nomesPopulares: sql<Array<string>>`array_agg(${nomePopularTable.nome})`,
+      nomesPopulares: sql<
+        Array<string>
+      >`array_agg(distinct ${nomePopularTable.nome})`,
       funcaoBiologica: sql<
         Array<string>
-      >`array_agg(${funcaoBiologicaTable.value})`,
+      >`array_agg(distinct ${funcaoBiologicaTable.value})`,
     })
     .from(peptideoTable)
     .leftJoin(organismoTable, eq(peptideoTable.organismoId, organismoTable.id))
@@ -42,6 +44,7 @@ export async function loader() {
     .groupBy(
       peptideoTable.id,
       peptideoTable.identificador,
+      peptideoTable.sintetico,
       peptideoTable.sequencia,
       organismoTable.nomeCientifico,
     );
