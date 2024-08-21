@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "@remix-run/react";
-import { db } from "../db.server/connection";
+import { db } from "~/db.server/connection";
 
 export async function loader() {
   return await db.query.peptideoTable.findMany({
