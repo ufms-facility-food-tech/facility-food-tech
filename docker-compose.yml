@@ -9,8 +9,6 @@ services:
       - facility_db:/var/lib/postgresql/data
 
   facility:
-    ports:
-      - "3000:3000"
     build: .
     env_file: .env
     depends_on:
@@ -25,5 +23,19 @@ services:
     volumes:
       - ./public/images/upload:/srv/client/images/upload
 
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - facility
+
 volumes:
   facility_db:
+  caddy_data:
+  caddy_config:
