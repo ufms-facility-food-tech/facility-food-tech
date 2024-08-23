@@ -13,6 +13,7 @@
   "dependencies": {
     "@conform-to/react": "^1.1.5",
     "@lucia-auth/adapter-drizzle": "^1.1.0",
+    "@node-rs/argon2": "^1.8.3",
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.11.1",

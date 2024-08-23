@@ -15,6 +15,13 @@
       "when": 1724361751547,
       "tag": "0001_rapid_silver_samurai",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1724432672981,
+      "tag": "0002_absurd_fallen_one",
+      "breakpoints": true
     }
   ]
 }

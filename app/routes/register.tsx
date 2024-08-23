@@ -1,106 +1,136 @@
-import { type ActionFunctionArgs, redirect } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { Form, redirect, useActionData } from "@remix-run/react";
+import { parseWithValibot } from "conform-to-valibot";
+import { count, eq, gte } from "drizzle-orm";
+import { generateIdFromEntropySize } from "lucia";
+import {
+  object,
+  string,
+  setSpecificMessage,
+  pipe,
+  minLength,
+  forward,
+  partialCheck,
+  regex,
+} from "valibot";
+import { auth } from "~/.server/auth";
+import { db } from "~/.server/db/connection";
+import { userTable } from "~/.server/db/schema";
 import { Container } from "~/components/container";
-import { SubmitButton, TextInput } from "~/components/form";
+import { FormErrorMessage, SubmitButton, TextInput } from "~/components/form";
+
+setSpecificMessage(string, "Campo obrigatório");
+const schema = pipe(
+  object({
+    displayName: string(),
+    email: pipe(string(), regex(/.+@.+/, "Email inválido")),
+    password: pipe(string(), minLength(8, "Mínimo de 8 caracteres")),
+    confirmPassword: string(),
+  }),
+  forward(
+    partialCheck(
+      [["password"], ["confirmPassword"]],
+      ({ confirmPassword, password }) => confirmPassword === password,
+      "Confirmação diferente da primeira senha.",
+    ),
+    ["confirmPassword"],
+  ),
+);
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const username = formData.get("username") as string;
-  const displayName = formData.get("displayName") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const submission = parseWithValibot(formData, {
+    schema,
+  });
 
-  const newUser = {
-    username,
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const { displayName, email, password } = submission.value;
+
+  const [{ emailExists }] = await db
+    .select({ emailExists: gte(count(userTable.id), 1) })
+    .from(userTable)
+    .where(eq(userTable.email, email))
+    .limit(1);
+  if (emailExists) {
+    return submission.reply({
+      fieldErrors: { email: ["Email já cadastrado"] },
+    });
+  }
+
+  const { hash } = await import("@node-rs/argon2");
+  const passwordHash = await hash(password, {
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1,
+  });
+
+  const userId = generateIdFromEntropySize(10);
+
+  await db.insert(userTable).values({
+    id: userId,
     displayName,
     email,
-    password,
-  };
-  console.log(newUser);
-  // const res = await fetch("/api/auth/register", {
-  //   method: "POST",
-  //   body: JSON.stringify(newUser),
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // });
+    passwordHash,
+  });
 
-  // const params = {
-  //   success: res.ok ? "true" : "false",
-  //   message: await res.text(),
-  // };
+  const session = await auth.createSession(userId, {});
+  const sessionCookie = auth.createSessionCookie(session.id);
 
-  // return redirect(`/register?${new URLSearchParams(params).toString()}`);
-  return redirect("/admin");
+  return redirect("/admin", {
+    headers: {
+      "Set-Cookie": sessionCookie.serialize(),
+    },
+  });
 }
 
-// export function clientLoader({ request }: ClientLoaderFunctionArgs) {
-//   const user = window.localStorage.getItem("user");
-//   if (user) {
-//     return redirect("/");
-//   }
-
-//   const urlSeachParams = new URL(request.url).searchParams;
-//   return urlSeachParams;
-// }
-
 export default function Cadastrar() {
-  // const urlSeachParams = useLoaderData<typeof clientLoader>();
-  // const registerSuccess = urlSeachParams.get("success");
+  const lastResult = useActionData<typeof action>();
 
-  // if (registerSuccess != null && registerSuccess === "true") {
-  //   return (
-  //     <Container title="Cadastrar">
-  //       <div className="my-16 flex flex-col items-center">
-  //         <p>Cadastro realizado com sucesso.</p>
-  //         <Link to="/" className="text-cyan-600 underline">
-  //           Voltar para a página inicial
-  //         </Link>
-  //       </div>
-  //     </Container>
-  //   );
-  // }
+  const [form, fields] = useForm({
+    defaultValue: {
+      displayName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    lastResult,
+  });
 
   return (
     <Container title="Cadastrar">
-      {/* {registerSuccess != null && registerSuccess === "false" && (
-        <div className="my-16 flex flex-col items-center">
-          <p>
-            Erro ao cadastrar usuário
-            {urlSeachParams.has("message")
-              ? `: ${urlSeachParams.get("message")}`
-              : ""}
-          </p>
-        </div>
-      )} */}
-      <Form method="post" className="flex flex-col gap-4">
+      <Form
+        method="post"
+        {...getFormProps(form)}
+        className="flex flex-col gap-4"
+      >
         <TextInput
-          name="displayName"
           label="Nome de exibição"
           autoComplete="name"
+          {...getInputProps(fields.displayName, { type: "text" })}
         />
+        <FormErrorMessage errors={fields.displayName.errors} />
         <TextInput
-          name="username"
-          label="Nome de usuário"
-          autoComplete="username"
-        />
-        <TextInput
-          name="email"
           label="Email"
-          type="email"
           autoComplete="email"
+          {...getInputProps(fields.email, { type: "email" })}
         />
+        <FormErrorMessage errors={fields.email.errors} />
         <TextInput
-          name="password"
           label="Senha"
-          type="password"
           autoComplete="new-password"
+          {...getInputProps(fields.password, { type: "password" })}
         />
+        <FormErrorMessage errors={fields.password.errors} />
         <TextInput
-          name="confirmarSenha"
           label="Confirmar Senha"
-          type="password"
+          {...getInputProps(fields.confirmPassword, { type: "password" })}
         />
+        <FormErrorMessage errors={fields.confirmPassword.errors} />
         <div className="m-4 flex justify-center">
           <SubmitButton>Cadastrar</SubmitButton>
         </div>
