@@ -3,8 +3,8 @@ import { Link, redirect, useLoaderData, useNavigate } from "@remix-run/react";
 import { eq } from "drizzle-orm";
 import { TbFlaskFilled, TbPencil } from "react-icons/tb";
 import { Container } from "~/components/container";
-import { db } from "~/db.server/connection";
-import { peptideoTable } from "~/db.server/schema";
+import { db } from "~/.server/db/connection";
+import { peptideoTable } from "~/.server/db/schema";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;

@@ -8,6 +8,13 @@
       "when": 1723740857975,
       "tag": "0000_light_shadowcat",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1724361751547,
+      "tag": "0001_rapid_silver_samurai",
+      "breakpoints": true
     }
   ]
 }

@@ -12,8 +12,8 @@ import {
 } from "@remix-run/react";
 import { eq } from "drizzle-orm";
 import { SubmitButton, TextInput } from "~/components/form";
-import { db } from "~/db.server/connection";
-import { imageMetadataTable } from "~/db.server/schema";
+import { db } from "~/.server/db/connection";
+import { imageMetadataTable } from "~/.server/db/schema";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;

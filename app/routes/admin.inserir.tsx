@@ -30,7 +30,7 @@ import {
   TextAreaInput,
   TextInput,
 } from "~/components/form";
-import { db } from "~/db.server/connection";
+import { db } from "~/.server/db/connection";
 import {
   caracteristicasAdicionaisTable,
   casoSucessoTable,
@@ -41,7 +41,7 @@ import {
   peptideoTable,
   peptideoToPublicacaoTable,
   publicacaoTable,
-} from "~/db.server/schema";
+} from "~/.server/db/schema";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();

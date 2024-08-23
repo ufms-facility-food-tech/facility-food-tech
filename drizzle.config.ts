@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
-  schema: "./app/db.server/schema.ts",
+  schema: "./app/.server/db/schema.ts",
   out: "./migrations",
   dialect: "postgresql",
   dbCredentials: {
@@ -10,6 +10,6 @@ export default defineConfig({
     database: process.env.PGDATABASE || "postgres",
     host: process.env.PGHOST || "localhost",
     port: Number(process.env.PGPORT),
-    ssl: false,
+    ssl: process.env.NODE_ENV === "production",
   },
 });
