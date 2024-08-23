@@ -14,7 +14,7 @@ import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import type { ReactNode } from "react";
 import { Container } from "~/components/container";
 import { Header } from "~/components/header";
-import type { User } from "~/db.server/schema";
+import type { User } from "~/.server/db/schema";
 
 export const links: LinksFunction = () => {
   return [

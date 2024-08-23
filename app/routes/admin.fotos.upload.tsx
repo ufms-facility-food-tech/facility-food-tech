@@ -12,8 +12,8 @@ import { Form, useActionData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { TbFileUpload } from "react-icons/tb";
 import { SubmitButton, TextInput } from "~/components/form";
-import { db } from "~/db.server/connection";
-import { imageMetadataTable } from "~/db.server/schema";
+import { db } from "~/.server/db/connection";
+import { imageMetadataTable } from "~/.server/db/schema";
 
 export async function action({ request }: ActionFunctionArgs) {
   try {

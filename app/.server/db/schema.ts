@@ -190,7 +190,7 @@ export const rolesEnum = pgEnum("roles", [
 ]);
 
 export const userTable = pgTable("user", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey(),
   name: text("name").notNull().unique(),
   displayName: text("display_name").notNull(),
   email: text("email").notNull().unique(),
@@ -200,6 +200,17 @@ export const userTable = pgTable("user", {
 });
 
 export type User = typeof userTable.$inferSelect;
+
+export const sessionTable = pgTable("session", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id, { onDelete: "cascade" }),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
+});
 
 export const imageMetadataTable = pgTable("image_metadata", {
   id: serial("id").primaryKey(),

@@ -1,6 +1,6 @@
 import { Link, NavLink } from "@remix-run/react";
 import { TbLogin, TbLogout, TbUserCircle, TbUserPlus } from "react-icons/tb";
-import type { User } from "~/db.server/schema";
+import type { User } from "~/.server/db/schema";
 
 export function Header({ user }: { user: User | null }) {
   return (

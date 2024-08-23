@@ -3,7 +3,7 @@ import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
 import { type SQL, eq, ilike, or, sql } from "drizzle-orm";
 import { TbFlaskFilled } from "react-icons/tb";
 import { Container } from "~/components/container";
-import { db } from "~/db.server/connection";
+import { db } from "~/.server/db/connection";
 import {
   casoSucessoTable,
   funcaoBiologicaTable,
@@ -11,7 +11,7 @@ import {
   organismoTable,
   organismoToNomePopularTable,
   peptideoTable,
-} from "~/db.server/schema";
+} from "~/.server/db/schema";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
