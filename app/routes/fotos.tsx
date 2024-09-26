@@ -1,7 +1,7 @@
 import { json, useLoaderData } from "@remix-run/react";
-import { Container } from "~/components/container";
 import { db } from "~/.server/db/connection";
 import { imageMetadataTable } from "~/.server/db/schema";
+import { Container } from "~/components/container";
 
 export async function loader() {
   const images = await db

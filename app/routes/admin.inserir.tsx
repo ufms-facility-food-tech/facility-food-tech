@@ -23,13 +23,7 @@ import {
   string,
   transform,
 } from "valibot";
-import {
-  CheckboxInput,
-  FormErrorMessage,
-  SubmitButton,
-  TextAreaInput,
-  TextInput,
-} from "~/components/form";
+import { auth, authMiddleware } from "~/.server/auth";
 import { db } from "~/.server/db/connection";
 import {
   caracteristicasAdicionaisTable,
@@ -42,7 +36,13 @@ import {
   peptideoToPublicacaoTable,
   publicacaoTable,
 } from "~/.server/db/schema";
-import { auth, authMiddleware } from "~/.server/auth";
+import {
+  CheckboxInput,
+  FormErrorMessage,
+  SubmitButton,
+  TextAreaInput,
+  TextInput,
+} from "~/components/form";
 
 export async function action({ request }: ActionFunctionArgs) {
   const { session } = await authMiddleware(request);

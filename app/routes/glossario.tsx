@@ -1,8 +1,8 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Container } from "~/components/container";
 import { db } from "~/.server/db/connection";
 import { glossarioTable } from "~/.server/db/schema";
+import { Container } from "~/components/container";
 
 export async function loader() {
   const glossary = await db.select().from(glossarioTable);

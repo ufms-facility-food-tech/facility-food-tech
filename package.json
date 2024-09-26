@@ -44,8 +44,5 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "esbuild"
-  ]
+  "trustedDependencies": ["@biomejs/biome", "esbuild"]
 }

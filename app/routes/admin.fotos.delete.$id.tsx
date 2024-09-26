@@ -1,9 +1,9 @@
 import { rm } from "node:fs";
 import { type ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { eq } from "drizzle-orm";
+import { auth, authMiddleware } from "~/.server/auth";
 import { db } from "~/.server/db/connection";
 import { imageMetadataTable } from "~/.server/db/schema";
-import { auth, authMiddleware } from "~/.server/auth";
 
 export async function action({ params, request }: ActionFunctionArgs) {
   const { session } = await authMiddleware(request);

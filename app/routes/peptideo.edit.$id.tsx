@@ -32,14 +32,7 @@ import {
   string,
   transform,
 } from "valibot";
-import { Container } from "~/components/container";
-import {
-  CheckboxInput,
-  FormErrorMessage,
-  SubmitButton,
-  TextAreaInput,
-  TextInput,
-} from "~/components/form";
+import { auth, authMiddleware } from "~/.server/auth";
 import { db } from "~/.server/db/connection";
 import {
   caracteristicasAdicionaisTable,
@@ -52,7 +45,14 @@ import {
   peptideoToPublicacaoTable,
   publicacaoTable,
 } from "~/.server/db/schema";
-import { auth, authMiddleware } from "~/.server/auth";
+import { Container } from "~/components/container";
+import {
+  CheckboxInput,
+  FormErrorMessage,
+  SubmitButton,
+  TextAreaInput,
+  TextInput,
+} from "~/components/form";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { session } = await authMiddleware(request);

@@ -1,7 +1,6 @@
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { eq, sql } from "drizzle-orm";
-import { Container } from "~/components/container";
 import { db } from "~/.server/db/connection";
 import {
   funcaoBiologicaTable,
@@ -10,6 +9,7 @@ import {
   organismoToNomePopularTable,
   peptideoTable,
 } from "~/.server/db/schema";
+import { Container } from "~/components/container";
 
 export async function loader() {
   const descobertas = await db

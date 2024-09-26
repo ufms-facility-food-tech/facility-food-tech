@@ -2,7 +2,6 @@ import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
 import { type SQL, eq, ilike, or, sql } from "drizzle-orm";
 import { TbFlaskFilled } from "react-icons/tb";
-import { Container } from "~/components/container";
 import { db } from "~/.server/db/connection";
 import {
   casoSucessoTable,
@@ -12,6 +11,7 @@ import {
   organismoToNomePopularTable,
   peptideoTable,
 } from "~/.server/db/schema";
+import { Container } from "~/components/container";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);

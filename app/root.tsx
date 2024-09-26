@@ -16,10 +16,10 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import type { ReactNode } from "react";
+import { authMiddleware } from "~/.server/auth";
+import type { User } from "~/.server/db/schema";
 import { Container } from "~/components/container";
 import { Header } from "~/components/header";
-import type { User } from "~/.server/db/schema";
-import { authMiddleware } from "~/.server/auth";
 
 export const links: LinksFunction = () => {
   return [
