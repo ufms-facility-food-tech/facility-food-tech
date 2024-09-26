@@ -1,4 +1,3 @@
-import { Container } from "~/components/container";
 import {
   TbBrandInstagram,
   TbBrandLinkedin,
@@ -6,6 +5,7 @@ import {
   TbMail,
   TbMapPin,
 } from "react-icons/tb";
+import { Container } from "~/components/container";
 
 export default function Sobre() {
   return (
