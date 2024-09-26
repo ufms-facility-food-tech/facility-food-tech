@@ -1,4 +1,4 @@
-import { Link, NavLink } from "@remix-run/react";
+import { Form, Link, NavLink } from "@remix-run/react";
 import { TbLogin, TbLogout, TbUserCircle, TbUserPlus } from "react-icons/tb";
 import type { User } from "~/.server/db/schema";
 
@@ -22,12 +22,14 @@ export function Header({ user }: { user: User | null }) {
             >
               {user.displayName as string} <TbUserCircle size="2rem" />
             </NavLink>
-            <NavLink
-              to="/logout"
-              className="flex items-center gap-2 rounded-full bg-gradient-to-l from-neutral-200 to-neutral-100 py-2 pl-5 pr-4 text-lg font-bold"
-            >
-              Sair <TbLogout size="2rem" />
-            </NavLink>
+            <Form method="post" action="/logout">
+              <button
+                type="submit"
+                className="flex items-center gap-2 rounded-full bg-gradient-to-l from-neutral-200 to-neutral-100 py-2 pl-5 pr-4 text-lg font-bold"
+              >
+                Sair <TbLogout size="2rem" />
+              </button>
+            </Form>
           </div>
         ) : (
           <div className="my-6 flex flex-wrap justify-end gap-3">

@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { NavLink, Outlet, redirect } from "@remix-run/react";
 import { IconContext } from "react-icons";
 import {
   TbBook,
@@ -7,7 +8,32 @@ import {
   TbLibraryPhoto,
   TbUsersGroup,
 } from "react-icons/tb";
+import { auth, authMiddleware } from "~/.server/auth";
 import { Container } from "~/components/container";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { session } = await authMiddleware(request);
+
+  if (!session) {
+    const sessionCookie = auth.createBlankSessionCookie();
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
+  if (session?.fresh) {
+    const sessionCookie = auth.createSessionCookie(session.id);
+    return redirect(request.url, {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
+  return null;
+}
 
 export default function Admin() {
   return (

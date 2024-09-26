@@ -1,10 +1,16 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { Link, redirect, useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  Link,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useOutletContext,
+} from "@remix-run/react";
 import { eq } from "drizzle-orm";
 import { TbFlaskFilled, TbPencil } from "react-icons/tb";
 import { Container } from "~/components/container";
 import { db } from "~/.server/db/connection";
-import { peptideoTable } from "~/.server/db/schema";
+import { peptideoTable, type User } from "~/.server/db/schema";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
@@ -59,6 +65,9 @@ export default function Peptideo() {
   );
 
   const navigate = useNavigate();
+
+  const { user } = useOutletContext<{ user: User | null }>();
+
   return (
     <Container>
       <div className="my-5 flex flex-col gap-4">
@@ -254,13 +263,15 @@ export default function Peptideo() {
         </div>
 
         <div className="flex items-center justify-center gap-2">
-          <Link
-            prefetch="intent"
-            to={`/peptideo/edit/${peptideo.id}`}
-            className="flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 py-2 pl-3 pr-4 font-bold text-white"
-          >
-            <TbPencil size="1.5rem" /> Editar
-          </Link>
+          {user && ["admin", "update"].includes(user.role) && (
+            <Link
+              prefetch="intent"
+              to={`/peptideo/edit/${peptideo.id}`}
+              className="flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 py-2 pl-3 pr-4 font-bold text-white"
+            >
+              <TbPencil size="1.5rem" /> Editar
+            </Link>
+          )}
           <button
             type="button"
             className="w-min rounded-full bg-neutral-100 px-6 py-2 font-bold"

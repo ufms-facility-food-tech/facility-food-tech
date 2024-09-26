@@ -37,7 +37,7 @@ export default function Glossario() {
               <div className="flex gap-2">
                 <Link
                   prefetch="intent"
-                  to={`editar/${id}`}
+                  to={`edit/${id}`}
                   className="flex w-min items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 py-1 pl-2 pr-4 text-sm font-bold text-white"
                 >
                   <TbPencil size="1.5rem" /> editar
