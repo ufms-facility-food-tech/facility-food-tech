@@ -55,7 +55,7 @@ export default function Resultado() {
   const descobertas = useLoaderData<typeof loader>();
 
   return (
-    <Container>
+    <Container title="Descobertas do LPPFB">
       <p className="mt-4 text-sm text-neutral-800">
         {descobertas.length} registros
       </p>

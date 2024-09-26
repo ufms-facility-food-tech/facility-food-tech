@@ -1,4 +1,4 @@
-import { Form, Link, NavLink } from "@remix-run/react";
+import { Form, NavLink } from "@remix-run/react";
 import { TbLogin, TbLogout, TbUserCircle, TbUserPlus } from "react-icons/tb";
 import type { User } from "~/.server/db/schema";
 
@@ -6,13 +6,16 @@ export function Header({ user }: { user: User | null }) {
   return (
     <header>
       <div className="min-h-26 flex items-center justify-between bg-white px-4">
-        <Link to="/">
+        <a
+          href="https://lppfb.ufms.br/"
+          title="Retornar ao site principal do LPPFB"
+        >
           <img
             className="my-2 h-24 max-w-md text-balance text-center"
             src="/images/static/lppfb-logo.jpg"
             alt="UFMS - LABORATÓRIO DE PURIFICAÇÃO DE PROTEÍNAS E SUAS FUNÇÕES BIOLÓGICAS"
           />
-        </Link>
+        </a>
         {user ? (
           <div className="my-6 flex flex-wrap justify-end gap-3">
             <NavLink
@@ -68,6 +71,19 @@ export function Header({ user }: { user: User | null }) {
           <li>
             <NavLink
               prefetch="intent"
+              to="/banco-de-dados"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "underline" : ""
+                } p-3 underline-offset-4 hover:underline`
+              }
+            >
+              Banco de Dados
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              prefetch="intent"
               to="/pesquisa"
               className={({ isActive }) =>
                 `${
@@ -115,6 +131,32 @@ export function Header({ user }: { user: User | null }) {
               }
             >
               Descobertas do LPPFB
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              prefetch="intent"
+              to="/casos-de-sucesso"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "underline" : ""
+                } p-3 underline-offset-4 hover:underline`
+              }
+            >
+              Casos de Sucesso
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              prefetch="intent"
+              to="/sobre"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "underline" : ""
+                } p-3 underline-offset-4 hover:underline`
+              }
+            >
+              Sobre
             </NavLink>
           </li>
         </ul>
