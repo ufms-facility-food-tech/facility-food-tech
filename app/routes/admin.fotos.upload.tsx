@@ -11,10 +11,10 @@ import {
 import { Form, redirect, useActionData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { TbFileUpload } from "react-icons/tb";
-import { SubmitButton, TextInput } from "~/components/form";
+import { auth, authMiddleware } from "~/.server/auth";
 import { db } from "~/.server/db/connection";
 import { imageMetadataTable } from "~/.server/db/schema";
-import { auth, authMiddleware } from "~/.server/auth";
+import { SubmitButton, TextInput } from "~/components/form";
 
 export async function action({ request }: ActionFunctionArgs) {
   const { session } = await authMiddleware(request);

@@ -13,9 +13,9 @@ import {
 import { getValibotConstraint, parseWithValibot } from "conform-to-valibot";
 import { eq } from "drizzle-orm";
 import { object, string } from "valibot";
-import { FormErrorMessage, SubmitButton, TextInput } from "~/components/form";
 import { db } from "~/.server/db/connection";
 import { glossarioTable } from "~/.server/db/schema";
+import { FormErrorMessage, SubmitButton, TextInput } from "~/components/form";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;

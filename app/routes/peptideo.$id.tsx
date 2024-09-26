@@ -8,9 +8,9 @@ import {
 } from "@remix-run/react";
 import { eq } from "drizzle-orm";
 import { TbFlaskFilled, TbPencil } from "react-icons/tb";
-import { Container } from "~/components/container";
 import { db } from "~/.server/db/connection";
-import { peptideoTable, type User } from "~/.server/db/schema";
+import { type User, peptideoTable } from "~/.server/db/schema";
+import { Container } from "~/components/container";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
