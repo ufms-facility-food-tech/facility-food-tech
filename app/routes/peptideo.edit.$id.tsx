@@ -52,8 +52,29 @@ import {
   peptideoToPublicacaoTable,
   publicacaoTable,
 } from "~/.server/db/schema";
+import { auth, authMiddleware } from "~/.server/auth";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  const { session } = await authMiddleware(request);
+
+  if (!session) {
+    const sessionCookie = auth.createBlankSessionCookie();
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
+  if (session?.fresh) {
+    const sessionCookie = auth.createSessionCookie(session.id);
+    return redirect(request.url, {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
   const { id } = params;
 
   const peptideo = await db.query.peptideoTable.findFirst({
@@ -192,6 +213,26 @@ const schema = object({
 });
 
 export async function action({ request }: ActionFunctionArgs) {
+  const { session } = await authMiddleware(request);
+
+  if (!session) {
+    const sessionCookie = auth.createBlankSessionCookie();
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
+  if (session?.fresh) {
+    const sessionCookie = auth.createSessionCookie(session.id);
+    return redirect(request.url, {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
   const formData = await request.formData();
   const submission = parseWithValibot(formData, {
     schema,

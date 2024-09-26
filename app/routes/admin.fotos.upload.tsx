@@ -8,14 +8,35 @@ import {
   json,
   unstable_parseMultipartFormData as parseMultipartFormData,
 } from "@remix-run/node";
-import { Form, useActionData, useNavigate } from "@remix-run/react";
+import { Form, redirect, useActionData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { TbFileUpload } from "react-icons/tb";
 import { SubmitButton, TextInput } from "~/components/form";
 import { db } from "~/.server/db/connection";
 import { imageMetadataTable } from "~/.server/db/schema";
+import { auth, authMiddleware } from "~/.server/auth";
 
 export async function action({ request }: ActionFunctionArgs) {
+  const { session } = await authMiddleware(request);
+
+  if (!session) {
+    const sessionCookie = auth.createBlankSessionCookie();
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
+  if (session?.fresh) {
+    const sessionCookie = auth.createSessionCookie(session.id);
+    return redirect(request.url, {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
   try {
     const formData = await parseMultipartFormData(
       request,

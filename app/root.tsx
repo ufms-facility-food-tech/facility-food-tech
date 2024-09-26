@@ -10,11 +10,16 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import "./tailwind.css";
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
+import type {
+  LinksFunction,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import type { ReactNode } from "react";
 import { Container } from "~/components/container";
 import { Header } from "~/components/header";
 import type { User } from "~/.server/db/schema";
+import { authMiddleware } from "~/.server/auth";
 
 export const links: LinksFunction = () => {
   return [
@@ -69,22 +74,17 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
-export function clientLoader() {
-  const user = window.localStorage.getItem("user");
-  if (user) {
-    return JSON.parse(user);
-  }
-
-  return user;
+export async function loader({ request }: LoaderFunctionArgs) {
+  return await authMiddleware(request);
 }
 
 export default function App() {
-  const user = useLoaderData<typeof clientLoader>() as User | null;
+  const { user } = useLoaderData<typeof loader>();
 
   return (
     <>
-      <Header user={user} />
-      <Outlet />
+      <Header user={user as User} />
+      <Outlet context={{ user }} />
     </>
   );
 }

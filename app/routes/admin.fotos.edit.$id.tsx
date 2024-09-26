@@ -14,6 +14,7 @@ import { eq } from "drizzle-orm";
 import { SubmitButton, TextInput } from "~/components/form";
 import { db } from "~/.server/db/connection";
 import { imageMetadataTable } from "~/.server/db/schema";
+import { auth, authMiddleware } from "~/.server/auth";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
@@ -29,6 +30,26 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
+  const { session } = await authMiddleware(request);
+
+  if (!session) {
+    const sessionCookie = auth.createBlankSessionCookie();
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
+  if (session?.fresh) {
+    const sessionCookie = auth.createSessionCookie(session.id);
+    return redirect(request.url, {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
   const formData = await request.formData();
   const alt = formData.get("alt");
   const id = params.id;
